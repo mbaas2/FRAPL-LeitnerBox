@@ -15,8 +15,8 @@
       :If ⎕NEXISTS file
           data←⎕JSON 1⊃⎕NGET file
           sf←data.stock
-          :If ~∨/'\/'∊sf
-              sf←(1⊃⎕NPARTS file),sf
+          :If ~∨/'\/'∊sf ⍝ is stock-file specified using a path?
+              sf←(1⊃⎕NPARTS file),sf   ⍝ nope, then use same dir as project file
           :EndIf
           :If ⎕NEXISTS sf
               stock←⎕JSON 1⊃⎕NGET sf
@@ -27,7 +27,7 @@
           data.direction←1
           data.progress←1
           data.stats←,⎕NS''
-          data.stats[1].(id fach)←1
+          data.stats[1].(id sect)←1
           stock←⎕NS''
           ((⎕JSON⍠'Compact' 0)data)⎕NPUT file 1
           ⎕←'Initialized data-file ',file,' please edit config!'
@@ -36,79 +36,83 @@
 
     ∇ R←info
       :Access public
-      R←⊂'Lernprojekt: ',file
-      R,←⊂'nutzt Vokabular: ',data.stock,' (',('lernt ',data.direction⊃'Fremdsprache' 'Rückübersetzung'),')'
-      R,←⊂'Fortschritt: ',⍕data.progress
+      R←⊂'Project: ',file
+      R,←⊂'uses vocabulary: ',data.stock,' (',('trains ',data.direction⊃'foreign language' 'backward translation'),')'
+      R,←⊂'Progress: ',⍕data.progress
       :If 326≠⎕DR data.stats   ⍝ variable (namespace=9)
-          R,←⊂'Karten je Fach (incl. F0/5): ',¯2↓∊(⍕¨(≢stock.cards.id),0 0 0 0 0),¨⊂' | '
+          R,←⊂'Cards per section (incl. S0/5): ',¯2↓∊(⍕¨(≢stock.cards.id),0 0 0 0 0),¨⊂' | '
       :Else
-          R,←⊂'Karten je Fach (incl. F0/5): ',¯2↓∊(⍕¨(+/~stock.cards.id∊data.stats.id),+⌿data.stats.fach∘.=⍳5),¨⊂' | '
+          R,←⊂'Cards per section (incl. S0/5): ',¯2↓∊(⍕¨(+/~stock.cards.id∊data.stats.id),+⌿data.stats.sect∘.=⍳5),¨⊂' | '
       :EndIf
-      R,←⊂'Heute zu lernendes Fach: ',⍕method[data.progress]
+      R,←⊂'Today''s section: ',⍕method[data.progress]
      
     ∇
 
 
 
-    ∇ Tageslektion;z;loop;ok;lektion;i;word;sink
+    ∇ Lesson;z;loop;ok;lesson_ids;i;word;sink
       :Access public
-      lektion←heuteLernen
-      ok←0×lektion
+      lesson_ids←todaysLesson
+      ok←0×lesson_ids
       loop←1
       :While 0∊ok
-          (⍕loop),'. Durchlauf, ',(⍕+/~ok),' Vokabeln'
+          (⍕loop),'. pass, ',(⍕+/~ok),' words'
           loop+←1
           :For i :In ⍸~ok
-              word←stock.cards[idx←stock.cards.id⍳lektion[i]]
+              word←stock.cards[idx←stock.cards.id⍳lesson_ids[i]]
               40⍴⎕UCS 13     ⍝ CLS ;)
-              ⎕←word.h
+              ⎕←word.(h f)[data.direction]
               sink←⍞
-              ⍞←word.f
+              ⍞←word.(f f)[data.direction]
               ⍝ anzeigen
               ⍝ gewusst         oder   nicht
      ask:
-              ⎕←'Gewusst oder nicht? (1/0/q/i)'
+              ⎕←'Correct...or failed? (1/y/j=Correct, 0/n=Failed, i=Info, q=Quit (w/o saving progress), e=Exit (save progress)'
               z←⍞
-              →(∨/z∊'Qq')/0
+              :if ∨/z∊'Qq' ⋄ ⎕←'Quit' ⋄ :goto 0 ⋄ :endif
+              :if ∨/z'eE' 
+              ⎕←'Exit' ⋄ :leave
+              :endif
               :If 'i'∊z
                   ⎕←1↑¯2↑info
                   →ask
               :EndIf
-              z←⊃(//)⎕VFI z
-              :If (≢data.stats.id)<s←data.stats.id⍳lektion[i]
-                  new←⎕NS'' ⋄ new.id←i ⋄ new.fach←data.progress
+              z←∨/'jyJY1'∊z
+              :If (≢data.stats.id)<s←data.stats.id⍳lesson_ids[i]
+                  new←⎕NS'' ⋄ new.id←i ⋄ new.sect←data.progress
               :EndIf
               :If (,1)≡,z
-                  data.stats[s].fach+←1
+                  data.stats[s].sect+←1
               :Else
-                  data.stats[s].fach←1  ⍝ zurück nach1 !
+                  data.stats[s].sect←1  ⍝ zurück nach1 !
               :EndIf
-              ok[i]←z∨fach>1
+              ok[i]←z∨sect>1
           :EndFor
       :EndWhile
       data.progress+←1
       saveData
-      ⎕←'Lektion beendet.'
+      ⎕←'lesson_ids ended. Status:'
+      ⎕←↑info
     ∇
 
-    ∇ R←heuteLernen;missing;new
+    ∇ R←todaysLesson;missing;new
       :Access public
-    ⍝ ermittle ids der heute zu lernenden Vokabeln
+    ⍝ get ids of words to be learned today
       R←⍬
       :If 326≠⎕DR data.stats
           missing←stock.cards.id
       :Else
           missing←(~stock.cards.id∊data.stats.id)/stock.cards.id
       :EndIf
-      fach←method[data.progress]
-      new←(fach=1)/missing[(lumpSize⌊≢missing)?≢missing]
+      sect←method{w←a|⍵ ⋄w+←w=0  ⋄ ⍺[w] }data.progress
+      new←(sect=1)/missing[(lumpSize⌊≢missing)?≢missing]
       :If 326=⎕DR data.stats
-          R←(fach=data.stats.fach)/data.stats.id
+          R←(sect=data.stats.sect)/data.stats.id
           R←R[?⍨≢R]
       :EndIf
       R←R,new
       :If 0<≢new
-          data.stats⍪←{n←⎕NS'' ⋄ n.id←⍵ ⋄ n.fach←1 ⋄ n}¨new
+          data.stats⍪←{n←⎕NS'' ⋄ n.id←⍵ ⋄ n.sect←1 ⋄ n}¨new
       :EndIf
     ∇
 
