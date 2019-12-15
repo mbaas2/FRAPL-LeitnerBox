@@ -1,0 +1,10 @@
+<Server>
+	<Name>Vocabulary</Name>
+	<ClassName>VocaServer</ClassName>
+	<LogMessageLevel>-1</LogMessageLevel>               <!-- 0-none -1-all 1-error/important 2-warning 4-informational 8-Transactional -->
+	<SessionTimeout>7d</SessionTimeout>                <!-- avoid session timeout -->
+	<Production>0</Production>
+	    <TrapErrors>0</TrapErrors>    <!-- Valid: 0=Crash, 1=Trap and Log errors -->
+    <Debug>2</Debug>              <!-- Valid: 0=No Debug Info, 1=Debug Info, 2=Allow Editing -->
+
+</Server>

@@ -1,0 +1,28 @@
+﻿:Class Kasten
+
+    :field public Dateiname ←''
+    :field public Karten←⍬
+    :field public config←⍬
+    :field public Description←''
+
+
+
+    ∇ ZumStapel(Wort Übersetzung);n
+      :Access public
+      n←1+⌈/0,Karten.id
+      Karten,←{n←⎕NS'' ⋄ n.(id h f)←⍵ ⋄ n}n Wort Übersetzung
+    ∇
+
+    ∇ Speichern
+      :Access public
+      data←⎕NS''
+      data.desc←config
+      data.cards←Karten
+      ((⎕JSON⍠'Compact' 0)data)⎕NPUT Dateiname 1
+    ∇
+
+
+
+
+    isChar←{0 2∊⍨10|⎕dr ⍵}
+:EndClass
