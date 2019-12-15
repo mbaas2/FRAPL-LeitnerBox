@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This little project has been developed by the FRAPL-Meetup - a group of APL-Enthusiasts in and around Frankfurt.
+This little project has been developed by the [FRAPL-Meetup](https://www.meetup.com/de-DE/Frankfurt-APLers/) - a group of APL-Enthusiasts in and around Frankfurt.
 Our goal is to learn how to use APL by building useful software. This little (totally untypical) APL-Application  
 intends to help students in their study of vocabulary of a foreign language.  
 
@@ -43,6 +43,8 @@ specified using value `2`.)
 The `progress`-field in that file is a counter that is incremented with every day (of exercise). According to this parameter you'll be presented with different sections of the index-box for learning.
 
 ## Using it  
+
+* requires [Dyalog APL](https://www.dyalog.com/) - free for personal, non-commercial use. V17 onwards...
 
 * first, to load the app. do:  
   `]load /git/FRAPL-Voka/*.aplc`  
