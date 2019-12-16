@@ -58,3 +58,10 @@ The `progress`-field in that file is a counter that is incremented with every da
 
 * to run the daily lesson:
   `myP.Lesson`
+
+## Plans
+
+* of course, we welcome contributions (PR) to this repository!
+* top-priority: import of .CSV or .TXT-Files with vocabulary
+* currently the app just pauses and displays the solution. It might be interesting to implement (optional) input
+  of YOUR answer/translation and then try a comparison to the "solution" (although that will still need human verification and confirmation)
