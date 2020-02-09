@@ -30,6 +30,22 @@ of turbo-learning. But note that will you only harm yourself, because in the end
 The UI is a bit rough atm, the app currently operates using console input. We're planning to use this a test-case to explore
 various approaches towards UI, so expect some movement in that direction.
 
+### DUI-UI 
+In Feb2020 we started implementing an HTML-UI which can be used cross-platform. This uses DUI (Dyalog User Interface) which renders HTML/JS-based UIs.
+Available from its repository https://github.com/Dyalog/DUI (doco of controls & how to build pages etc. currently to be found @ https://miserver.dyalog.com/)
+
+To execute it, start Dyalog and then:
+`)load /git/dui/dui ⍝ adjust path as appropriate`
+
+To run the app using HTMLRenderer as a container:
+`DUI.Run'/git/frapl-voka'`
+
+Run it serving pages to your browser:
+`DUI.Run'/git/frapl-voka' 8080`  ⍝ click URL that is shown in output`
+
+** Warning: ** sorry, it's still very early days for this UI, so currently there's not much it can do. We're planning to work on it! ;)
+
+
 ## Concepts  
 
 The app uses vocabulary that is provided in a `.JSON`-format as illustrated in the norwegian vocabulary
@@ -42,26 +58,10 @@ native **to** foreign language.) The technical specification of this "learning d
 specified using value `2`.)
 The `progress`-field in that file is a counter that is incremented with every day (of exercise). According to this parameter you'll be presented with different sections of the index-box for learning.
 
-## Using it  
-
-* requires [Dyalog APL](https://www.dyalog.com/) - free for personal, non-commercial use. V17 onwards...
-
-* first, to load the app. do:  
-  `]load /git/FRAPL-Voka/*.aplc`  
-  which brings the neccessary classes into the workspace.
-
-* to run it, you need to open a "learning project":
-  `myP←⎕NEW #.project '/git/FRAPL-Voka/Data/norw-hin.json'  
-
-* for status-info, of that project:  
-  `myP.info`
-
-* to run the daily lesson:
-  `myP.Lesson`
-
 ## Plans
 
 * of course, we welcome contributions (PR) to this repository!
 * top-priority: import of .CSV or .TXT-Files with vocabulary
 * currently the app just pauses and displays the solution. It might be interesting to implement (optional) input
   of YOUR answer/translation and then try a comparison to the "solution" (although that will still need human verification and confirmation)
+* we're looking for a "sexy" name fo the app. Contributions welcome! ;)

@@ -1,0 +1,36 @@
+﻿:class index : MiPage
+
+
+∇ Compose 
+:access public
+
+prj←⎕new #.project (#.Boot.AppRoot,'Data/norw.json')
+
+d←Add _.div
+'id=titel class=titel'd.Add _.p 'Vokabeln lernen'
+
+
+'#w1'Add _.div' (1⊃prj.Lektion.GetWord)
+'#translate'Add _.button'Übersetzung zeigen'
+
+trans←'#trans style=display:none;'Add _.div
+'#w2'trans.Add _.div(2⊃prj.Lektion.GetWord) 
+
+'#ok'trans.Add _.button'Das habe ich gewusst'
+'#fail'trans.Add _.button'Nochmal lernen'
+
+Add _.Handler'button' 'click' 'ClickedButton'
+∇
+
+
+∇ R←ClickedButton
+:access public 
+:select _what 
+:case'translate' 
+R←Execute'$("#trans").show();'
+:caselist 'ok' 'fail' 
+w←prj.Lektion.Ergebnis _what≡'ok'
+:endselect
+∇
+
+:endclass
