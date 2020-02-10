@@ -125,6 +125,7 @@
       :Access public
       ((⎕JSON⍠'Compact' 0)data)⎕NPUT file 1
     ∇
+
     :class cLesson
         :field public _words←⍬
         :field private idx←1
@@ -160,9 +161,8 @@
               data.stats[idx].sect←1  ⍝ back to 1!
           :EndIf
           ok[idx]←bool∨sect>1
-          :EndClass
-         
         ∇
 
 
     :endclass
+:endclass
