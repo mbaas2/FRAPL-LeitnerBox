@@ -10,7 +10,7 @@ d←Add _.div
 'id=titel class=titel'd.Add _.p 'Vokabeln lernen'
 
 
-'#w1'Add _.div' (1⊃prj.Lektion.GetWord)
+'#w1'Add _.div (1⊃prj.Lektion.GetWord)
 '#translate'Add _.button'Übersetzung zeigen'
 
 trans←'#trans style=display:none;'Add _.div
