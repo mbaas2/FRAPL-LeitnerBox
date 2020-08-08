@@ -1,4 +1,4 @@
-# FRAPL-Voka
+# FRAPL-LeitnerBox
 
 ## Purpose
 
@@ -6,6 +6,7 @@ This little project has been developed by the [FRAPL-Meetup](https://www.meetup.
 Our goal is to learn how to use APL by building useful software. This little (totally untypical) APL-Application  
 intends to help students (or other "learners") in their study of vocabulary or other material they need to memorize. It uses the [Flashcard](https://wikipedia.org/wiki/Flashcard)-ideas from [Sebastian Leitner](https://de.wikipedia.org/wiki/Sebastian_Leitner).
 
+The current name is probably temporary - one fine day (when it gets really useable) we may drop the FRAPL-Prefix! ;)
 
 ### DUI-UI 
 In Feb2020 we started implementing an HTML-UI which can be used cross-platform. This uses DUI (Dyalog User Interface) which renders HTML/JS-based UIs.
