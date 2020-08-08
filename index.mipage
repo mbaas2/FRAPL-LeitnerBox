@@ -27,14 +27,15 @@
     ∇ R←ClickedButton
       :Access public
       R←''
-      :Select _what
+      :Select _currentTarget
       :Case 'translate'
           R←Execute'$("#trans").show();'
           R,←Execute'$("#translate").prop("disabled", true);'
       :CaseList 'ok' 'fail'
-          prj.Lektion.Tested _what≡'ok'
+          prj.Lektion.Tested _currentTarget≡'ok'
           R,←'#status'Replace(renderIt StatusInfo)
           :If prj.Lektion.Done
+              R,←Execute'$("#w1").hide();'
               R,←'#trans'Replace(New _.p('Lesson ended, Data saved!'))
               prj.data.progress+←1
               prj.saveData
@@ -44,9 +45,9 @@
               R,←'#w2'Replace(2⊃prj.Lektion.GetWord)
               R,←Execute'$("#translate").prop("disabled", false);'
           :EndIf
-          :else
-          ⎕←'_what=',_what
-          ∘∘∘ 
+      :Else
+          ⎕←'_currentTarget=',_currentTarget
+          ∘∘∘
       :EndSelect
     ∇
 
