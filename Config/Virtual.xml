@@ -3,11 +3,6 @@
 	%ServerRoot% - MiServer root directory
 	%SiteRoot%   - web site root -->
 	<directory>
-		<alias>FontAwesome5</alias>
-		<path>%SiteRoot%/assets/fontawesome-pro-5.10.1-web/</path>
-		<!-- redefining the std-path that uses FA-free -->
-	</directory>
-	<directory>
 		<alias>Parsley</alias>
 		<path>%SiteRoot%/assets/parsley-2.8.1/</path>
 	</directory>

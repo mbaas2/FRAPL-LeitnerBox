@@ -1,36 +1,59 @@
 ﻿:class index : MiPage
+⍝ Leitner-methode: https://de.wikipedia.org/wiki/Lernkartei bzw. https://en.wikipedia.org/wiki/Flashcard ( https://de.wikipedia.org/wiki/Sebastian_Leitner )
+
+    ∇ Compose
+      :Access public
+      Use'Bootstrap4'
+      'class'Body.Set'bg-dark text-white'
+      prj←⎕NEW #.project(#.Boot.AppRoot,'Data/norw-fw.json')
+     
+      d←Add _.div
+      'id=titel class=titel .text-center'd.Add _.div'FRAPL''s Leitnerbox'
+      ('.text-center'd.Add _.div).Add¨{New _.p ⍵}2↑prj.info
+     
+      task←'.w-100 .text-center'Add _.div
+      '#status .mt-2 .mb-4'task.Add _.div StatusInfo
+      '#w1 .alert .alert-dark .font-weight-bold .w-100 .text-center'task.Add _.div(1⊃prj.Lektion.GetWord)
+      '#translate accesskey=S .btn .btn-primary .mt-3 .mb-3'('class="text-center"'task.Add _.div).Add _.button'(S)how translation'
+     
+      trans←'#trans style=display:none; .mx-auto .w-100 .text-center'Add _.div
+      '#w2 .alert .alert .alert-info .font-weight-bold .w-100 .text-center'trans.Add _.div(2⊃prj.Lektion.GetWord)
+      '#ok accesskey=C .btn .btn-success .mr-2'trans.Add _.button((New _.Icon'fas-check-circle'),New _.span' (C)orrect')
+      '#fail accesskey=N .btn .btn-danger .ml-2'trans.Add _.button((New _.Icon'fas-thumbs-down'),New _.span' Did (n)ot know')
+      Add _.Handler'button' 'click' 'ClickedButton'
+    ∇
 
 
-∇ Compose 
-:access public
+    ∇ R←ClickedButton
+      :Access public
+      R←''
+      :Select _what
+      :Case 'translate'
+          R←Execute'$("#trans").show();'
+          R,←Execute'$("#translate").prop("disabled", true);'
+      :CaseList 'ok' 'fail'
+          prj.Lektion.Tested _what≡'ok'
+          R,←'#status'Replace(renderIt StatusInfo)
+          :If prj.Lektion.Done
+              R,←'#trans'Replace(New _.p('Lesson ended, Data saved!'))
+              prj.data.progress+←1
+              prj.saveData
+          :Else
+              R,←Execute'$("#trans").hide();'
+              R,←'#w1'Replace(1⊃prj.Lektion.GetWord)
+              R,←'#w2'Replace(2⊃prj.Lektion.GetWord)
+              R,←Execute'$("#translate").prop("disabled", false);'
+          :EndIf
+          :else
+          ⎕←'_what=',_what
+          ∘∘∘ 
+      :EndSelect
+    ∇
 
-prj←⎕new #.project (#.Boot.AppRoot,'Data/norw.json')
 
-d←Add _.div
-'id=titel class=titel'd.Add _.p 'Vokabeln lernen'
-
-
-'#w1'Add _.div (1⊃prj.Lektion.GetWord)
-'#translate'Add _.button'Übersetzung zeigen'
-
-trans←'#trans style=display:none;'Add _.div
-'#w2'trans.Add _.div(2⊃prj.Lektion.GetWord) 
-
-'#ok'trans.Add _.button'Das habe ich gewusst'
-'#fail'trans.Add _.button'Nochmal lernen'
-
-Add _.Handler'button' 'click' 'ClickedButton'
-∇
-
-
-∇ R←ClickedButton
-:access public 
-:select _what 
-:case'translate' 
-R←Execute'$("#trans").show();'
-:caselist 'ok' 'fail' 
-w←prj.Lektion.Ergebnis _what≡'ok'
-:endselect
-∇
+    ∇ R←StatusInfo
+      si←prj.SectionInfo
+      R←(si[1]=¯1+⍳≢2⊃si){New _.span(⍕⍵)('.badge .badge-pill .badge-',(1+⍺)⊃'info' 'light')}¨2⊃si
+    ∇
 
 :endclass
