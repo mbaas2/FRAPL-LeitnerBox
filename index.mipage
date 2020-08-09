@@ -1,24 +1,18 @@
-﻿:class index : MiPage
+﻿:class index :  lBoxPage
 ⍝ Leitner-methode: https://de.wikipedia.org/wiki/Lernkartei bzw. https://en.wikipedia.org/wiki/Flashcard ( https://de.wikipedia.org/wiki/Sebastian_Leitner )
 
     ∇ Compose
       :Access public
-      Use'Bootstrap4'
-      'class'Body.Set'bg-dark text-white'
-      prj←⎕NEW #.lBox(#.Boot.AppRoot,'Data/norw-fw.json')
      
-      d←Add _.div
-      'id=titel class=titel .text-center'd.Add _.div'FRAPL''s Leitnerbox'
+      task←'#task .w-100 .text-center .d-none'Add _.div
+      '#status .mt-2 .mb-4 style=font-size:1.4em;'task.Add _.div
+      '#w1 .alert .alert-dark .font-weight-bold .w-100 .text-center'task.Add _.div ⍝ (1⊃prj.Lesson.GetWord)
+      '#translate accesskey=S .btn .btn-primary .btn-lg .mt-3 .mb-3'('class="text-center"'task.Add _.div).Add _.button(New _.Icon'fas-caret-right')  ⍝'(S)how translation'
      
-      task←'.w-100 .text-center'Add _.div
-      '#status .mt-2 .mb-4 style=font-size:1.4em;'task.Add _.div StatusInfo
-      '#w1 .alert .alert-dark .font-weight-bold .w-100 .text-center'task.Add _.div(1⊃prj.Lesson.GetWord)
-      '#translate accesskey=S .btn .btn-primary .mt-3 .mb-3'('class="text-center"'task.Add _.div).Add _.button'(S)how translation'
-     
-      trans←'#trans style=display:none; .mx-auto .w-100 .text-center'Add _.div
-      '#w2 .alert .alert .alert-info .font-weight-bold .w-100 .text-center'trans.Add _.div(2⊃prj.Lesson.GetWord)
-      '#ok accesskey=C .btn .btn-success .mr-2'trans.Add _.button((New _.Icon'fas-check-circle'),New _.span' (C)orrect')
-      '#fail accesskey=N .btn .btn-danger .ml-2'trans.Add _.button((New _.Icon'fas-thumbs-down'),New _.span' Did (n)ot know')
+      trans←'#trans .d-none .mx-auto .w-100 .text-center'Add _.div
+      '#w2 .alert .alert .alert-info .font-weight-bold .w-100 .text-center'trans.Add _.div ⍝ (2⊃prj.Lesson.GetWord)
+      '#ok accesskey=C .btn .btn-success .btn-lg  .mx-2 .px-4'trans.Add _.button(New _.Icon'fas-check-circle')
+      '#fail accesskey=N .btn .btn-danger .btn-lg .mx-2 .px-4'trans.Add _.button(New _.Icon'fas-thumbs-down')
       Add _.Handler'button' 'click' 'ClickedButton'
     ∇
 
@@ -28,18 +22,18 @@
       R←''
       :Select _currentTarget
       :Case 'translate'
-          R←Execute'$("#trans").show();'
+          R←#.Tools.Show'trans'
           R,←Execute'$("#translate").prop("disabled", true);'
       :CaseList 'ok' 'fail'
           prj.Lesson.Tested _currentTarget≡'ok'
           R,←'#status'Replace(renderIt StatusInfo)
           :If prj.Lesson.Done
-              R,←Execute'$("#w1").hide();'
+              R←0 #.Tools.Show'w1'
               R,←'#trans'Replace(New _.p('Lesson ended, Data saved!'))
               prj.data.progress+←1
               prj.saveData
           :Else
-              R,←Execute'$("#trans").hide();'
+              R←0 #.Tools.Show'trans'
               R,←'#w1'Replace(1⊃prj.Lesson.GetWord)
               R,←'#w2'Replace(2⊃prj.Lesson.GetWord)
               R,←Execute'$("#translate").prop("disabled", false);'
@@ -51,9 +45,26 @@
     ∇
 
 
-    ∇ R←StatusInfo
+    ∇ R←StatusInfo;si
       si←prj.SectionInfo
-      R←(si[1]=¯1+⍳≢2⊃si){New _.span(⍕⍵)('.mr-1 .badge .badge-pill .badge-',(1+⍺)⊃'info' 'light')}¨2⊃si
+      R←(↓(⍳≢2⊃si),[1.5]si[1]=¯1+⍳≢2⊃si){New _.span(⍕⍵)('.mr-1 .badge .badge-pill .badge-',(1+2⊃⍺)⊃'info' 'light')}¨2⊃si
     ∇
 
+
+
+    ∇ R←OpenProject
+      :Access public
+     
+      prj←⎕NEW #.lBox(#.Boot.AppRoot,'Data/norw-fw.json')
+      R←#.Tools.Show'translate'
+      R←#.Tools.Show'task'
+      R,←'#w1'Replace(1⊃prj.Lesson.GetWord)
+      R,←'#w2'Replace(2⊃prj.Lesson.GetWord)
+      R,←'#status'Replace(renderIt StatusInfo)
+    ∇
+
+    ∇ R←Go ⍝ start default-project - temporary hack until we have File>Load
+      :Access Public
+      R←OpenProject
+    ∇
 :endclass

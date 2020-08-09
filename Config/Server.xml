@@ -1,6 +1,5 @@
 <Server>
 	<Name>Vocabulary</Name>
-	<ClassName>VocaServer</ClassName>
 	<LogMessageLevel>-1</LogMessageLevel>               <!-- 0-none -1-all 1-error/important 2-warning 4-informational 8-Transactional -->
 	<SessionTimeout>7d</SessionTimeout>                <!-- avoid session timeout -->
 	<Production>0</Production>
