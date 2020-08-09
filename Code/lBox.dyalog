@@ -1,4 +1,4 @@
-﻿:class project
+﻿:class lBox  ⍝ was "project"
 
     :field public data
     :field public file
@@ -6,7 +6,7 @@
     :field private method← 1 1 2 1 1 2 1 1 2 3 1 1 2 1 1 2 1 1 2 3 4
     :field private lumpSize←20   ⍝ how many new words to add to 1?
     :field public Wort
-    :field public Lektion
+    :field public Lesson
 
     nl←⎕ucs 13
 
@@ -34,21 +34,7 @@
           ((⎕JSON⍠'Compact' 0)data)⎕NPUT file 1
           ⎕←'Initialized data-file ',file,' please edit config!'
       :EndIf
-      Lektion←⎕NEW cLesson(data todaysLesson stock)
-    ∇
-
-    ∇ R←info
-      :Access public
-      R←⊂'Project: ',file
-      R,←⊂'trains: ',∊stock.desc.(foreign native )[data.direction+1],' ➔ ',stock.desc.(native foreign )[data.direction+1]
-      R,←⊂'Progress: ',⍕data.progress
-      :If 326≠⎕DR data.stats   ⍝ variable (namespace=9)
-          R,←⊂'Cards per section (incl. S0/5): ',¯2↓∊(⍕¨(≢stock.cards.id),0 0 0 0 0),¨⊂' | '
-      :Else
-          R,←⊂'Cards per section (incl. S0/5): ',¯2↓∊(⍕¨(+/~stock.cards.id∊data.stats.id),+⌿data.stats.sect∘.=⍳5),¨⊂' | '
-      :EndIf
-      R,←⊂'Today''s section: ',⍕method[data.progress]
-     
+      Lesson←⎕NEW cLesson(data todaysLesson stock)
     ∇
 
     ∇ R←SectionInfo
@@ -66,53 +52,7 @@
     ∇
 
 
-
-    ∇ Lesson;z;loop;ok;lesson_ids;i;word;sink
-      :Access public
-      lesson_ids←todaysLesson
-      ok←0×lesson_ids
-      loop←1
-      :While 0∊ok
-          (⍕loop),'. pass, ',(⍕+/~ok),' words'
-          loop+←1
-          :For i :In ⍸~ok
-              word←stock.cards[idx←stock.cards.id⍳lesson_ids[i]]
-             ⍝ 40⍴⎕UCS 13     ⍝ CLS ;)
-              ⎕←word.(h f)[data.direction]
-              sink←⍞
-              ⍞←word.(f f)[data.direction]
-              ⍝ anzeigen
-              ⍝ gewusst         oder   nicht
-     ask:
-              ⎕←'Correct...or failed? (1/y/j=Correct, 0/n=Failed, i=Info, q=Quit (w/o saving progress), e=Exit (save progress)'
-              z←⍕⍞
-              :If ∨/z∊'Qq' ⋄ ⎕←'Quit' ⋄ :GoTo 0 ⋄ :EndIf
-              :If ∨/z∊'eE'
-                  ⎕←'Exit' ⋄ :Leave
-              :EndIf
-              :If 'i'∊z
-                  ⎕←1↑¯2↑info
-                  →ask
-              :EndIf
-              z←∨/'jyJY1'∊z
-              :If (≢data.stats.id)<s←data.stats.id⍳lesson_ids[i]
-                  new←⎕NS'' ⋄ new.id←i ⋄ new.sect←data.progress ⋄ data.stats,←new
-              :EndIf
-              :If (,1)≡,z
-                  data.stats[s].sect+←1
-              :Else
-                  data.stats[s].sect←1  ⍝ zurück nach1 !
-              :EndIf
-              ok[i]←z∨sect>1
-          :EndFor
-      :EndWhile
-      data.progress+←1
-      saveData
-      ⎕←'lesson_ids ended. Status:'
-      ⎕←↑info
-    ∇
-
-    ∇ R←todaysLesson;missing;new
+    ∇ R←todaysLesson;missing;new;sect
       :Access public
     ⍝ get ids of words to be learned today
       R←⍬
@@ -143,7 +83,6 @@
         :field public _words←⍬
         :field private idx←1
         :field public data
-        :field public ok←⍬
         :field private stock
 
         ∇ make arg
@@ -151,7 +90,6 @@
           :Access public
           ⍝ Constructor: data lesson
           (data _words stock)←arg
-          ok←(≢_words)⍴0
         ∇
 
 
@@ -166,16 +104,18 @@
           :Access public
 ⍝ actions after testing: word ok or failed - change status accordingly and increment internal counter
          
-          :If (≢data.stats)<s←data.stats.id⍳_words[idx]
-              new←⎕NS'' ⋄ new.id←_words[idx] ⋄ new.sect←data.progress ⋄ data.stats,←new
+          :If (≢data.stats)<s←data.stats.id⍳_words[idx]  ⍝ do we have stats for that word already?
+              new←⎕NS'' ⋄ new.id←_words[idx] ⋄ new.sect←data.progress ⋄ data.stats,←new  ⍝ nope - new entry!
           :EndIf
          
           :If bool
               data.stats[s].sect+←1
           :Else
               data.stats[s].sect←1  ⍝ back to 1!
+              :if 1=1⊃##.SectionInfo   ⍝ if we're in box 1 
+              _words,←s  ⍝ repeat failed words till they are mastered!
+              :endif
           :EndIf
-          ok[idx]←bool∨data.stats[s].sect>1
           idx+←1
         ∇
 

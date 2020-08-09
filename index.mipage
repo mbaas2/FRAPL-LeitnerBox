@@ -5,19 +5,18 @@
       :Access public
       Use'Bootstrap4'
       'class'Body.Set'bg-dark text-white'
-      prj←⎕NEW #.project(#.Boot.AppRoot,'Data/norw-fw.json')
+      prj←⎕NEW #.lBox(#.Boot.AppRoot,'Data/norw-fw.json')
      
       d←Add _.div
       'id=titel class=titel .text-center'd.Add _.div'FRAPL''s Leitnerbox'
-      ('.text-center'd.Add _.div).Add¨{New _.p ⍵}2↑prj.info
      
       task←'.w-100 .text-center'Add _.div
-      '#status .mt-2 .mb-4'task.Add _.div StatusInfo
-      '#w1 .alert .alert-dark .font-weight-bold .w-100 .text-center'task.Add _.div(1⊃prj.Lektion.GetWord)
+      '#status .mt-2 .mb-4 style=font-size:1.4em;'task.Add _.div StatusInfo
+      '#w1 .alert .alert-dark .font-weight-bold .w-100 .text-center'task.Add _.div(1⊃prj.Lesson.GetWord)
       '#translate accesskey=S .btn .btn-primary .mt-3 .mb-3'('class="text-center"'task.Add _.div).Add _.button'(S)how translation'
      
       trans←'#trans style=display:none; .mx-auto .w-100 .text-center'Add _.div
-      '#w2 .alert .alert .alert-info .font-weight-bold .w-100 .text-center'trans.Add _.div(2⊃prj.Lektion.GetWord)
+      '#w2 .alert .alert .alert-info .font-weight-bold .w-100 .text-center'trans.Add _.div(2⊃prj.Lesson.GetWord)
       '#ok accesskey=C .btn .btn-success .mr-2'trans.Add _.button((New _.Icon'fas-check-circle'),New _.span' (C)orrect')
       '#fail accesskey=N .btn .btn-danger .ml-2'trans.Add _.button((New _.Icon'fas-thumbs-down'),New _.span' Did (n)ot know')
       Add _.Handler'button' 'click' 'ClickedButton'
@@ -32,17 +31,17 @@
           R←Execute'$("#trans").show();'
           R,←Execute'$("#translate").prop("disabled", true);'
       :CaseList 'ok' 'fail'
-          prj.Lektion.Tested _currentTarget≡'ok'
+          prj.Lesson.Tested _currentTarget≡'ok'
           R,←'#status'Replace(renderIt StatusInfo)
-          :If prj.Lektion.Done
+          :If prj.Lesson.Done
               R,←Execute'$("#w1").hide();'
               R,←'#trans'Replace(New _.p('Lesson ended, Data saved!'))
               prj.data.progress+←1
               prj.saveData
           :Else
               R,←Execute'$("#trans").hide();'
-              R,←'#w1'Replace(1⊃prj.Lektion.GetWord)
-              R,←'#w2'Replace(2⊃prj.Lektion.GetWord)
+              R,←'#w1'Replace(1⊃prj.Lesson.GetWord)
+              R,←'#w2'Replace(2⊃prj.Lesson.GetWord)
               R,←Execute'$("#translate").prop("disabled", false);'
           :EndIf
       :Else
@@ -54,7 +53,7 @@
 
     ∇ R←StatusInfo
       si←prj.SectionInfo
-      R←(si[1]=¯1+⍳≢2⊃si){New _.span(⍕⍵)('.badge .badge-pill .badge-',(1+⍺)⊃'info' 'light')}¨2⊃si
+      R←(si[1]=¯1+⍳≢2⊃si){New _.span(⍕⍵)('.mr-1 .badge .badge-pill .badge-',(1+⍺)⊃'info' 'light')}¨2⊃si
     ∇
 
 :endclass
