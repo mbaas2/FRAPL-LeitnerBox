@@ -1,0 +1,1 @@
+This directory contains the neccessary configuration and code to make data accessible through JARVIS - Dyalog's JSON-Server. (This will allow central storage of sessions and data)
