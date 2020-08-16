@@ -3,10 +3,9 @@
     :field public data
     :field public file
     :field public stock
-    :field private method← 1 1 2 1 1 2 1 1 2 3 1 1 2 1 1 2 1 1 2 3 4
-    :field private lumpSize←20   ⍝ how many new words to add to 1?
     :field public Wort
     :field public Lesson
+    :field private sf←'' ⍝ stockfile
 
     nl←⎕ucs 13
 
@@ -37,30 +36,41 @@
           ((⎕JSON⍠'Compact' 0)data)⎕NPUT file 1
           ⎕←'Initialized data-file ',file,' please edit config!'
       :EndIf
-      Lesson←⎕NEW cLesson(data todaysLesson stock)
+      Lesson←⎕NEW cLesson(data stock)
     ∇
 
-    ∇ R←SectionInfo;sects;unassigned
+
+    ∇ saveData
       :Access public
-⍝ R[1]: index of today's section
-⍝ R[2]: vector with # of elements per section
-⍝ R[3]: ids per section
-      :If 326≠⎕DR data.stats   ⍝ variable (namespace=9)
-          R←1
-          R,←⊂6↑≢stock.cards.id
-      :Else
-          R←sect←method{w←(≢⍺)|⍵ ⋄ w←w+w=0 ⋄ w⊃⍺}data.progress
-          (~stock.cards.id∊data.stats.id)/stock.cards.id
-          sects←data.stats.sect{⍺ ⍵}⌸data.stats.id
-          sects←(sects[;2],0)[sects[;1]⍳⍳5]
-          unassigned←(~stock.cards.id∊data.stats.id)/stock.cards.id
-          R,←⊂(≢unassigned),≢¨sects
-          R,←⊂(⊂unassigned),sects
-      :EndIf
+      ((⎕JSON⍠'Compact' 0)data)⎕NPUT file 1
     ∇
 
+    :class cLesson
+        :field public _words←⍬
+        :field private idx←1
+    :field private lumpSize←20   ⍝ how many new words to add to 1?
+        :field public data
+        :field private stock
+    :field private method← 1 1 2 1 1 2 1 1 2 3 1 1 2 1 1 2 1 1 2 3 4
 
-    ∇ R←todaysLesson;missing;new;sect
+
+        ∇ make arg
+          :Implements constructor
+          :Access public
+          ⍝ Constructor: data lesson
+          (data stock)←arg
+          _words←todaysLesson
+        ∇
+
+
+        ∇ R←GetWord
+          :Access public
+          word←stock.cards[stock.cards.id⍳_words[idx]]
+          R←⊂word⍎data.prompt
+          R,←⊂word⍎data.show
+        ∇
+
+   ∇ R←todaysLesson;missing;new;sect
       :Access public
     ⍝ get ids of words to be learned today
       R←⍬
@@ -81,34 +91,6 @@
           data.stats⍪←{n←⎕NS'' ⋄ n.id←⍵ ⋄ n.sect←1 ⋄ n}¨new
       :EndIf
     ∇
-
-    ∇ saveData
-      :Access public
-      ((⎕JSON⍠'Compact' 0)data)⎕NPUT file 1
-    ∇
-
-    :class cLesson
-        :field public _words←⍬
-        :field private idx←1
-        :field public data
-        :field private stock
-
-        ∇ make arg
-          :Implements constructor
-          :Access public
-          ⍝ Constructor: data lesson
-          (data _words stock)←arg
-        ∇
-
-
-        ∇ R←GetWord
-          :Access public
-          word←stock.cards[stock.cards.id⍳_words[idx]]
-          R←⊂word⍎data.prompt
-          R,←⊂word⍎data.show
-        ∇
-
-
         ∇ Tested bool
           :Access public
 ⍝ actions after testing: word ok or failed - change status accordingly and increment internal counter
@@ -121,12 +103,31 @@
               data.stats[s].sect+←1
           :Else
               data.stats[s].sect←1  ⍝ back to 1!
-              :If 1=1⊃##.SectionInfo   ⍝ if we're in box 1
+              :If 1=1⊃SectionInfo   ⍝ if we're in box 1
                   _words,←_words[idx]  ⍝ repeat failed words till they are mastered!
               :EndIf
           :EndIf
           idx+←1
         ∇
+
+    ∇ R←SectionInfo;sects;unassigned
+      :Access public
+⍝ R[1]: index of today's section
+⍝ R[2]: vector with # of elements per section
+⍝ R[3]: ids per section
+      :If 326≠⎕DR data.stats   ⍝ variable (namespace=9)
+          R←1
+          R,←⊂6↑≢stock.cards.id
+      :Else
+          R←sect←method{w←(≢⍺)|⍵ ⋄ w=0:(≢⍺)⊃⍺ ⋄ w⊃⍺}data.progress
+          (~stock.cards.id∊data.stats.id)/stock.cards.id
+          sects←data.stats.sect{⍺ ⍵}⌸data.stats.id
+          sects←(sects[;2],0)[sects[;1]⍳⍳5]
+          unassigned←(~stock.cards.id∊data.stats.id)/stock.cards.id
+          R,←⊂(≢unassigned),≢¨sects
+          R,←⊂(⊂unassigned),sects
+      :EndIf
+    ∇
 
         ∇ R←Done
           :Access public

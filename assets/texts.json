@@ -19,5 +19,7 @@
     {"Code":"BoxNew","HTML":"New Box"},
     {"Code":"ToggleDevTools","HTML":"Toggle Developer-Tools"},
     {"Code":"OK","HTML":"OK"},
-    {"Code":"Cancel","HTML":"Cancel"}
+    {"Code":"Cancel","HTML":"Cancel"},
+    {"Code":"PlsEnterEmail","HTML":"Please enter your email-address!"},
+    {"Code":"WelcomeNewUser","HTML":"You successfully signed up as a new user! Please use password \"START\" for your first login."}
 ]

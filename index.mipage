@@ -52,9 +52,9 @@
      
           ll←'User'{r←('.nav-item .dropdown')ul.Add _.li ⋄ nul←'.nav-link .pt-0 .dropdown-toggle data-toggle=dropdown id=men-data role=button aria-haspopup=true aria-expanded=false'r.Add _.a ⍺('href=#') ⋄ r}''
           dd←'.dropdown-menu .dropdown-menu aria-labelledby=men-data'll.Add _.div
-          (('#mn_login .dropdown-item href=#',(~haveUser)/' disabled')dd.Add _.a(GetText'Login')).On'click' 'cb_LogInOutRegister'
-          (('#mn_register .dropdown-item href=#',(~haveUser)/' disabled')dd.Add _.a(GetText'Register')).On'click' 'cb_LogInOutRegister'
-          (('#mn_logout .needsLogin .dropdown-item href=#')dd.Add _.a(GetText'LogOut')).On'click' 'cb_LogInOutRegister'
+          (('#mn_login .dropdown-item href=#',haveUser/' disabled')dd.Add _.a(GetText'Login')).On'click' 'cb_LogInOutRegister'
+          (('#mn_register .dropdown-item href=#',haveUser/' disabled')dd.Add _.a(GetText'Register')).On'click' 'cb_LogInOutRegister'
+          (('#mn_logout .needsLogin .dropdown-item href=#',(~haveUser)/' disabled')dd.Add _.a(GetText'LogOut')).On'click' 'cb_LogInOutRegister'
      
           ll←'Help'{r←('.nav-item .dropdown')ul.Add _.li ⋄ nul←'.nav-link .pt-0  .pb-0 .dropdown-toggle data-toggle=dropdown id=helpmenu role=button aria-haspopup=true aria-expanded=false'r.Add _.a ⍺('href=#') ⋄ r}''
           dd←('.dropdown-menu aria-labelledby=helpmenu')ll.Add _.div
@@ -156,7 +156,7 @@
 
 
     ∇ R←StatusInfo;si;R
-      si←prj.SectionInfo
+      si←prj.Lesson.SectionInfo
       R←(↓(⍳≢2⊃si),[1.5]si[1]=¯1+⍳≢2⊃si){
           (1=1⊃⍺)^⍵=0:New _.span  ⍝ return empty span if box 0 is empty
           s←New _.span(⍕⍵)('#sect_',(⍕1⊃⍺),' .mr-',(⍕4*1=1⊃⍺),' .badge .badge-pill .badge-',(1+2⊃⍺)⊃'info' 'light') 
@@ -184,6 +184,7 @@
 ∘∘∘
 
 ∇
+
     ∇ R←cb_LogInOutRegister;file;t
       :Access public
       R←''
@@ -200,6 +201,7 @@
               R,←Execute'#mn_login'#._JSS.Attr'disabled' 'disabled'
               R,←Execute'#mn_register'#._JSS.Attr'disabled' 'disabled'
               R,←Execute'.needsLogin'#._JSS.RemoveAttr'disabled'
+              R,←'Hurray!'MsgBox'You were logged in!'
               :If 0≢user.ListBoxes
                   R,←Execute'#mn_BoxOpen'#._JSS.RemoveAttr'disabled'
               :Else
@@ -218,8 +220,20 @@
               ∘∘∘
           :EndIf
       :Case 'logout'
-          ∘∘∘
+      _Request.Server.SessionHandler.Logout _Request
+      _Request.Server.SessionHandler.KillSessions _Request.Session.ID
+      R,←Execute'document.cookie ="LoggedIn=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; location.reload(1);'
       :Case 'register'
+      :if 0<≢e←Get'email'   ⍝ TODO: we just assume it's valid - should be validated!
+      r←#.User.Register e
+      :if 0≤⊃R
+      R←Execute Notice 1 (GetText'WelcomeNewUser')
+      :else 
+      R←Execute Notice 3 (2⊃R)
+      :endif
+      :else
+      R←Execute Notice 2 (GetText'PlsEnterEmail')
+      :endif 
           ∘∘∘
       :Case 'forgotPwd'
           ∘∘∘
@@ -246,8 +260,12 @@
           '.btn .btn-warning .btn-lg  .mx-2 .px-4 onclick=$("#mo_OpenBox").modal("close");'mf.Add _.Button(GetText'Cancel')
           R←Execute'$("body").append("',(('\"'⎕R'\\"')m.Render),'");$("#mo_OpenBox").modal("show");'
       :Case 'BoxOpen2'
-          R←Execute'$("#mo_OpenBox").modal("hide");'
+          R←Execute'$("#mo_OpenBox").modal("hide").remove();'
+        ⍝   R,←Execute'$("#mo_OpenBox").remove();'
           prj←⎕NEW #.lBox(#.Boot.AppRoot,'Data/Users/u',(⍕user.id),'/',Get'file')
+     :if prj.Lesson.Done
+     R,←('Today''s section is empty!')MsgBox'The section for today is empty'((('Open next section') 'NextSection')('OK' 'close' 'primary'))
+     :else 
           R,←Display'translate'
           R,←Display'task'
           R,←'#w1'Replace(1⊃prj.Lesson.GetWord)
@@ -255,8 +273,20 @@
           (h j)←StatusInfo
           R,←'#status'Replace h
           R,←Execute j
+          :endif
       :Case 'BoxNew'
       :EndSelect
+    ∇
+
+    ∇ R←NextSection
+    :Access public
+    start←prj.Lesson.data.progress
+    :while prj.Lesson.Done
+    prj.Lesson.data.progress+←1
+    prj.Lesson.SaveData
+    :endwhile
+
+      
     ∇
 
     ∇ R←ToggleDevTools

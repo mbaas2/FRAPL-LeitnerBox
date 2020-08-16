@@ -33,13 +33,13 @@
       }
 
 
-∇DETRAP
-{} 600⌶1
-∇
+    ∇ DETRAP
+      {}600⌶1
+    ∇
 
-∇RETRAP
-{} 600⌶2
-∇
+    ∇ RETRAP
+      {}600⌶2
+    ∇
 
 
     :section dotNet
@@ -87,10 +87,10 @@
       :EndIf
     ∇
 
-        ∇ (h j)←getHTMLjs html;sc
+    ∇ (h j)←getHTMLjs html;sc
       :Access  public shared
       ⍝ returns html and js of given object (or HTML-String)
-      :If 326=⎕dr html ⋄ html←∊html.Render ⋄ :EndIf
+      :If 326=⎕DR html ⋄ html←∊html.Render ⋄ :EndIf
       h←('<script>(.*)</script>'⎕R''⍠('DotAll' 1)('Mode' 'M')('Greedy' 0))html
      
       :If (⊂'')≢sc←⊆('<script>(.*)</script>'⎕S'\1'⍠('DotAll' 1)('Mode' 'M')('Greedy' 0))html
@@ -100,6 +100,69 @@
     ∇
 
     :endsection
+
+    :Section Bootstrap-Tools
+    ∇ R←tit MsgBox text_actions
+⍝ title **MsgBox** text actions
+⍝ actions: (BtnTitle NameOfCallback (or "close") [Style - vtv])
+⍝ Style=primary  etc.    
+      :Access Public
+      (text actions)←2↑⊆text_actions
+      R←'.modal'#.HtmlElement.New #._.div
+      R.id←modId←R.GenId
+      mc←('.modal-dialog .modal-dialog-centered role=document'R.Add #._.div).Add #._.div'' '.modal-content .bg-dark'
+      mh←'.modal-header'mc.Add #._.div
+      mh.Add #._.h3 tit'.modal-title'
+⍝         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+⍝           <span aria-hidden="true">&times;</span>
+⍝         </button>
+     
+      mc.Add #._.div text'.modal-body'
+⍝       <div class="modal-body">
+⍝         ...
+⍝       </div>
+     
+      mf←mc.Add #._.div'' '.modal-footer'
+      :For b :In 1↑⊆actions
+          (tit cb st)←3↑⊆b  ⍝ title, callback, style
+          :If 0=≢tit ⋄ tit←GetText'OK' ⋄ :EndIf
+          btn←mf.Add #._.Button tit
+          :If 0=≢st  ⍝ if no style
+          :AndIf 1=≢actions ⍝ and there is one button only
+              st←'primary'   ⍝ that button nwill be the default one!
+          :EndIf
+          :If 0<≢cb
+              :If cb≡'close'
+                  btn.On'click' '' ''('$("#',modId,'").modal("close");$("#',modId,'").remove();')
+              :Else
+                  btn.On'click'cb
+              :EndIf
+          :ElseIf 1=≢⊆actions  ⍝ if there is one button only, it WILL close the dialog!
+              btn.On'click' '' ''('$("#',modId,'").modal("close");$("#',modId,'").remove();')
+          :EndIf
+          s∆←'.btn'
+          :For s :In ⊆st
+              :If s∊⍥⊆'primary' 'secondary' 'danger' 'warning' 'success' 'info' 'light' 'dark' 'link'
+                  s∆,←' .btn-',s
+              :EndIf
+          :EndFor
+      :EndFor
+     
+      (h j)←getHTMLjs        R
+      R←'body'#.MiPage.Append h
+      R,←#.MiPage.Execute j
+      R,←#.MiPage.Execute '$("#',modId,'").modal("show");'
+⍝       <div class="modal-footer">
+⍝         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+⍝         <button type="button" class="btn btn-primary">Save changes</button>
+⍝       </div>
+⍝     </div>
+⍝   </div>
+⍝ </div>
+    ∇
+
+    :EndSection Bootstrap-Tools
+
 
     :section Localization and regional stuff
     ∇ LoadTexts lang;file
@@ -136,10 +199,11 @@
       str,←', ',(idn[2]⊃months),' ',(,'ZI2'⎕FMT 3⊃idn),' ',(⍕1⊃idn),(5≤≢ts)/' ',¯1↓,'ZI2,<:>'⎕FMT ¯2↑5↑ts
     ∇
 
-    :endsection
+    :endsection 
+
     :section Cryptography
     hash←{#.Crypt.(HASH_SHA256 Hash ⍵)}
     salt←{#.Strings.stringToHex #.Crypt.Random ⍵}
 
-    :endsection
+    :endsection 
 :endnamespace
