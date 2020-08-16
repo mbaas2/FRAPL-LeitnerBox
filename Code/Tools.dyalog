@@ -1,7 +1,11 @@
 ﻿:namespace Tools
+    Texts←⍬   ⍝ see "GetText
+
+
 
     ∇ ReadSessionPrefs req;sess
       :Access public
+     
       sess←req.Session
       sess.Prefs←⎕JSON #.Files.ReadText #.Boot.AppRoot,'preferences.json'  ⍝ make sess.Prefs independend (do not link it to #.Prefs - might cause trouble if we ever do multi-user...)
       sess.(⍙⍙trap⍙⍙←Prefs.Session.TrapErrors≡⊂'true')
@@ -10,6 +14,8 @@
       :OrIf 0=≢sess._tsLog
           sess._tsLog←req.Session._tsLog←,#.tsSiteTools.mns('type' 5)('in' 'Welcome to TamStat')('_id' 1)
       :EndIf
+     
+     
     ∇
 
 ⍝ from dfns: (slightly modified to allow type=2 as default (if omitted))
@@ -27,17 +33,16 @@
       }
 
 
-    ∇ str←{opts}fmtDate ts;days;months;idn
-   ⍝ format a date in ⎕TS-Format as a string.
-   ⍝ Format currently fixed as DDD, MMM dd yyyy hh:mm
-   ⍝ opts not used - might be extended later...
-      days←'Mon' 'Tue' 'Wed' 'Thu' 'Fri' 'Sat' 'Sun'
-      months←'Jan' 'Feb' 'Mar' 'Apr' 'May' 'Jun' 'Jul' 'Aug' 'Sep' 'Oct' 'Nov' 'Dec'
-      idn←+2 ⎕NQ'.' 'IDNToDate'(2 ⎕NQ'.' 'DateToIDN'ts)
-      str←(1+4⊃idn)⊃days
-      str,←', ',(idn[2]⊃months),' ',(,'ZI2'⎕FMT 3⊃idn),' ',(⍕1⊃idn),(5≤≢ts)/' ',¯1↓,'ZI2,<:>'⎕FMT ¯2↑5↑ts
-    ∇
+∇DETRAP
+{} 600⌶1
+∇
 
+∇RETRAP
+{} 600⌶2
+∇
+
+
+    :section dotNet
 
 
     ∇ R←GetDOTNETVersion;vers;⎕IO;⎕USING
@@ -57,7 +62,7 @@
               :If (⍕vers)≡'4.0.30319.42000'   ⍝ .NET 4.6 and higher!
                   R[4]←⊂Runtime.InteropServices.RuntimeInformation.FrameworkDescription
               :ElseIf (10↑⍕vers)≡'4.0.30319.' ⍝ .NET 4, 4.5, 4.5.1, 4.5.2
-                  R[4]←⊂'.NET Framework ',2⊃R  ⍝ JD: good enough?  Otherwise I may need to dig into the registry according to https://docs.microsoft.com/de-de/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed?view=netframework-4.8
+                  R[4]←⊂'.NET Framework ',2⊃R
               :EndIf
           :ElseIf 3.1=R[3]  ⍝ .NET CORE
           :OrIf 4<R[3]
@@ -69,10 +74,11 @@
       ⍝ bad luck, go with the defaults
       :EndTrap
     ∇
+    :endsection
 
-
-    ∇ R←{show}Show id
-⍝ Show (or hide - if "show"=0) control with given id
+    :section HTML/DUI-Tools
+    ∇ R←{show}Display id
+      ⍝ Show (or hide - if "show"=0) control with given id
       :If 0=⎕NC'show'
       :OrIf show=1
           R←#.MiPage.Execute'$("#',id,'").removeClass("d-none");'
@@ -81,5 +87,59 @@
       :EndIf
     ∇
 
+        ∇ (h j)←getHTMLjs html;sc
+      :Access  public shared
+      ⍝ returns html and js of given object (or HTML-String)
+      :If 326=⎕dr html ⋄ html←∊html.Render ⋄ :EndIf
+      h←('<script>(.*)</script>'⎕R''⍠('DotAll' 1)('Mode' 'M')('Greedy' 0))html
+     
+      :If (⊂'')≢sc←⊆('<script>(.*)</script>'⎕S'\1'⍠('DotAll' 1)('Mode' 'M')('Greedy' 0))html
+          j←∊sc
+      :Else ⋄ j←''
+      :EndIf
+    ∇
 
+    :endsection
+
+    :section Localization and regional stuff
+    ∇ LoadTexts lang;file
+      :If ~⎕NEXISTS file←#.Env.Root,'assets/texts-',(1 ⎕C lang),'.json'
+          file←#.Env.Root,'assets/texts.json'
+      :EndIf
+      Texts←⎕JSON 1⊃⎕NGET file
+    ∇
+
+    ∇ R←{dflt}GetText code;z
+      :If 0=⎕NC'dflt' ⋄ dflt←'' ⋄ :EndIf
+      :If 0=≢Texts ⋄ LoadTexts'' ⋄ :EndIf
+     
+      :If '*'∊code
+          z←((¯1+≢code)↑¨Texts.Code)≡¨⊂¯1↓code
+          R←↑{⍵.Code ⍵.HTML}¨z/Texts
+      :ElseIf Texts.Code∊⍨⊂code
+          R←((Texts.Code⍳⊂code)⊃Texts).HTML ⍝ just return empty vector for unrecognized codes...
+      :ElseIf 0<≢dflt
+          R←dflt
+      :Else
+          R←'"',code,'"'
+      :EndIf
+    ∇
+
+    ∇ str←{opts}fmtDate ts;days;months;idn
+   ⍝ format a date in ⎕TS-Format as a string.
+   ⍝ Format currently fixed as DDD, MMM dd yyyy hh:mm
+   ⍝ opts not used - might be extended later...
+      days←'Mon' 'Tue' 'Wed' 'Thu' 'Fri' 'Sat' 'Sun'
+      months←'Jan' 'Feb' 'Mar' 'Apr' 'May' 'Jun' 'Jul' 'Aug' 'Sep' 'Oct' 'Nov' 'Dec'
+      idn←+2 ⎕NQ'.' 'IDNToDate'(2 ⎕NQ'.' 'DateToIDN'ts)
+      str←(1+4⊃idn)⊃days
+      str,←', ',(idn[2]⊃months),' ',(,'ZI2'⎕FMT 3⊃idn),' ',(⍕1⊃idn),(5≤≢ts)/' ',¯1↓,'ZI2,<:>'⎕FMT ¯2↑5↑ts
+    ∇
+
+    :endsection
+    :section Cryptography
+    hash←{#.Crypt.(HASH_SHA256 Hash ⍵)}
+    salt←{#.Strings.stringToHex #.Crypt.Random ⍵}
+
+    :endsection
 :endnamespace

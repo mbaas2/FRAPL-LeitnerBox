@@ -1,19 +1,127 @@
-﻿:class index :  lBoxPage
+﻿:class index :  MiPage  ⍝ single-page app does not template
 ⍝ Leitner-methode: https://de.wikipedia.org/wiki/Lernkartei bzw. https://en.wikipedia.org/wiki/Flashcard ( https://de.wikipedia.org/wiki/Sebastian_Leitner )
+    :field public _Sessioned←1
+    :field public user←''
+    :field public prj←''
 
     ∇ Compose
       :Access public
+      :Section Admin-Stuff
+          OnLoad,←'jBoxTooltip=new jBox("Tooltip",{theme: "TooltipDark",id:"jBoxTooltip",getTitle: "data-jbox-title", getContent: "data-jbox-content",attach: "[data-jbox-content]",reload:"strict"}).attach();'
+          Use'⍎/assets/lBox.js'
+          Use'⍕/jBox/themes/TooltipDark.css'
+          Use'jBox'
+          Use'Bootstrap4'
+          Use'⍕/assets/style.css'
+          :Trap 0
+              user←SessionGet'user'
+              prj←SessionGet'prj'
+          :Else
+              ↑⎕DM
+          :EndTrap
+          haveUser←user{6 11::0 ⋄ 0<⍺⍎⍵}'id'  ⍝ do we have an active user?
+          haveBox←{0::0⋄0<⍎⍵}'≢prj.Lesson.GetWord'
+          'class'Body.Set'bg-dark text-white'
      
-      task←'#task .w-100 .text-center .d-none'Add _.div
-      '#status .mt-2 .mb-4 style=font-size:1.4em;'task.Add _.div
-      '#w1 .alert .alert-dark .font-weight-bold .w-100 .text-center'task.Add _.div ⍝ (1⊃prj.Lesson.GetWord)
-      '#translate accesskey=S .btn .btn-primary .btn-lg .mt-3 .mb-3'('class="text-center"'task.Add _.div).Add _.button(New _.Icon'fas-caret-right')  ⍝'(S)how translation'
+          'style'Body.Set'padding-top: 4em;' ⍝ for sticky nav! (was 55pc, but I guess em will be more responsive)
      
-      trans←'#trans .d-none .mx-auto .w-100 .text-center'Add _.div
-      '#w2 .alert .alert .alert-info .font-weight-bold .w-100 .text-center'trans.Add _.div ⍝ (2⊃prj.Lesson.GetWord)
-      '#ok accesskey=C .btn .btn-success .btn-lg  .mx-2 .px-4'trans.Add _.button(New _.Icon'fas-check-circle')
-      '#fail accesskey=N .btn .btn-danger .btn-lg .mx-2 .px-4'trans.Add _.button(New _.Icon'fas-thumbs-down')
-      Add _.Handler'button' 'click' 'ClickedButton'
+          nav←'#topnav .navbar .navbar-expand-md .navbar-dark .bg-dark .align-items-stretch .w-100 .fixed-top .py-0'Add _.nav
+          (nav.Add _.span'LeitnerBox' '.navbar-text .navbar-flex .tstext #tsTitle').On'click' 'Go'
+      ⍝     ⍝ul←'.navbar-nav #men1'nav.Add _.ul
+      ⍝     r←'.nav-item .dropdown #ddTopLeft 'ul.Add _.li
+      ⍝     '.nav-link .dropdown-toggle data-toggle=dropdown href=# .pt-0 .pb-0 #ddTitle'r.Add _.a'Dataset'
+      ⍝     '#ddMenu .dropdown-menu aria-labelledby=ddTopLeft'r.Add _.div
+      ⍝     h←nav.Add _.Handler'#ddMenu' 'click' 'Handle_ddSelect'
+      ⍝     '.navbar-nav #men2 .ml-auto .mt-auto .pb-2'nav.Add _.ul
+          ul←'.navbar-nav #men1'('.collapse .navbar-collapse #m1nv'nav.Add _.div).Add _.ul
+     
+          ll←(GetText'mnFile'){r←('.nav-item .dropdown')ul.Insert _.li ⋄ nul←'.nav-link .pt-0 .dropdown-toggle data-toggle=dropdown id=men-file role=button aria-haspopup=true aria-expanded=false'r.Add _.a ⍺('href=#') ⋄ r}''
+          dd←'.dropdown-menu .dropdown-menu aria-labelledby=men-file'll.Add _.div
+          ('#mn_BoxNew .needsLogin .dropdown-item'dd.Add _.a(GetText'BoxNew')).On'click' 'FileMenu'
+          ('#mn_BoxOpen .needsLogin .dropdown-item'dd.Add _.a(GetText'BoxOpen')).On'click' 'FileMenu'
+          :If haveUser
+              OnLoad,←'.needsLogin'#._JSS.RemoveAttr'disabled'
+          :Else
+              OnLoad,←'.needsLogin'#._JSS.Attr'disabled' 'disabled'
+          :EndIf
+          :If #.Env.isHR
+              '.dropdown-divider'dd.Add _.div
+              (dd.Add _.a'Exit' '.dropdown-item onclick=off()').On'click' 'OFF'
+          :EndIf
+     
+     
+          ll←'User'{r←('.nav-item .dropdown')ul.Add _.li ⋄ nul←'.nav-link .pt-0 .dropdown-toggle data-toggle=dropdown id=men-data role=button aria-haspopup=true aria-expanded=false'r.Add _.a ⍺('href=#') ⋄ r}''
+          dd←'.dropdown-menu .dropdown-menu aria-labelledby=men-data'll.Add _.div
+          (('#mn_login .dropdown-item href=#',(~haveUser)/' disabled')dd.Add _.a(GetText'Login')).On'click' 'cb_LogInOutRegister'
+          (('#mn_register .dropdown-item href=#',(~haveUser)/' disabled')dd.Add _.a(GetText'Register')).On'click' 'cb_LogInOutRegister'
+          (('#mn_logout .needsLogin .dropdown-item href=#')dd.Add _.a(GetText'LogOut')).On'click' 'cb_LogInOutRegister'
+     
+          ll←'Help'{r←('.nav-item .dropdown')ul.Add _.li ⋄ nul←'.nav-link .pt-0  .pb-0 .dropdown-toggle data-toggle=dropdown id=helpmenu role=button aria-haspopup=true aria-expanded=false'r.Add _.a ⍺('href=#') ⋄ r}''
+          dd←('.dropdown-menu aria-labelledby=helpmenu')ll.Add _.div
+     
+          :If 0<≢2 ⎕NQ'.' 'GetEnvironment' 'TamStat_DEV'  ⍝ "secret" flag to recognize MB's environment ;)
+          :AndIf {0::0 ⋄ 0<≢⍵._Renderer.⎕NL-⍳9}#.Boot.ms
+              (('#ToggleDevTools .dropdown-item onlick="return false;"',#.Env.DevToolsVisible/' .active')dd.Add _.a(GetText'ToggleDevTools')).On'click' 'ToggleDevTools'
+          :EndIf
+     
+          :If {0::1 ⋄ 0=≢⍵._Renderer.⎕NL-⍳9}#.Boot.ms  ⍝ only offer web-link if opened in browser - currently do not have methods in DUI to deal with multiple renderers...
+              '#website'dd.Add _.a'Website' '.dropdown-item href=https://github.com/mbaas2/FRAPL-LeitnerBox target=_new rel=noopener'
+          :EndIf
+          '#about_ts'dd.Add _.a(GetText'About')'.dropdown-item href=# onclick=$("#about").modal("show");'
+     
+          :If ~user{6 11::0 ⋄ 0<⍺⍎⍵}'id'
+              OnLoad,←'$("#login-box").modal("show");'
+          :EndIf
+          td←'#login-box .modal role=dialog data-backdrop=static data-keyboard=true data-focus=false data-show=false tabindex=-1'Add _.div
+          mc←('.modal-dialog .modal-dialog-centered'td.Add _.div).Add _.div'' '.modal-content .bg-dark'
+          mh←mc.Add _.div'' '.modal-header'
+          '.modal-title'mh.Add _.h3(GetText'Login')
+     
+          ud←('.modal-body'mc.Add _.div).Add _.form
+          'for="email-login" maxlength=1024 type="email"'ud.Add _.label(GetText'Email')
+          ud.Add _.input'#email-login type="email" maxlength=1024 .form-control'
+     
+          ud0←'#loginctrl'ud.Add _.div
+          'for="password" .mt-4'ud0.Add _.label(GetText'Password')
+          ud0.Add _.input'#password type="password" maxlength=1024 .form-control onkeyup=onEnterClick(event,"login")'
+          ud0b←'#loginctrlbuttons.mt-4 'ud0.Add _.div
+          ud1←ud0b.Add _.div
+          '#rememberMe'ud1.Add _.Input'checkbox'
+          ud1.Add _.span(GetText'RememberMe')
+     
+          ud2←'.text-right'ud0b.Add _.div
+          ('#btn_logMeIn .btn .btn-primary'ud2.Add _.Button(GetText'Login')).On'click' 'cb_LogInOutRegister'(('email' 'val' '#email-login')('password' 'val' '#password')('rememberMe' 'prop' 'checked' '#rememberMe'))
+          (('#btn_register .btn .btn-outline-light')ud2.Add _.Button(GetText'Register')).On'click' 'cb_LogInOutRegister'(('rectoken' 'val' '#rectoken')('email' 'val' '#email-login'))'$("#wpProc").show()'
+          ('#btn_forgotPwd .btn .btn-outline-light'ud2.Add _.Button(GetText'Forgot')).On'click' 'Ccb_LogInOutRegister'(('rectoken' 'val' '#rectoken')('email' 'val' '#email-login'))'$("#wpProc").show()'
+          ('.btn .btn-outline-light .data-dismiss=modal aria-label=Close'ud2.Add _.Button(GetText'Cancel')).On'click' 0 '' '$("#login-box").modal("hide")'
+     
+          ud0.Add _.hr
+     
+    ⍝ REGISTER NEW USER
+          ud0.Add _.h4(GetText'HowToRegister')
+          ud0.Add _.p(GetText'detHowToRegister')
+     
+    ⍝ FORGOT MY PASSWORD
+          ud0.Add _.h4(GetText'ForgotPwd')
+          ud0.Add _.p(GetText'detForgotPwd')
+     
+     
+      :EndSection
+     
+      :Section Testing-UI
+          task←('#task .w-100 .text-center',(~haveBox)/' .d-none')Add _.div
+          s←'#status .mt-2 .mb-4 style=font-size:1.4em;'task.Add _.div
+          :if haveBox ⋄ s.Add StatusInfo ⋄ :endif
+          '#w1 .alert .alert-dark .font-weight-bold .w-100 .text-center'task.Add _.div  ({0::'' ⋄ ⍎⍵}'1⊃prj.Lesson.GetWord')
+          '.transbutton #translate accesskey=S .btn .btn-primary .btn-lg .mt-3 .mb-3'('class="text-center"'task.Add _.div).Add _.button(New _.Icon'fas-caret-right')  ⍝'(S)how translation'
+     
+          trans←'#trans .d-none .mx-auto .w-100 .text-center'Add _.div
+          '#w2 .alert .alert .alert-info .font-weight-bold .w-100 .text-center'trans.Add _.div  ({0::'' ⋄ ⍎⍵}'2⊃prj.Lesson.GetWord')
+          '.transbutton #ok accesskey=C .btn .btn-success .btn-lg  .mx-2 .px-5'trans.Add _.button(New _.Icon'fas-check-circle')
+          '.transbutton #fail accesskey=N .btn .btn-danger .btn-lg .mx-2 .px-5'trans.Add _.button(New _.Icon'fas-thumbs-down')
+          Add _.Handler'.transbutton' 'click' 'ClickedButton'
+      :EndSection
+     
     ∇
 
 
@@ -22,18 +130,20 @@
       R←''
       :Select _currentTarget
       :Case 'translate'
-          R←#.Tools.Show'trans'
+          R←Display'trans'
           R,←Execute'$("#translate").prop("disabled", true);'
       :CaseList 'ok' 'fail'
           prj.Lesson.Tested _currentTarget≡'ok'
-          R,←'#status'Replace(renderIt StatusInfo)
+      (h j)←getHTMLjs StatusInfo
+          R,←'#status'Replace h
+          R,←Execute j
           :If prj.Lesson.Done
-              R←0 #.Tools.Show'w1'
+              R←0 Display'w1'
               R,←'#trans'Replace(New _.p('Lesson ended, Data saved!'))
               prj.data.progress+←1
               prj.saveData
           :Else
-              R←0 #.Tools.Show'trans'
+              R,←0 Display'trans'
               R,←'#w1'Replace(1⊃prj.Lesson.GetWord)
               R,←'#w2'Replace(2⊃prj.Lesson.GetWord)
               R,←Execute'$("#translate").prop("disabled", false);'
@@ -45,26 +155,152 @@
     ∇
 
 
-    ∇ R←StatusInfo;si
+    ∇ R←StatusInfo;si;R
       si←prj.SectionInfo
-      R←(↓(⍳≢2⊃si),[1.5]si[1]=¯1+⍳≢2⊃si){New _.span(⍕⍵)('.mr-1 .badge .badge-pill .badge-',(1+2⊃⍺)⊃'info' 'light')}¨2⊃si
+      R←(↓(⍳≢2⊃si),[1.5]si[1]=¯1+⍳≢2⊃si){
+          (1=1⊃⍺)^⍵=0:New _.span  ⍝ return empty span if box 0 is empty
+          s←New _.span(⍕⍵)('#sect_',(⍕1⊃⍺),' .mr-',(⍕4*1=1⊃⍺),' .badge .badge-pill .badge-',(1+2⊃⍺)⊃'info' 'light') 
+          h←s.On'dblclick' 'cb_ViewSect' 
+          s
+          }¨2⊃si
     ∇
 
 
-
-    ∇ R←OpenProject
+    ∇ R←SendCode
       :Access public
-     
-      prj←⎕NEW #.lBox(#.Boot.AppRoot,'Data/norw-fw.json')
-      R←#.Tools.Show'translate'
-      R←#.Tools.Show'task'
-      R,←'#w1'Replace(1⊃prj.Lesson.GetWord)
-      R,←'#w2'Replace(2⊃prj.Lesson.GetWord)
-      R,←'#status'Replace(renderIt StatusInfo)
+      ∘∘∘
+      R←''
     ∇
 
-    ∇ R←Go ⍝ start default-project - temporary hack until we have File>Load
-      :Access Public
-      R←OpenProject
+    ∇ R←Login
+      :Access public
+      ∘∘∘
+      R←''
     ∇
+
+∇R←cb_ViewSect
+:Access Public
+⎕←_currentTarget
+∘∘∘
+
+∇
+    ∇ R←cb_LogInOutRegister;file;t
+      :Access public
+      R←''
+      :Select ⎕←2⊃'_'#.Strings.split _currentTarget
+      :Case 'login'
+          R←Execute'$("#login-box").modal("show");'
+      :Case 'logMeIn'
+          user←New #.User(Get'email')(Get'password')
+          :If user.id=¯2
+              R←Execute Notice 3 'Invalid credentials!'
+          :ElseIf user.id>0
+              R←Execute'$("#login-box").modal("hide");'
+              R,←Execute Notice 1 'welcome!'
+              R,←Execute'#mn_login'#._JSS.Attr'disabled' 'disabled'
+              R,←Execute'#mn_register'#._JSS.Attr'disabled' 'disabled'
+              R,←Execute'.needsLogin'#._JSS.RemoveAttr'disabled'
+              :If 0≢user.ListBoxes
+                  R,←Execute'#mn_BoxOpen'#._JSS.RemoveAttr'disabled'
+              :Else
+                  R,←Execute'#mn_BoxOpen'#._JSS.#._JSS.Attr'disabled' 'disabled'
+              :EndIf
+              :If _true≡⎕←Get'rememberMe'
+                  ⍝ remember user.id etc.
+                  :If ~⎕NEXISTS(file←#.Env.Root,'Data/last'),'.dcf'
+                      t←file ⎕FCREATE 0 ⋄ 0 ⎕FAPPEND t ⋄ ⎕FUNTIE t
+                  :EndIf
+                  t←file ⎕FSTIE 0 ⋄ user.id ⎕FREPLACE t,1 ⋄ ⎕FUNTIE t
+              :Else
+                  1 ⎕NDELETE(#.Env.Root,'Data/last.dcf')
+              :EndIf
+          :Else
+              ∘∘∘
+          :EndIf
+      :Case 'logout'
+          ∘∘∘
+      :Case 'register'
+          ∘∘∘
+      :Case 'forgotPwd'
+          ∘∘∘
+      :Else
+          ∘∘∘
+      :EndSelect
+    ∇
+
+    ∇ R←FileMenu
+      :Access public
+      :Select ⎕←2⊃'_'#.Strings.split _currentTarget
+      :Case 'BoxOpen'
+          f←user.ListBoxes
+          m←'#mo_OpenBox .modal role=dialog data-backdrop=static data-keyboard=true data-focus=false data-show=false'New _.div
+          mc←('.modal-dialog .modal-dialog-centered'm.Add _.div).Add _.div'' '.modal-content .bg-dark'
+          mh←mc.Add _.div'' '.modal-header'
+          '.modal-title'mh.Add _.h3(GetText'BoxOpen')
+     
+          mb←('.modal-body'mc.Add _.div).Add _.form
+          '#file'mb.Add _.Chosen f
+     
+          mf←('.model-footer .text-center'mc.Add _.div)
+          ('#b_BoxOpen2 .btn .btn-success .btn-lg  .mx-2 .px-4'mf.Add _.Button(GetText'OK')).On'click' 'FileMenu'
+          '.btn .btn-warning .btn-lg  .mx-2 .px-4 onclick=$("#mo_OpenBox").modal("close");'mf.Add _.Button(GetText'Cancel')
+          R←Execute'$("body").append("',(('\"'⎕R'\\"')m.Render),'");$("#mo_OpenBox").modal("show");'
+      :Case 'BoxOpen2'
+          R←Execute'$("#mo_OpenBox").modal("hide");'
+          prj←⎕NEW #.lBox(#.Boot.AppRoot,'Data/Users/u',(⍕user.id),'/',Get'file')
+          R,←Display'translate'
+          R,←Display'task'
+          R,←'#w1'Replace(1⊃prj.Lesson.GetWord)
+          R,←'#w2'Replace(2⊃prj.Lesson.GetWord)
+          (h j)←StatusInfo
+          R,←'#status'Replace h
+          R,←Execute j
+      :Case 'BoxNew'
+      :EndSelect
+    ∇
+
+    ∇ R←ToggleDevTools
+      :Access public
+      #.Boot.ms._Renderer.ShowDevTools #.Env.DevToolsVisible←~#.Env.DevToolsVisible
+      :If #.Env.DevToolsVisible
+          R←Execute'#ToggleDevTools'_JSS.AddClass'active'
+      :Else
+          R←Execute'#ToggleDevTools'_JSS.RemoveClass'active'
+      :EndIf
+    ∇
+
+    ∇ R←{opts}Notice(type content);options;jb;color;icon
+      :Access public
+⍝ get JS to display a notice
+⍝ type   = 1 (info), 2=success, 3=error
+⍝ content= message
+⍝ opts   = an options namespace
+      color←type⊃'blue' 'green' 'yellow'
+      icon←#.HtmlElement.New _.Icon(type⊃'fa-info-circle' 'fa-check' 'fa-exclamation-triangle')
+      options←⎕NS''
+      :If 2=⎕NC'opts'
+          options.(autoClose closeButton color)←opts defaultArgs 10000 _true color
+      :ElseIf 9=⎕NC'opts'
+          options←opts
+      :EndIf
+      jb←New #._.jBox'Notice'(icon,'&nbsp;',content)
+      jb.Options←options
+      jb.ScriptOptions←0 0 0
+      'color'jb.SetIfNotSet color
+      'attributes.x'jb.SetIfNotSet'right'
+      'attributes.y'jb.SetIfNotSet'bottom'
+      'offset.x'jb.SetIfNotSet 30
+      'offset.y'jb.SetIfNotSet 10
+      'autoClose'jb.SetIfNotSet 10000
+      'closeOnClick'jb.SetIfNotSet _false
+      'closeButton'jb.SetIfNotSet _true
+      'width'jb.SetIfNotSet 450
+      R←jb.Render
+    ∇
+
+    ∇ R←OFF
+      :Access public
+      ⎕OFF
+    ∇
+
 :endclass

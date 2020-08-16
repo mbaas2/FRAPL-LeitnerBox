@@ -21,13 +21,16 @@
           sf←data.stock
           :If ~∨/'\/'∊sf ⍝ is stock-file specified using a path?
               sf←(1⊃⎕NPARTS file),sf   ⍝ nope, then use same dir as project file
+          :OrIf '.'=1⊃file ⍝ if it's a relative path
+              sf←(1⊃⎕NPARTS file),sf   ⍝ nope, then use same dir as project file
           :EndIf
           :If ⎕NEXISTS sf
               stock←⎕JSON 1⊃⎕NGET sf
+          :Else ⋄ ∘∘∘
           :EndIf
-      :Else
+      :Else  ⍝ todo: take this out and explicitely add somezhing to make a new lBox based on seleced card-file
           data←⎕NS''
-          data.direction←1
+          data.(prompt show)←⊂''
           data.progress←1
           data.stats←,⎕NS''
           data.stats[1].(id sect)←1
@@ -37,17 +40,22 @@
       Lesson←⎕NEW cLesson(data todaysLesson stock)
     ∇
 
-    ∇ R←SectionInfo
+    ∇ R←SectionInfo;sects;unassigned
       :Access public
 ⍝ R[1]: index of today's section
 ⍝ R[2]: vector with # of elements per section
+⍝ R[3]: ids per section
       :If 326≠⎕DR data.stats   ⍝ variable (namespace=9)
           R←1
           R,←⊂6↑≢stock.cards.id
       :Else
           R←sect←method{w←(≢⍺)|⍵ ⋄ w←w+w=0 ⋄ w⊃⍺}data.progress
-     
-          R,←⊂(+/~stock.cards.id∊data.stats.id),+⌿data.stats.sect∘.=⍳5
+          (~stock.cards.id∊data.stats.id)/stock.cards.id
+          sects←data.stats.sect{⍺ ⍵}⌸data.stats.id
+          sects←(sects[;2],0)[sects[;1]⍳⍳5]
+          unassigned←(~stock.cards.id∊data.stats.id)/stock.cards.id
+          R,←⊂(≢unassigned),≢¨sects
+          R,←⊂(⊂unassigned),sects
       :EndIf
     ∇
 
@@ -96,7 +104,8 @@
         ∇ R←GetWord
           :Access public
           word←stock.cards[stock.cards.id⍳_words[idx]]
-          R←word.(h f)[data.direction,(⍳2)~data.direction]
+          R←⊂word⍎data.prompt
+          R,←⊂word⍎data.show
         ∇
 
 
@@ -112,16 +121,16 @@
               data.stats[s].sect+←1
           :Else
               data.stats[s].sect←1  ⍝ back to 1!
-              :if 1=1⊃##.SectionInfo   ⍝ if we're in box 1 
-              _words,←s  ⍝ repeat failed words till they are mastered!
-              :endif
+              :If 1=1⊃##.SectionInfo   ⍝ if we're in box 1
+                  _words,←_words[idx]  ⍝ repeat failed words till they are mastered!
+              :EndIf
           :EndIf
           idx+←1
         ∇
 
         ∇ R←Done
           :Access public
-⍝ are we done yet?
+         ⍝ are we done yet?
           R←idx>≢_words
         ∇
 

@@ -1,0 +1,9 @@
+[
+    {"Code":"UserExists","HTML":"Diese Email-Adresse ist bereits registriert!"},
+    {"Code":"Login","HTML":"Anmelden"},
+    {"Code":"Logout","HTML":"Abmelden"},
+    {"Code":"Register","HTML":"Registrieren"},
+    {"Code":"About","HTML":"Über LeitnerBox"},
+    {"Code":"","HTML":""}
+
+]

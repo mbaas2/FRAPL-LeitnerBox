@@ -1,0 +1,23 @@
+[
+    {"Code":"doc1","HTML":"This is the main file that contain all texts used by the app. It is possible to translate this file into any language - please use the appropriate 2-letter country code"},
+    {"Code":"doc2","HTML":"according to https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes and append it as a (uppercase) suffix to the basename of the file (using a - as separator."},
+    {"Code":"UserExists","HTML":"That email-address is used already!"},
+    {"Code":"Login","HTML":"Sign In"},
+    {"Code":"LogOut","HTML":"Sign Out"},
+    {"Code":"Register","HTML":"Sign Up"},
+    {"Code":"About","HTML":"About LeitnerBox"},
+    {"Code":"Password","HTML":"Password"},
+    {"Code":"Email","HTML":"Email"},
+    {"Code":"Forgot","HTML":"Forgot"},
+    {"Code":"Cancel","HTML":"Cancel"},
+    {"Code":"HowToRegister","HTML":"How to register"},
+    {"Code":"ForgotPwd","HTML":"I forgot my password"},
+    {"Code":"detHowToRegister","HTML":"Just do it - it's great!"},
+    {"Code":"detForgotPwd","HTML":"Click the \"Forgot\"-Button and hope the best!"},
+    {"Code":"mnFile","HTML":"File"},
+    {"Code":"BoxOpen","HTML":"Open Box"},
+    {"Code":"BoxNew","HTML":"New Box"},
+    {"Code":"ToggleDevTools","HTML":"Toggle Developer-Tools"},
+    {"Code":"OK","HTML":"OK"},
+    {"Code":"Cancel","HTML":"Cancel"}
+]

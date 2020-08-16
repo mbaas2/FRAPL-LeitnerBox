@@ -1,0 +1,248 @@
+{
+    "cards": [{
+            "NO": "god",
+            "DE": "gut",
+            "id": 1
+        },
+        {
+            "NO": "dag",
+            "DE": "Tag",
+            "id": 2
+        },
+        {
+            "NO": "alle",
+            "DE": "alle",
+            "id": 3
+        },
+        {
+            "NO": "sammen",
+            "DE": "zuammen",
+            "id": 4
+        },
+        {
+            "NO": "jeg",
+            "DE": "ich",
+            "id": 5
+        },
+        {
+            "NO": "hete",
+            "DE": "heissen",
+            "id": 6
+        },
+        {
+            "NO": "hva",
+            "DE": "was",
+            "id": 7
+        },
+        {
+            "NO": "mer",
+            "DE": "mehr",
+            "id": 8
+        },
+        {
+            "NO": "altsaa",
+            "DE": "auch",
+            "id": 9
+        },
+        {
+            "NO": "bibliotecar",
+            "DE": "Bibliothekar",
+            "id": 10
+        },
+        {
+            "NO": "i",
+            "DE": "in",
+            "id": 11
+        },
+        {
+            "NO": "norsk",
+            "DE": "norwegisch",
+            "id": 12
+        },
+        {
+            "NO": "lärer",
+            "DE": "Lehrer",
+            "id": 13
+        },
+        {
+            "NO": "forstaa",
+            "DE": "verstehen",
+            "id": 14
+        },
+        {
+            "NO": "du",
+            "DE": "du",
+            "id": 15
+        },
+        {
+            "NO": "ja",
+            "DE": "ja",
+            "id": 16
+        },
+        {
+            "NO": "saa",
+            "DE": "so",
+            "id": 17
+        },
+        {
+            "NO": "klok",
+            "DE": "klug",
+            "id": 18
+        },
+        {
+            "NO": "alt",
+            "DE": "alles",
+            "id": 19
+        },
+        {
+            "NO": "nei",
+            "DE": "nein",
+            "id": 20
+        },
+        {
+            "NO": "ikke",
+            "DE": "nicht",
+            "id": 21
+        },
+        {
+            "NO": "for",
+            "DE": "denn",
+            "id": 22
+        },
+        {
+            "NO": "og",
+            "DE": "und",
+            "id": 23
+        },
+        {
+            "NO": "sjaaför",
+            "DE": "Fahrer",
+            "id": 24
+        },
+        {
+            "NO": "kjöre",
+            "DE": "fahren",
+            "id": 25
+        },
+        {
+            "NO": "lastebil",
+            "DE": "Lastwagen",
+            "id": 26
+        },
+        {
+            "NO": "eller",
+            "DE": "oder",
+            "id": 27
+        },
+        {
+            "NO": "buss",
+            "DE": "Bus",
+            "id": 28
+        },
+        {
+            "NO": "drosje",
+            "DE": "Taxi",
+            "id": 29
+        },
+        {
+            "NO": "si",
+            "DE": "sagen",
+            "id": 30
+        },
+        {
+            "NO": "litt",
+            "DE": "ein bisschen",
+            "id": 31
+        },
+        {
+            "NO": "men",
+            "DE": "aber",
+            "id": 32
+        },
+        {
+            "NO": "dum",
+            "DE": "dumm",
+            "id": 33
+        },
+        {
+            "NO": "mye",
+            "DE": "viel",
+            "id": 34
+        },
+        {
+            "NO": "hvem",
+            "DE": "wer",
+            "id": 35
+        },
+        {
+            "NO": "gjöre",
+            "DE": "machen",
+            "id": 36
+        },
+        {
+            "NO": "en",
+            "DE": "ein",
+            "id": 37
+        },
+        {
+            "NO": "han",
+            "DE": "er",
+            "id": 38
+        },
+        {
+            "NO": "hvor",
+            "DE": "wo",
+            "id": 39
+        },
+        {
+            "NO": "arbeide",
+            "DE": "arbeiten",
+            "id": 40
+        },
+        {
+            "NO": "bibliotek",
+            "DE": "Bibliothek",
+            "id": 41
+        },
+        {
+            "NO": "hun",
+            "DE": "sie",
+            "id": 42
+        },
+        {
+            "NO": "med",
+            "DE": "mit",
+            "id": 43
+        },
+        {
+            "NO": "bok",
+            "DE": "Buch",
+            "id": 44
+        },
+        {
+            "NO": "läre",
+            "DE": "lernen",
+            "id": 45
+        },
+        {
+            "NO": "undervise",
+            "DE": "unterrichten",
+            "id": 46
+        },
+        {
+            "NO": "elev",
+            "DE": "Schüler",
+            "id": 47
+        },
+        {
+            "NO": "student",
+            "DE": "Student",
+            "id": 48
+        }
+    ],
+    "meta": {
+        "fields":["DE","NO"],
+        "DE": "norwegisch",
+        "NO": "deutsch"
+    }
+}

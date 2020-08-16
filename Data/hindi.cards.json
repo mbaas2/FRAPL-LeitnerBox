@@ -1,0 +1,23 @@
+{
+    "meta": {
+        "Fields":["DE","HI"],
+        "DE": "deutsch",
+        "HI": "hindi"
+    },
+    "cards": [{
+        "id":1,
+            "DE": "Gespräch,Unterhaltung,Nachricht,Erzählung",
+            "HI": "samvaad"
+        },
+        {
+            "id": 2,
+            "DE":"militärisch,Militär,Soldat",
+            "HI": "sainik"
+        },
+        {
+            "id": 3,
+            "DE":"Küche",
+            "HI": "rasoiighar"
+        }
+    ]
+}
