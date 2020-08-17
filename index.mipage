@@ -181,7 +181,10 @@
 ∇R←cb_ViewSect
 :Access Public
 ⎕←_currentTarget
+600⌶1
 ∘∘∘
+
+
 
 ∇
 
