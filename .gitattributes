@@ -1,0 +1,5 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# don't count third-party code in languag analysis
+Assets/* linguist-vendored
