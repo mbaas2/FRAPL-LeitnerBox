@@ -22,3 +22,5 @@ Run it serving pages to your browser:
 `DUI.Run'/git/frapl-voka' 8080`  ⍝ click URL that is shown in output`
 
 ** Warning: ** sorry, it's still very early days for this UI...
+
+This project is licensed under the terms of the MIT license.
