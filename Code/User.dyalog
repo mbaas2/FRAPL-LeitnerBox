@@ -101,7 +101,7 @@
     ∇
 
 
-    ∇ R←ListBoxes
+    ∇ R←ListProjects
       :Access public
 ⍝ return list of filenames of boxes in user's datadir
       R←{∊1↓⎕NPARTS ⍵}¨⊃0(⎕NINFO⍠1)#.Env.Root,'Data/Users/u',(⍕id),'/*.lbox.json'
@@ -123,8 +123,18 @@
           Prefs.lang←'EN'
           (⊂⎕JSON Prefs)⎕NPUT file 1
       :EndIf
-      #.Boot.ms.Config.Lang←¯1 ⎕C Prefs.lang  ⍝ pretend we're sending data in the selected language ;)
       LoadTexts Prefs.lang
+      #.Boot.ms.Config.Lang←¯1 ⎕C Prefs.lang  ⍝ pretend we're sending data in the selected language ;)
+
+      ⍝ *************************************************
+      ⍝ *  Defaults for language-dependen accelerators  *
+      ⍝ *************************************************
+      Default←{0=⎕NC ⍺:⍎⍺,'←⍵'}
+      :If 0=Prefs.⎕NC'accel' ⋄ Prefs.accel←⎕NS'' ⋄ :EndIf
+      'Prefs.accel.OK'Default(GetText'DefaultAccelOK')
+      'Prefs.accel.Reveal'Default(GetText'DefaultAccelReveal')
+      'Prefs.accel.Nope'Default(GetText'DefaultAccelNope')
+     
     ∇
 
 

@@ -122,7 +122,7 @@
           R←sect←method{w←(≢⍺)|⍵ ⋄ w=0:(≢⍺)⊃⍺ ⋄ w⊃⍺}data.progress
           (~stock.cards.id∊data.stats.id)/stock.cards.id
           sects←data.stats.sect{⍺ ⍵}⌸data.stats.id
-          sects←(sects[;2],0)[sects[;1]⍳⍳5]
+          sects←(sects[;2],⊂⍬)[sects[;1]⍳⍳5]
           unassigned←(~stock.cards.id∊data.stats.id)/stock.cards.id
           R,←⊂(≢unassigned),≢¨sects
           R,←⊂(⊂unassigned),sects

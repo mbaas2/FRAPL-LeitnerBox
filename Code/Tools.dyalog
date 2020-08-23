@@ -41,6 +41,80 @@
       {}600⌶2
     ∇
 
+    ∇ txt∆←{opts}sprintf R;txt;fmt;val;align;pad;width;precision;prc;i;RhoRho;prc∆
+ ⍝ replaces format specifiers in txt with values
+ ⍝ format specifiers are introduced with '%'
+ ⍝ txt might be vector or matrix
+ ⍝ Format:
+ ⍝ %[index of argument in'[]'][-][0][width][.precision]type
+ ⍝ type = s -> String
+ ⍝        b -> String with removal of extraneous blanks
+ ⍝        i -> Integer
+ ⍝        d -> Number with decimals
+ ⍝ very oooooold code if found in a shed (originally developed for Dyalog 10.1) - can probably be improved! ;)
+ ⍝ Ideas for extensions:
+ ⍝ - ⎕FmtString⎕ for d or i
+     
+     
+      :If 1=≡R ⋄ txt∆←R ⋄ →0 ⋄ :EndIf  ⍝ not nested → no replacements needed...
+      txt←1⊃R ⋄ R←1↓R
+      RhoRho←⍴⍴txt
+     
+      txt←¯1↓,txt,⎕TC[2]  ⍝ Newline
+      txt∆←''
+      prc←0
+     
+      :While '%'∊txt
+          i←txt⍳'%'
+          txt∆←txt∆,(i-1)↑txt
+          :If txt[i+1]≡'%' ⋄ txt∆←,'%' ⋄ txt←(i+1)↓txt
+          :Else ⋄ align←0 ⋄ pad←' ' ⋄ width←¯1 ⋄ precision←1 ⋄ txt←i↓txt ⋄ prc+←1
+              prc∆←prc
+              :If txt[1]≡'[' ⋄ prc←2⊃⎕VFI 1↓(¯1+txt⍳']')↑txt ⋄ txt←(txt⍳']')↓txt ⋄ :EndIf
+              :If txt[1]≡'-' ⋄ align←1 ⋄ txt←1↓txt ⋄ :EndIf  ⍝ Align numbers left and text right
+              :If txt[1]≡'0' ⋄ pad←'0' ⋄ txt←1↓txt ⋄ :EndIf  ⍝ Pad numbers with zeroes instead of blanks
+              :If txt[1]∊⎕D
+                  i←+/∧\txt∊⎕D ⋄ width←2⊃⎕VFI i↑txt ⋄ txt←i↓txt
+              :EndIf
+              :If txt[1]≡'.'
+                  txt←1↓txt ⋄ i←+/∧\txt∊⎕D ⋄ precision←2⊃⎕VFI i↑txt ⋄ txt←i↓txt
+              :EndIf
+              val←''
+              :Select txt[1]
+              :Case 'b' ⋄ val←#.Strings.deb,⍕prc∆⊃R ⋄ :If width>0 ⋄ val←width↑val ⋄ :EndIf  ⍝ String with blank-removal
+              :Case 's' ⋄ val←,⍕prc∆⊃R ⋄ :If width>0 ⋄ val←width↑val ⋄ :EndIf  ⍝ String
+              :Case 'd' ⋄ val←prc∆⊃R         ⍝ Number, optionally with decimals
+                  :If 0≠1↑0↑val ⋄ val←2⊃⎕VFI⍕val ⋄ :EndIf  ⍝ why???
+                  width←width⌈⍴,⍕⌊val
+                  fmt←('M<->','IF'[1+precision>0],(⍕width+precision+(precision>0)+val<0),(precision>0)/'.',(⍕precision))
+                  val←,fmt ⎕FMT val
+              :Case 'i' ⋄ val←prc∆⊃R        ⍝ Integer, rounded if necessary, ignoring decimals
+                  :If 0≠1↑0↑val ⋄ val←2⊃⎕VFI'0',⍕val ⋄ :EndIf
+                  val←⍬⍴,val ⋄ width←width⌈⍴⍕⌊val+0.5
+                  fmt←'M<->I',⍕width+val<0
+                  val←,fmt ⎕FMT⌊val+0.5
+              :EndSelect
+              :If 0<width ⋄ :AndIf (align>0)∨pad≠' '
+                  :If align=1
+                      :If txt[1]='s' ⋄ val←⌽LJ⌽val ⋄ :Else ⋄ val←LJ val ⋄ :EndIf
+                  :EndIf
+                  :If pad='0'
+                      :Select align,txt[1]='s'
+                      :Case 1 0 ⍝ numeric, lft-aligned
+                      :Case 1 1 ⋄ val[⍸∧\val=' ']←'0' ⍝ Text, rechtsbündig, links wird gefüllt!
+                      :Case 0 0 ⋄ val[⍸∧\val=' ']←'0' ⍝ numerisch, rechtsbündig, links füllen
+                      :Case 0 1 ⋄ val[⍸⌽∧\⌽val=' ']←'0' ⍝ Text, linksbündig, am Ende '0' anhängen
+                      :EndSelect
+                  :EndIf
+              :EndIf
+              txt←1↓txt ⋄ txt∆←txt∆,val
+          :EndIf
+      :EndWhile
+      txt∆←txt∆,txt
+      :If 2=RhoRho
+          txt←↑⎕TC[2]#.Strings.split txt∆
+      :EndIf
+    ∇
 
     :section dotNet
 
@@ -105,7 +179,7 @@
     ∇ R←tit MsgBox text_actions
 ⍝ title **MsgBox** text actions
 ⍝ actions: (BtnTitle NameOfCallback (or "close") [Style - vtv])
-⍝ Style=primary  etc.    
+⍝ Style=primary  etc.
       :Access Public
       (text actions)←2↑⊆text_actions
       R←'.modal'#.HtmlElement.New #._.div
@@ -148,10 +222,10 @@
           :EndFor
       :EndFor
      
-      (h j)←getHTMLjs        R
+      (h j)←getHTMLjs R
       R←'body'#.MiPage.Append h
       R,←#.MiPage.Execute j
-      R,←#.MiPage.Execute '$("#',modId,'").modal("show");'
+      R,←#.MiPage.Execute'$("#',modId,'").modal("show");'
 ⍝       <div class="modal-footer">
 ⍝         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 ⍝         <button type="button" class="btn btn-primary">Save changes</button>
@@ -160,6 +234,19 @@
 ⍝   </div>
 ⍝ </div>
     ∇
+
+    ∇ {ctl}←ctl AddTooltipAndAccesskey code;accel;prefs;txt
+      prefs←(1⊃⎕RSI).user.Prefs
+      accel←prefs.accel⍎code
+      txt←sprintf(GetText'Tooltip',code)accel
+      ctl.Set'accesskey=',accel
+      ctl AddTooltip txt
+    ∇
+
+
+∇ {ctl}←ctl AddTooltip txt
+ctl.Set'title="',txt,'"'
+∇
 
     :EndSection Bootstrap-Tools
 
@@ -199,11 +286,11 @@
       str,←', ',(idn[2]⊃months),' ',(,'ZI2'⎕FMT 3⊃idn),' ',(⍕1⊃idn),(5≤≢ts)/' ',¯1↓,'ZI2,<:>'⎕FMT ¯2↑5↑ts
     ∇
 
-    :endsection 
+    :endsection
 
     :section Cryptography
     hash←{#.Crypt.(HASH_SHA256 Hash ⍵)}
     salt←{#.Strings.stringToHex #.Crypt.Random ⍵}
 
-    :endsection 
+    :endsection
 :endnamespace
