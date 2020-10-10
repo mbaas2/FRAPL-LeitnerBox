@@ -241,8 +241,21 @@
         }
     ],
     "meta": {
-        "fields":["DE","NO"],
-        "DE": "norwegisch",
-        "NO": "deutsch"
+        "fields": [
+        {"code":"DE","label":"deutsch"} ,   
+        {"code":"NO","label":"norwegisch"}    
+        ],
+        "modes": [{
+                "id": "vorwärts",
+                "f1": "DE",
+                "f2": "NO"
+            },
+            {
+                "id": "rückwärts",
+                "f1": "NO",
+                "f2": "DE"
+            }
+        ]
+
     }
 }

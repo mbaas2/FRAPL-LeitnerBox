@@ -39,6 +39,7 @@
           #.Env.DevToolsVisible←0
           #.Env.DevToolsVisible←1=2⊃⎕VFI #.Boot.ms.Config.HRServer.Debug
       :EndIf
+      RETRAP
       :If ⎕NEXISTS(file←#.Env.Root,'Data/last'),'.dcf'
           t←file ⎕FSTIE 0
           uid←⎕FREAD t,1 ⋄ ⎕FUNTIE 1
@@ -47,10 +48,10 @@
           :If 0<≢f←u{6::'' ⋄ ⍺⍎⍵}'Prefs.autoOpen'
           :AndIf ⎕NEXISTS f←#.Env.Root,'Data/Users/u',(⍕uid),'/',f
               prj←⎕NEW #.lBox f
+              #.Boot.ms.SessionHandler.Sessions.user←u
               #.Boot.ms.SessionHandler.Sessions.prj←prj
           :EndIf
       :EndIf
-      RETRAP
     ∇
 
 
@@ -66,8 +67,8 @@
     ∇
 
     ∇ Cleanup
-      :If {6::0 ⋄ 'HRServer'≡⍎⍵}'#.Boot.ms.Framework'
-      :AndIf {6::⍵ ⋄ #.Prefs.closeAPLonExit}0
+      :If {0::0 ⋄ 'HRServer'≡⍎⍵}'#.Boot.ms.Framework'
+      :AndIf {0::0 ⋄ ⍵.Prefs.closeAPLonExit}user
           ⎕OFF
       :EndIf
     ∇

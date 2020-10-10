@@ -152,23 +152,30 @@
 
     :section HTML/DUI-Tools
     ∇ R←{show}Display id
-      ⍝ Show (or hide - if "show"=0) control with given id
+      ⍝ Show (or hide - if "show"=0) control with given id (optionally id[1] can be '#' or '.')
+      :If ~(⊃id)∊'.#' ⋄ id←'#',id ⋄ :EndIf
       :If 0=⎕NC'show'
       :OrIf show=1
-          R←#.MiPage.Execute'$("#',id,'").removeClass("d-none");'
+          R←#.MiPage.Execute'$("',id,'").removeClass("d-none");'
+          R,←#.MiPage.Execute'$("',id,'").trigger("becameVisible");'
       :Else
-          R←#.MiPage.Execute'$("#',id,'").addClass("d-none");'
+          R←#.MiPage.Execute'$("',id,'").addClass("d-none");'
       :EndIf
     ∇
 
     ∇ (h j)←getHTMLjs html;sc
       :Access  public shared
       ⍝ returns html and js of given object (or HTML-String)
-      :If 326=⎕DR html ⋄ html←∊html.Render ⋄ :EndIf
+     
+      :If 326=⎕DR html ⋄ html←html.Render ⋄ :EndIf
       h←('<script>(.*)</script>'⎕R''⍠('DotAll' 1)('Mode' 'M')('Greedy' 0))html
      
-      :If (⊂'')≢sc←⊆('<script>(.*)</script>'⎕S'\1'⍠('DotAll' 1)('Mode' 'M')('Greedy' 0))html
-          j←∊sc
+      :If 1∊'<script>'⍷html
+          :If 0<≢j←⊆('<script>\$\(function\(\)\{(.*)}\);</script>'⎕S'\1'⍠('DotAll' 1)('Mode' 'M')('Greedy' 0))html
+              html←('<script>\$\(function\(\)\{(.*)}\);</script>'⎕R''⍠('DotAll' 1)('Mode' 'M')('Greedy' 0))html
+          :EndIf
+          j,←⊆('<script>(.*)</script>'⎕S'\1'⍠('DotAll' 1)('Mode' 'M')('Greedy' 0))html
+     
       :Else ⋄ j←''
       :EndIf
     ∇
@@ -176,63 +183,76 @@
     :endsection
 
     :Section Bootstrap-Tools
-    ∇ R←tit MsgBox text_actions
+
+    ∇ R←tit_opts MsgBox text_actions;opts;text;actions;tit;opts;mc;h;mf;js;btn;c∆;b;st;cb;keep;modId;s
 ⍝ title **MsgBox** text actions
 ⍝ actions: (BtnTitle NameOfCallback (or "close") [Style - vtv])
 ⍝ Style=primary  etc.
+⍝ also: if style is "default", that button will be triggered when enter is pressed. and it will be a primary-btn!
+⍝ opts: 1           - return object (otherwise: return result of a typical callback-function)
+⍝       2           - bg-dark (if not set, we won't set)
+     
       :Access Public
       (text actions)←2↑⊆text_actions
-      R←'.modal'#.HtmlElement.New #._.div
+      :If 1≠≡tit_opts ⋄ (tit opts)←tit_opts ⋄ :Else ⋄ tit←tit_opts ⋄ opts←0 ⋄ :EndIf
+      opts←⌽2 2⊤opts
+      R←'.modal data-backdrop=static data-keyboard=false'#.HtmlElement.New #._.div
       R.id←modId←R.GenId
-      mc←('.modal-dialog .modal-dialog-centered role=document'R.Add #._.div).Add #._.div'' '.modal-content .bg-dark'
+      mc←('.modal-dialog .modal-dialog-centered role=document'R.Add #._.div).Add #._.div''('.modal-content',opts[2]/'.bg-dark')
       mh←'.modal-header'mc.Add #._.div
       mh.Add #._.h3 tit'.modal-title'
-⍝         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-⍝           <span aria-hidden="true">&times;</span>
-⍝         </button>
+      ('type=button class=close data-dismiss=modal'mh.Add #._.button).Add #._.span'&times;' 'aria-hidden=true'
+      js←''
      
       mc.Add #._.div text'.modal-body'
-⍝       <div class="modal-body">
-⍝         ...
-⍝       </div>
      
       mf←mc.Add #._.div'' '.modal-footer'
-      :For b :In 1↑⊆actions
-          (tit cb st)←3↑⊆b  ⍝ title, callback, style
-          :If 0=≢tit ⋄ tit←GetText'OK' ⋄ :EndIf
+      :For b :In ,⊆actions
+          (tit cb st keep)←4↑⊆b  ⍝ title, callback, style, keepDialog
+          c∆←'btn'
+          :If ~∨/keep∊0 1 ⋄ :OrIf 1≠≢keep ⋄ keep←0 ⋄ :EndIf
+          :If 0=≢tit ⋄ tit←GetText'OK' ⋄ c∆,←' btn-primary' ⋄ :EndIf
           btn←mf.Add #._.Button tit
           :If 0=≢st  ⍝ if no style
           :AndIf 1=≢actions ⍝ and there is one button only
+          :AndIf ~∨/'btn-primary'⍷c∆
               st←'primary'   ⍝ that button nwill be the default one!
           :EndIf
+          btn.(id←GenId)
+          h←mf.Add #._.Handler('#',btn.id)'click'
           :If 0<≢cb
               :If cb≡'close'
-                  btn.On'click' '' ''('$("#',modId,'").modal("close");$("#',modId,'").remove();')
+                  h.Callback←0
               :Else
-                  btn.On'click'cb
+                  h.Callback←cb
+                  h.ClientData←'mid' 'string'modId
               :EndIf
-          :ElseIf 1=≢⊆actions  ⍝ if there is one button only, it WILL close the dialog!
-              btn.On'click' '' ''('$("#',modId,'").modal("close");$("#',modId,'").remove();')
           :EndIf
-          s∆←'.btn'
+          :If ~keep
+              h.JavaScript,←'$("#',modId,'").modal("hide");$("#',modId,'").remove();'
+          :EndIf
           :For s :In ⊆st
               :If s∊⍥⊆'primary' 'secondary' 'danger' 'warning' 'success' 'info' 'light' 'dark' 'link'
-                  s∆,←' .btn-',s
+                  c∆,←' btn-',s
+              :ElseIf 'default'≡⎕C s
+                  c∆,←' btn-primary'
+                  'onKeyUp'btn.Set'onEnterClick("#',btn.id,'");'
+              :Else
+                  ⎕←'Unknow style: ',s
+                  ∘∘∘
               :EndIf
           :EndFor
+          btn.class←c∆
       :EndFor
+      :If opts[1]
+          R.Add #._.script js,'$($("#',modId,'").modal("show"))'
+          →0
+      :EndIf
      
       (h j)←getHTMLjs R
       R←'body'#.MiPage.Append h
-      R,←#.MiPage.Execute j
+      R,←#.MiPage.Execute j,js
       R,←#.MiPage.Execute'$("#',modId,'").modal("show");'
-⍝       <div class="modal-footer">
-⍝         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-⍝         <button type="button" class="btn btn-primary">Save changes</button>
-⍝       </div>
-⍝     </div>
-⍝   </div>
-⍝ </div>
     ∇
 
     ∇ {ctl}←ctl AddTooltipAndAccesskey code;accel;prefs;txt
@@ -244,9 +264,9 @@
     ∇
 
 
-∇ {ctl}←ctl AddTooltip txt
-ctl.Set'title="',txt,'"'
-∇
+    ∇ {ctl}←ctl AddTooltip txt
+      ctl.Set'title="',txt,'"'
+    ∇
 
     :EndSection Bootstrap-Tools
 

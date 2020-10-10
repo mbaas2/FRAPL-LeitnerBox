@@ -25,6 +25,7 @@
     :field public Status←0
     :field public Prefs
     :field public MyDataDir←''
+    :field public email←''
 
     ∇ LoginWithUID uid;t;users
       :Access public
@@ -32,16 +33,16 @@
       t←TieUsers 1 ⋄ users←⎕FREAD t,1
       users[uid;6]←1 ⎕DT⊂⎕TS ⋄ users ⎕FREPLACE t,1 ⋄ ⎕FUNTIE t
       id←uid
-      Status←users[uid;4]
+      (email Status)←users[uid;1 4]
       GetPrefs
     ∇
 
-    ∇ Login(email pwd)
+    ∇ Login(mail pwd)
       :Access public
       :Implements constructor
       t←TieUsers 0 ⋄ users←⎕FREAD t,1 ⋄ ⎕FUNTIE t
-      →((≢users)<i←users[;1]⍳⍥⎕C⊂email)/0
-     
+      →((≢users)<i←users[;1]⍳⍥⎕C⊂mail)/0
+      email←mail
       hash←#.Strings.stringToHex hash(2⊃users[i;]),pwd
       :If hash≡3⊃users[i;]
           id←i
@@ -101,14 +102,35 @@
     ∇
 
 
-    ∇ R←ListProjects
+    ∇ R←ListFiles ext1
       :Access public
-⍝ return list of filenames of boxes in user's datadir
-      R←{∊1↓⎕NPARTS ⍵}¨⊃0(⎕NINFO⍠1)#.Env.Root,'Data/Users/u',(⍕id),'/*.lbox.json'
+     
+      :Select ext1
+      :Case 'lbox'  ⍝ return list of filenames of projects in user's datadir
+          R←{∊1↓⎕NPARTS ⍵}¨⊃0(⎕NINFO⍠1)#.Env.Root,'Data/Users/u',(⍕id),'/*.',ext1,'.json'
+      :Case 'cards' ⍝ return list of filenames of boxes in central datadirs
+          R←{∊1↓⎕NPARTS ⍵}¨⊃0(⎕NINFO⍠1)#.Env.Root,'Data/*.',ext1,'.json'
+      :EndSelect
     ∇
 
+∇R←data SaveBox filename
+:access public
+          path←#.Env.Root,'Data/Users/u',(⍕id),'/'
+          (⊂data)⎕nput (R←path,filename)1
+∇
 
-
+    ∇ R←type GetFile fnam
+      :Access public
+     
+      :Select type
+      :Case 'cards'
+          fnam←#.Env.Root,'Data/',fnam
+          R←⎕NGET fnam
+      :EndSelect
+     
+     
+     
+    ∇
     ∇ GetPrefs
 ⍝ read preferences for user <id> (if there are any)
 ⍝ and make sure we have a datadir for him
@@ -121,14 +143,15 @@
       :Else  ⍝ initialize preferences
           Prefs←⎕NS''
           Prefs.lang←'EN'
-          (⊂⎕JSON Prefs)⎕NPUT file 1
+          (⊂(⎕JSON⍠'Compact' 0)Prefs)⎕NPUT file 1
       :EndIf
+      Prefs._file←file
       LoadTexts Prefs.lang
       #.Boot.ms.Config.Lang←¯1 ⎕C Prefs.lang  ⍝ pretend we're sending data in the selected language ;)
-
-      ⍝ *************************************************
-      ⍝ *  Defaults for language-dependen accelerators  *
-      ⍝ *************************************************
+     
+      ⍝ **************************************************
+      ⍝ *  Defaults for language-dependend accelerators  *
+      ⍝ **************************************************
       Default←{0=⎕NC ⍺:⍎⍺,'←⍵'}
       :If 0=Prefs.⎕NC'accel' ⋄ Prefs.accel←⎕NS'' ⋄ :EndIf
       'Prefs.accel.OK'Default(GetText'DefaultAccelOK')
@@ -137,13 +160,14 @@
      
     ∇
 
+    ∇ var SetPrefs val
+    :Access public
+    ⍝ set a prefs-value (and save 'em)
+    xx←⎕json 1⊃⎕nget Prefs._file
+    xx⍎var,'←''',val,''''
+    ((⎕json⍠'Compact'0)xx)⎕nput Prefs._file 1
+    GetPrefs
+      ∇
 
-    ∇ show;t;hdr
-      :Access public shared
-    ⍝ quick & dirty tool for testing - remove later!
-      t←TieUsers 0
-      hdr←'#' 'mail' 'salt' 'hash' 'stat' 'TSreg' 'TSlogin' 'TSlogout' 'TSforgot' 'HASHforgot' 'details'
-      ⎕SE.Dyalog.Utils.display hdr⍪{(⍳≢⍵),⍵}⎕FREAD t,1
-      ⎕FUNTIE t
-    ∇
+
 :endclass

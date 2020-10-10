@@ -1,6 +1,5 @@
 {
-  "cards": [
-    {
+  "cards": [{
       "flag": "./LänderFlaggenHauptstädte/af.svg",
       "capitol": "Kabul",
       "cnty": "Afghanistan",
@@ -9,13 +8,14 @@
     {
       "flag": "./LänderFlaggenHauptstädte/eg.svg",
       "capitol": "Kairo",
-      "cnty": "Agypten",
+      "cnty": "Ägypten",
       "id": 32138
     },
     {
       "flag": "./LänderFlaggenHauptstädte/al.svg",
       "capitol": "Tirana",
       "cnty": "Albanien",
+      "cont": "Europa",
       "id": 24383
     },
     {
@@ -28,6 +28,7 @@
       "flag": "./LänderFlaggenHauptstädte/ad.svg",
       "capitol": "Andorra la Vella",
       "cnty": "Andorra",
+      "cont": "Europa",
       "id": 3004
     },
     {
@@ -64,6 +65,7 @@
       "flag": "./LänderFlaggenHauptstädte/az.svg",
       "capitol": "Baku",
       "cnty": "Aserbaidschan",
+      "cont": "Europa",
       "id": 24901
     },
     {
@@ -100,6 +102,7 @@
       "flag": "./LänderFlaggenHauptstädte/be.svg",
       "capitol": "Brüssel",
       "cnty": "Belgien",
+      "cont": "Europa",
       "id": 13988
     },
     {
@@ -130,6 +133,7 @@
       "flag": "./LänderFlaggenHauptstädte/ba.svg",
       "capitol": "Sarajevo",
       "cnty": "Bosnien und Herzegowina",
+      "cont": "Europa",
       "id": 20601
     },
     {
@@ -154,6 +158,7 @@
       "flag": "./LänderFlaggenHauptstädte/bg.svg",
       "capitol": "Sofia",
       "cnty": "Bulgarien",
+      "cont": "Europa",
       "id": 12524
     },
     {
@@ -189,13 +194,15 @@
     {
       "flag": "./LänderFlaggenHauptstädte/dk.svg",
       "capitol": "Kopenhagen",
-      "cnty": "Danemark",
+      "cnty": "Dänemark",
+      "cont": "Europa",
       "id": 21682
     },
     {
       "flag": "./LänderFlaggenHauptstädte/de.svg",
       "capitol": "Berlin",
       "cnty": "Deutschland",
+      "cont": "Europa",
       "id": 18926
     },
     {
@@ -244,6 +251,7 @@
       "flag": "./LänderFlaggenHauptstädte/ee.svg",
       "capitol": "Tallinn (Reval)",
       "cnty": "Estland",
+      "cont": "Europa",
       "id": 16923
     },
     {
@@ -256,12 +264,14 @@
       "flag": "./LänderFlaggenHauptstädte/fi.svg",
       "capitol": "Helsinki",
       "cnty": "Finnland",
+      "cont": "Europa",
       "id": 28485
     },
     {
       "flag": "./LänderFlaggenHauptstädte/fr.svg",
       "capitol": "Paris",
       "cnty": "Frankreich",
+      "cont": "Europa",
       "id": 4532
     },
     {
@@ -280,6 +290,7 @@
       "flag": "./LänderFlaggenHauptstädte/ge.svg",
       "capitol": "Tiflis",
       "cnty": "Georgien",
+      "cont": "Europa",
       "id": 10338
     },
     {
@@ -298,6 +309,7 @@
       "flag": "./LänderFlaggenHauptstädte/gr.svg",
       "capitol": "Athen",
       "cnty": "Griechenland",
+      "cont": "Europa",
       "id": 9220
     },
     {
@@ -364,12 +376,14 @@
       "flag": "./LänderFlaggenHauptstädte/ie.svg",
       "capitol": "Dublin",
       "cnty": "Irland",
+      "cont": "Europa",
       "id": 8622
     },
     {
       "flag": "./LänderFlaggenHauptstädte/is.svg",
       "capitol": "Reykjavík",
       "cnty": "Island",
+      "cont": "Europa",
       "id": 21686
     },
     {
@@ -382,6 +396,7 @@
       "flag": "./LänderFlaggenHauptstädte/it.svg",
       "capitol": "Rom",
       "cnty": "Italien",
+      "cont": "Europa",
       "id": 28390
     },
     {
@@ -436,6 +451,7 @@
       "flag": "./LänderFlaggenHauptstädte/kz.svg",
       "capitol": "Nur-Sultan",
       "cnty": "Kasachstan",
+      "cont": "Europa",
       "id": 31870
     },
     {
@@ -502,6 +518,7 @@
       "flag": "./LänderFlaggenHauptstädte/hr.svg",
       "capitol": "Zagreb",
       "cnty": "Kroatien",
+      "cont": "Europa",
       "id": 28490
     },
     {
@@ -532,6 +549,7 @@
       "flag": "./LänderFlaggenHauptstädte/lv.svg",
       "capitol": "Riga",
       "cnty": "Lettland",
+      "cont": "Europa",
       "id": 2983
     },
     {
@@ -556,18 +574,21 @@
       "flag": "./LänderFlaggenHauptstädte/li.svg",
       "capitol": "Vaduz",
       "cnty": "Liechtenstein",
+      "cont": "Europa",
       "id": 9953
     },
     {
       "flag": "./LänderFlaggenHauptstädte/lt.svg",
       "capitol": "Vilnius",
       "cnty": "Litauen",
+      "cont": "Europa",
       "id": 10744
     },
     {
       "flag": "./LänderFlaggenHauptstädte/lu.svg",
       "capitol": "Luxemburg",
       "cnty": "Luxemburg",
+      "cont": "Europa",
       "id": 8986
     },
     {
@@ -604,6 +625,7 @@
       "flag": "./LänderFlaggenHauptstädte/mt.svg",
       "capitol": "Valletta",
       "cnty": "Malta",
+      "cont": "Europa",
       "id": 31117
     },
     {
@@ -646,12 +668,14 @@
       "flag": "./LänderFlaggenHauptstädte/md.svg",
       "capitol": "Chișinău",
       "cnty": "Moldau Republik",
+      "cont": "Europa",
       "id": 26279
     },
     {
       "flag": "./LänderFlaggenHauptstädte/mc.svg",
       "capitol": "",
       "cnty": "Monaco",
+      "cont": "Europa",
       "id": 23933
     },
     {
@@ -664,6 +688,7 @@
       "flag": "./LänderFlaggenHauptstädte/me.svg",
       "capitol": "Podgorica",
       "cnty": "Montenegro",
+      "cont": "Europa",
       "id": 28038
     },
     {
@@ -712,6 +737,7 @@
       "flag": "./LänderFlaggenHauptstädte/nl.svg",
       "capitol": "Amsterdam",
       "cnty": "Niederlande",
+      "cont": "Europa",
       "id": 18129
     },
     {
@@ -730,12 +756,14 @@
       "flag": "./LänderFlaggenHauptstädte/mk.svg",
       "capitol": "Skopje",
       "cnty": "Nordmazedonien",
+      "cont": "Europa",
       "id": 32606
     },
     {
       "flag": "./LänderFlaggenHauptstädte/no.svg",
       "capitol": "Oslo",
       "cnty": "Norwegen",
+      "cont": "Europa",
       "id": 29217
     },
     {
@@ -747,7 +775,8 @@
     {
       "flag": "./LänderFlaggenHauptstädte/at.svg",
       "capitol": "Wien",
-      "cnty": "Osterreich",
+      "cnty": "Österreich",
+      "cont": "Europa",
       "id": 21832
     },
     {
@@ -802,12 +831,14 @@
       "flag": "./LänderFlaggenHauptstädte/pl.svg",
       "capitol": "Warschau",
       "cnty": "Polen",
+      "cont": "Europa",
       "id": 29170
     },
     {
       "flag": "./LänderFlaggenHauptstädte/pt.svg",
       "capitol": "Lissabon",
       "cnty": "Portugal",
+      "cont": "Europa",
       "id": 3845
     },
     {
@@ -820,12 +851,14 @@
       "flag": "./LänderFlaggenHauptstädte/ro.svg",
       "capitol": "Bukarest",
       "cnty": "Rumänien",
+      "cont": "Europa",
       "id": 18769
     },
     {
       "flag": "./LänderFlaggenHauptstädte/ru.svg",
       "capitol": "Moskau",
       "cnty": "Russland",
+      "cont": "Europa",
       "id": 5777
     },
     {
@@ -868,6 +901,7 @@
       "flag": "./LänderFlaggenHauptstädte/sm.svg",
       "capitol": "San Marino",
       "cnty": "San Marino",
+      "cont": "Europa",
       "id": 17115
     },
     {
@@ -886,12 +920,14 @@
       "flag": "./LänderFlaggenHauptstädte/se.svg",
       "capitol": "Stockholm",
       "cnty": "Schweden",
+      "cont": "Europa",
       "id": 15370
     },
     {
       "flag": "./LänderFlaggenHauptstädte/ch.svg",
       "capitol": "Bern",
       "cnty": "Schweiz",
+      "cont": "Europa",
       "id": 707
     },
     {
@@ -904,6 +940,7 @@
       "flag": "./LänderFlaggenHauptstädte/rs.svg",
       "capitol": "Belgrad",
       "cnty": "Serbien",
+      "cont": "Europa",
       "id": 30804
     },
     {
@@ -934,12 +971,14 @@
       "flag": "./LänderFlaggenHauptstädte/sk.svg",
       "capitol": "Bratislava",
       "cnty": "Slowakei",
+      "cont": "Europa",
       "id": 22069
     },
     {
       "flag": "./LänderFlaggenHauptstädte/si.svg",
       "capitol": "Ljubljana",
       "cnty": "Slowenien",
+      "cont": "Europa",
       "id": 7723
     },
     {
@@ -952,6 +991,7 @@
       "flag": "./LänderFlaggenHauptstädte/es.svg",
       "capitol": "Madrid",
       "cnty": "Spanien",
+      "cont": "Europa",
       "id": 21432
     },
     {
@@ -1042,6 +1082,7 @@
       "flag": "./LänderFlaggenHauptstädte/cz.svg",
       "capitol": "Prag",
       "cnty": "Tschechien",
+      "cont": "Europa",
       "id": 15974
     },
     {
@@ -1053,7 +1094,8 @@
     {
       "flag": "./LänderFlaggenHauptstädte/tr.svg",
       "capitol": "Ankara",
-      "cnty": "Turkei",
+      "cnty": "Türkei",
+      "cont": "Europa",
       "id": 12498
     },
     {
@@ -1078,12 +1120,14 @@
       "flag": "./LänderFlaggenHauptstädte/ua.svg",
       "capitol": "Kiew",
       "cnty": "Ukraine",
+      "cont": "Europa",
       "id": 31858
     },
     {
       "flag": "./LänderFlaggenHauptstädte/hu.svg",
       "capitol": "Budapest",
       "cnty": "Ungarn",
+      "cont": "Europa",
       "id": 26323
     },
     {
@@ -1108,6 +1152,7 @@
       "flag": "./LänderFlaggenHauptstädte/va.svg",
       "capitol": "Vatikanstadt",
       "cnty": "Vatikanstadt",
+      "cont": "Europa",
       "id": 22193
     },
     {
@@ -1125,7 +1170,8 @@
     {
       "flag": "./LänderFlaggenHauptstädte/gb.svg",
       "capitol": "London",
-      "cnty": "Vereinigtes Konigreich",
+      "cnty": "Vereinigtes Königreich",
+      "cont": "Europa",
       "id": 2646
     },
     {
@@ -1144,6 +1190,7 @@
       "flag": "./LänderFlaggenHauptstädte/by.svg",
       "capitol": "Minsk",
       "cnty": "Weissrussland",
+      "cont": "Europa",
       "id": 18257
     },
     {
@@ -1184,8 +1231,7 @@
     }
   ],
   "meta": {
-    "fields": [
-      {
+    "fields": [{
         "code": "flag",
         "label": "Flagge",
         "type": "media"
@@ -1197,24 +1243,38 @@
       {
         "code": "cnty",
         "label": "Staat"
+      },
+      {
+        "label": "Kontinent",
+        "code": "cont",
+        "optional": true
       }
     ],
-    "modes": [
-      {
+    "modes": [{
         "f1": [
           "cnty",
           "flag"
         ],
-        "f2": "capitol",
+        "f2": ["capitol", "cont"],
         "id": "Hauptstädte benennen"
       },
       {
         "f1": "flag",
         "f2": [
           "cnty",
-          "capitol"
+          "capitol",
+          "cont"
         ],
         "id": "Flaggen erkennen"
+      }
+    ],
+    "subsets": [{
+        "title": "Europa",
+        "sel": "cont≡¨⊂'Europa'"
+      },
+      {
+        "title": "Nicht Europa",
+        "sel": "cont≢¨⊂'Europa'"
       }
     ]
   }

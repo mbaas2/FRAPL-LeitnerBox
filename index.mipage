@@ -1,35 +1,214 @@
-﻿:class index :  MiPage  ⍝ single-page app does not template
+﻿:class index : MiPage  ⍝ single-page app does not template
 ⍝ Leitner-methode: https://de.wikipedia.org/wiki/Lernkartei bzw. https://en.wikipedia.org/wiki/Flashcard ( https://de.wikipedia.org/wiki/Sebastian_Leitner )
     :field public _Sessioned←1
     :field public user←''
     :field public prj←''
 
-    ∇ Compose
+    :field public ctl_file
+
+    :field public text_white←'text-light'
+    :field public text_dark←'text-dark'
+    :field public bg_dark←'bg-dark'
+
+
+⍝ TODO: user.Status=1: change pswd!
+⍝ TODO: functionality to reset pwd for local or web-users (distinguish local & web-mode)
+
+    ∇ Compose;r;h;j;s;dPrj;styles;ctl
       :Access public
       :Section Admin-Stuff
           OnLoad,←'jBoxTooltip=new jBox("Tooltip",{theme: "TooltipDark",id:"jBoxTooltip",getTitle: "data-jbox-title", getContent: "data-jbox-content",attach: "[data-jbox-content]",reload:"strict"}).attach();'
-          Use'⍎/assets/lBox.js'
-          Use'⍕/jBox/themes/TooltipDark.css'
-          Use'jBox'
           Use'Bootstrap4'
+        ⍝  Use'⍕/assets/Bootstrap-4.1.1/bootstrap-sketchy.min.css'
+          Use'jBox'
+          Use'JQueryUI'
+          Use'⍕/jBox/themes/TooltipDark.css'
           Use'⍕/assets/style.css'
-          'class'Body.Set'bg-dark text-white'
-
-          :Trap 0
+          Use'⍎/assets/lBox.js'
+          :Trap 0/0 ⍝ tmp
               user←SessionGet'user'
               prj←SessionGet'prj'
+              :If 0<≢user.Prefs.ui_style~' '
+                  '#style'Head.Add _.link'rel=stylesheet type=text/css href=/assets/Bootstrap-4.5.2/styles/bootstrap-',user.Prefs.ui_style,'.min.css'
+              :EndIf
+              :If user.Prefs.bckgrnd≡'lite'
+                  text_white←'text-light'
+                  text_dark←'text-dark'
+                  bg_dark←'bg-dark'
+              :Else
+                  text_white←'text-dark'
+                  text_dark←'text-light'
+                  bg_dark←'bg-white'
+              :EndIf
           :Else
               ↑⎕DM
           :EndTrap
-
-          haveUser←user{6 11::0 ⋄ 0<⍺⍎⍵}'id'  ⍝ do we have an active user?
-          haveBox←{0::0 ⋄ 0<⍎⍵}'≢prj.Lesson.GetWord'
-
-              :If ~haveUser
+          'class'Body.Set(bg_dark,' ',text_white)
+     
+          :If haveUser←user{6 11::0 ⋄ 0<⍺⍎⍵}'id'  ⍝ do we have an active user?
+          :AndIf 0<≢file←user.Prefs.autoOpen
+              {}File_OpenPrj file
+              :If 0<≢d←prj.Lesson.GetCSS
+                  'boxCSS'Head.Add _.style d
+              :EndIf
+          :EndIf
+          :If haveBox←{0::0 ⋄ 1⊣⍎⍵}'≢prj.Lesson.Done'
+              :If ~haveLesson←~prj.Lesson.Done
+                  h←GetLessonDoneMsg 3
+                  Add h
+              :EndIf
+          :EndIf
+     
+          :If ~haveUser
               OnLoad,←'$("#login-box").modal("show");'
           :EndIf
+      :EndSection
+      :Section Page-Layout & Menu
+          n←('.navbar .',bg_dark,' .',text_white,(bg_dark≡'bg-dark')/' .navbar-dark')Add _.nav
+          :If 0
+        ⍝   (n.Add _.a'LeitnerBox' '#tsTitle .navbar-brand href=# .mr-auto').On'click' 'Go'
+        ⍝   '.navbar-text'n.Add _.span(New _.Icon'fas-user')('#bdgUser'New _.span{0::'' ⋄ ⍵.email}user)
+              nav←('#topnav style=font-size:1.2em;.mb-5'n.Add _.div).Add _.ul'' '.nav .nav-pills'
+     
+              :If haveUser
+                  OnLoad,←'.needsLogin'#._JSS.RemoveClass'disabled'
+                  OnLoad,←'.withoutLogin'#._JSS.AddClass'disabled'
+              :Else
+                  OnLoad,←'.withoutLogin'#._JSS.RemoveClass'disabled'
+                  OnLoad,←'.needsLogin'#._JSS.AddClass'disabled'
+              :EndIf
+     
+     ⍝ ***************
+     ⍝ *  User-Menu  *
+     ⍝ ***************
+              dd←'.nav-item .dropdown'nav.Add _.li
+              menTit←'.nav-link .dropdown-toggle data-toggle=dropdown href=# role=button'New _.a((New _.Icon'fas-user'),' ',('#lblUsr'New _.span(haveUser{~⍺:'' ⋄ 0::'' ⋄ ⍵.email}user)))
+              li←dd.Add menTit
+              d1←'.dropdown-menu'dd.Add _.div
+              (('#mn_register .withoutLogin .dropdown-item href=#',haveUser/' disabled')d1.Add _.a(GetText'Register')).On'click' 'cb_LogInOutRegister'
+              (('#mn_login .withoutLogin .dropdown-item href=#',haveUser/' disabled')d1.Add _.a(GetText'LogIn')).On'click' 'cb_LogInOutRegister'
+              (('#mn_logout .needsLogin .dropdown-item href=#',(~haveUser)/' disabled')d1.Add _.a(GetText'LogOut')).On'click' 'cb_LogInOutRegister'
+              '.dropdown-divider'd1.Add _.div
+              ('.dropdown-item .needsLogin href=#'d1.Add _.a(GetText'Settings')).On'click' 'Settings'
+              :If #.Env.isHR
+                  '.dropdown-divider'd1.Add _.div
+                  (d1.Add _.a'Exit' '.dropdown-item').On'click' 'OFF'
+              :EndIf
+     
+    ⍝ ***************
+    ⍝ *  File-Menu  *
+    ⍝ ***************
+              dd←'.nav-item .dropdown'nav.Add _.li
+              mnTit←'.nav-link .btn .dropdown-toggle data-toggle=dropdown href=# role=button'New _.Button
+              mnTit.Content←((New _.Icon'fas-box'),' ',('#lblPrj'New _.span(haveBox{~⍺:'' ⋄ 0::'' ⋄ 2⊃⎕NPARTS ⍵.file}prj)))
+              li←dd.Add mnTit
+              d←('.dropdown-menu'dd.Add _.div)
+              ('#mn_PrjNew .needsLogin .dropdown-item'd.Add _.Button(GetText'PrjNew')).On'click' 'FileMenu'
+              ('#mn_PrjOpen .needsLogin .dropdown-item'd.Add _.Button(GetText'PrjOpen')).On'click' 'FileMenu'
+              ('#mn_PrjClose .needsLogin .dropdown-item'd.Add _.Button(GetText'PrjClose')).On'click' 'FileMenu'
+        ⍝   ('#mn_PrjNew .needsLogin .dropdown-item'd.Add _.a(GetText'PrjNew')).On'click' 'FileMenu'
+        ⍝   ('#mn_PrjOpen .needsLogin .dropdown-item'd.Add _.a(GetText'PrjOpen')).On'click' 'FileMenu'
+        ⍝   ('#mn_PrjClose .needsLogin .dropdown-item'd.Add _.a(GetText'PrjClose')).On'click' 'FileMenu'
+     
+              '.dropdown-divider'd.Add _.div
+              ('#mn_BoxNew .needsLogin .dropdown-item'd.Add _.Button(GetText'BoxNew')).On'click' 'FileMenu'
+              d0←'.needsLogin .dropdown-header'd.Add _.h6(GetText'EditCurrentBox')
+              :If haveBox
+              :AndIf prj.Lesson.ReadOnly
+                  OnLoad,←'.mn_BoxEdit'#._JSS.AddClass'disabled'
+              :Else
+                  OnLoad,←'.mn_BoxEdit'#._JSS.RemoveClass'disabled'
+              :EndIf
+              (d.Add _.a'Edit modes' '.dropdown-item #mn_EditBoxModes .mnEditBox').On'click' 'FileMenu'
+              (d.Add _.a'Edit cards' '.dropdown-item #mn_EditBoxCards .mnEditBox').On'click' 'FileMenu'
+              (d.Add _.a'Edit fields' '.dropdown-item #mn_EditBoxFields .mnEditBox').On'click' 'FileMenu'
+     
+     
+          ⍝ll←'Help'{r←('.nav-item .dropdown')ul.Add _.li ⋄ nul←'.nav-link .pt-0  .pb-0 .dropdown-toggle data-toggle=dropdown id=helpmenu role=button aria-haspopup=true aria-expanded=false'r.Add _.a ⍺('href=#') ⋄ r}''
+          ⍝dd←('.dropdown-menu aria-labelledby=helpmenu')ll.Add _.div
+     
+     
+              :If 0<≢2 ⎕NQ'.' 'GetEnvironment' 'TamStat_DEV'  ⍝ "secret" flag to recognize MB's environment ;)
+              :AndIf {0::0 ⋄ 0<≢⍵._Renderer.⎕NL-⍳9}#.Boot.ms
+                  ctl←'.nav-link'(('.nav-item #ToggleDevTools',#.Env.DevToolsVisible/' .active')nav.Add _.li).Add _.a(New _.Icon'fab-dev')
+                  ctl.On'click' 'ToggleDevTools'
+                  ctl AddTooltip(GetText'ToggleDevTools')
+              :EndIf
+     
+              :If {0::1 ⋄ 0=≢⍵._Renderer.⎕NL-⍳9}#.Boot.ms  ⍝ only offer web-link if opened in browser - currently do not have methods in DUI to deal with multiple renderers...
+                  '#website'nav.Add _.a'Website' '.dropdown-item href=https://github.com/mbaas2/FRAPL-LeitnerBox target=_new rel=noopener'
+              :EndIf
+⍝          '#about_ts'dd.Add _.a(GetText'About')'.dropdown-item href=# onclick=$("#about").modal("show");'
+⍝   <li><a><i class="fas fa-user"></i> <span class="lblUsr">EMAIL</span></a></li>
+⍝   <li><a><i class="fas fa-box"></i> <span class="lblPrj">box here</span></a></li>
+     
+          :Else ⍝ ejMenu
+              men←ScriptFollows
+⍝ <ul id="menu">
+⍝   <li><a><span class="lblUsr">EMAIL</span></a>
+⍝   <ul>
+⍝      <li><a id="mn_usrLogin" class="withoutLogin">LOGIN</a></li>
+⍝      <li><a id="mn_usrRegister" class="withoutLogin">REGISTER</a></li>
+⍝      <li><a id="mn_usrLogout" class="needsLogin">LOGOUT</a></li>
+⍝      <li class="e-separator"></li>
+⍝      <li><a id="mn_usrSettings" class="needsLogin">UsrSettings</a></li>
+⍝      <li class="e-separator"></li>
+⍝      <li><a id="mn_OFF">Exit</a></li>
+⍝   </ul>
+⍝   </li>
+⍝   <li><a><span id="lblPrj" class="needsLogin">box here</span></a>
+⍝   <ul>
+⍝     <li><a id="mn_prjNew" class="needsLogin">PrjNew</a></li>
+⍝     <li><a id="mn_prjOpen"  class="needsLogin">PrjOpen</a></li>
+⍝     <li><a id="mn_prjClose"  class="needsBox">PrjClose</a></li>
+⍝      <li class="e-separator"></li>
+⍝     <li><a id="mn_boxNew"  class="needsLogin">BoxNew</a></li>
+⍝     <li><a class="needsBox">BoxEdit</a>
+⍝           <ul>
+⍝     <li><a id="mn_boxModes" class="needsBox">BoxModes</a></li>
+⍝     <li><a id="mn_boxCards" class="needsBox">BoxCards</a></li>
+⍝     <li><a id="mn_boxFields" class="needsBox">BoxFields</a></li>
+⍝     <li class="e-separator"></li>
+⍝     <li><a id="mn_boxImport" class="needsBox">ImportFile</a></li>
+⍝           </ul>
+⍝     </li>
+⍝   </ul></li>
+⍝ </ul>
+              :If haveUser
+                  OnLoad,←'$(".withoutLogin").addClass("e-disabled");'
+              :Else
+                  OnLoad,←'$(".needsLogin").addClass("e-disabled");'
+              :EndIf
+              :If haveBox
+                  ⍝OnLoad,←'$(".withoutLogin").addClass("e-disabled");'
+              :Else
+                  OnLoad,←'$(".needBox").addClass("e-disabled");'
+              :EndIf
+     
+              men←('REGISTER'⎕R(GetText'Register'))men
+              men←('LOGIN'⎕R(GetText'LogIn'))men
+              men←('LOGOUT'⎕R(GetText'LogOut'))men
+              men←('EMAIL'⎕R(haveUser{~⍺:'' ⋄ 0::'' ⋄ ⍵.email}user))men
+              men←('UsrSettings'⎕R(GetText'Settings'))men
+              men←('box here'⎕R(haveBox{~⍺:'' ⋄ 0::'' ⋄ 2⊃⎕NPARTS ⍵.file}prj))men
+              men←('PrjNew'⎕R(GetText'PrjNew'))men
+              men←('PrjOpen'⎕R(GetText'PrjOpen'))men
+              men←('PrjClose'⎕R(GetText'PrjClose'))men
+              men←('BoxNew'⎕R(GetText'BoxNew'))men
+              men←('BoxEdit'⎕R(GetText'EditCurrentBox'))men
+              men←('BoxModes'⎕R(GetText'BoxModes'))men
+              men←('BoxCards'⎕R(GetText'BoxCards'))men
+              men←('BoxFields'⎕R(GetText'BoxFields'))men
+              men←('ImportFile'⎕R(GetText'ImportFile'))men
+     
+              n.Add men
+              OnLoad,←'$("#menu").ejMenu({orientation:ej.Orientation.Horizontal});'
+              Add _.Handler'#menu' 'click' 'MenuHandler'
+          :EndIf
+      :EndSection
+      :Section Login
           td←'#login-box .modal role=dialog data-backdrop=static data-keyboard=true data-focus=false data-show=false tabindex=-1'Add _.div
-          mc←('.modal-dialog .modal-dialog-centered'td.Add _.div).Add _.div'' '.modal-content .bg-dark'
+          mc←('.modal-dialog .modal-dialog-centered'td.Add _.div).Add _.div''('.modal-content .',bg_dark)
           mh←mc.Add _.div'' '.modal-header'
           '.modal-title'mh.Add _.h3(GetText'LogIn')
      
@@ -60,81 +239,179 @@
     ⍝ FORGOT MY PASSWORD
           ud0.Add _.h4(GetText'ForgotPwd')
           ud0.Add _.p(GetText'detForgotPwd')
-     
-     
-
-     :Section Menu
-         
-          (Add _.div'LeitnerBox' '#tsTitle .mr-auto').On'click' 'Go'
-          nav←('#topnav style=font-size:1.5em;border-bottom:double gray; .mb-5'Add _.div).Add _.ul'' '.nav .nav-pills .justify-content-end'
-     
-          :If haveUser
-               OnLoad,←'.needsLogin'#._JSS.RemoveAttr'disabled'
-               OnLoad,←'.withoutLogin'#._JSS.Attr'disabled' 'disabled'
-          :Else
-               OnLoad,←'.withoutLogin'#._JSS.RemoveAttr'disabled'
-               OnLoad,←'.needsLogin'#._JSS.Attr'disabled' 'disabled'
-          :EndIf
-     
-          li←'.nav-link .dropdown-toggle data-toggle=dropdown href=# role=button'('.nav-item .dropdown'nav.Add _.li).Add _.a(New _.Icon'fas-user')
-          d←'.dropdown-menu'li.Add _.div
-          (('#mn_login .needsLogin .dropdown-item href=#',haveUser/' disabled')d.Add _.a(GetText'LogIn')).On'click' 'cb_LogInOutRegister'
-          (('#mn_register .withoutLogin .dropdown-item href=#',haveUser/' disabled')d.Add _.a(GetText'Register')).On'click' 'cb_LogInOutRegister'
-          (('#mn_logout .needsLogin .dropdown-item href=#',(~haveUser)/' disabled')d.Add _.a(GetText'LogOut')).On'click' 'cb_LogInOutRegister'
-          '.dropdown-divider'd.Add _.div
-          ('.dropdown-item .needsLogin href=#'d.Add _.a (GetText'Settings')).On'click' 'Settings'
-           :If #.Env.isHR
-               '.dropdown-divider'd.Add _.div
-               (d.Add _.a'Exit' '.dropdown-item').On'click' 'OFF'
-           :EndIf
-
-          li←'.nav-link .dropdown-toggle data-toggle=dropdown'('.nav-item'nav.Add _.li).Add _.a(New _.Icon'fas-box')
-          d←('.dropdown-menu'li.Add _.div)
-           ('#mn_PrjNew .needsLogin .dropdown-item'd.Add _.a(GetText'PrjNew')).On'click' 'FileMenu'
-           ('#mn_PrjOpen .needsLogin .dropdown-item'd.Add _.a(GetText'PrjOpen')).On'click' 'FileMenu'
-          '.dropdown-divider'd.Add _.div
-           ('#mn_BoxNew .needsLogin .dropdown-item'd.Add _.a(GetText'BoxNew')).On'click' 'FileMenu'
-           ('#mn_BoxEdit .needsLogin .dropdown-item'd.Add _.a(GetText'EditCurrentBox')).On'click' 'FileMenu'
-
-     
-          ⍝ll←'Help'{r←('.nav-item .dropdown')ul.Add _.li ⋄ nul←'.nav-link .pt-0  .pb-0 .dropdown-toggle data-toggle=dropdown id=helpmenu role=button aria-haspopup=true aria-expanded=false'r.Add _.a ⍺('href=#') ⋄ r}''
-          ⍝dd←('.dropdown-menu aria-labelledby=helpmenu')ll.Add _.div
-     
-     
-          :If 0<≢2 ⎕NQ'.' 'GetEnvironment' 'TamStat_DEV'  ⍝ "secret" flag to recognize MB's environment ;)
-          :AndIf {0::0 ⋄ 0<≢⍵._Renderer.⎕NL-⍳9}#.Boot.ms
-              ctl←'.nav-link'(('.nav-item #ToggleDevTools',#.Env.DevToolsVisible/' .active')nav.Add _.li).Add _.a(New _.Icon'fab-dev')
-              ctl.On'click' 'ToggleDevTools'
-              ctl AddTooltip(GetText'ToggleDevTools')
-          :EndIf
-     
-          :If {0::1 ⋄ 0=≢⍵._Renderer.⎕NL-⍳9}#.Boot.ms  ⍝ only offer web-link if opened in browser - currently do not have methods in DUI to deal with multiple renderers...
-              '#website'nav.Add _.a'Website' '.dropdown-item href=https://github.com/mbaas2/FRAPL-LeitnerBox target=_new rel=noopener'
-          :EndIf
-⍝          '#about_ts'dd.Add _.a(GetText'About')'.dropdown-item href=# onclick=$("#about").modal("show");'
-     
-     :EndSection Menu
-
-
-
- 
       :EndSection
      
-      :Section Testing-UI
-          task←('#task .w-100 .text-center',(~haveBox)/' .d-none')Add _.div
-          s←'#status .mt-2 .mb-4 style=font-size:1.4em;'task.Add _.div
-          :If haveBox ⋄ s.Add StatusInfo ⋄ :EndIf
-          '#w1 .alert .alert-dark .font-weight-bold .w-100 .text-center'task.Add _.div({0::'' ⋄ ⍎⍵}'1⊃prj.Lesson.GetWord')
-          ctl←'.transbutton #translate .btn .btn-primary .btn-lg .mt-3 .mb-3'('class="text-center"'task.Add _.div).Add _.button(New _.Icon'fas-caret-right')  ⍝'(S)how translation'
-          ctl AddTooltipAndAccesskey'Reveal'
+      :Section Preferences    ⍝ Settings.Dialog...
+      ⍝ TODO: select default box when starting
+      ⍝ TODO:
+          td←'#settings .modal role=dialog data-backdrop=true data-keyboard=true data-focus=false data-show=false tabindex=-1'Add _.div
+          mc←(('.modal-dialog .modal-dialog-centered .modal-dialog-scrollable .',text_dark)td.Add _.div).Add _.div'' '.modal-content'
+          mh←mc.Add _.div'' '.modal-header'
+          '.modal-title'mh.Add _.h3(GetText'Settings')
+          ('type=button class=close data-dismiss=modal'mh.Add _.button).Add _.span'&times;' 'aria-hidden=true'
      
-          trans←'#trans .d-none .mx-auto .w-100 .text-center'Add _.div
-          '#w2 .alert .alert .alert-info .font-weight-bold .w-100 .text-center'trans.Add _.div({0::'' ⋄ ⍎⍵}'2⊃prj.Lesson.GetWord')
-          ctl←'.transbutton #ok .btn .btn-success .btn-lg  .mx-2 .px-5'trans.Add _.button(New _.Icon'fas-check-circle')
-          ctl AddTooltipAndAccesskey'OK'
-          ctl←'.transbutton #fail .btn .btn-danger .btn-lg .mx-2 .px-5'trans.Add _.button(New _.Icon'fas-thumbs-down')
-          ctl AddTooltipAndAccesskey'Nope'
-          Add _.Handler'.transbutton' 'click' 'ClickedButton'
+          ud←('.modal-body'mc.Add _.div).Add _.div
+          ul←'.nav .nav-tabs role=tablist'ud.Add _.ul
+     
+          tabs←'.tab-content'ud.Add _.form
+          ud←('.modal-footer')mc.Add _.div
+          ('.btn .btn-secondary'ud.Add _.Button(GetText'Cancel')).On'click' 'SettingsCancel'
+          ('.btn .btn-primary'ud.Add _.Button(GetText'Settings.Save')).On'click' 'SaveSettings'
+     
+          'ui'{('.nav-item'ul.Add _.li).Add _.a ⍵('.nav-link .active data-toggle=tab href=#',⍺,' role=tab aria-controls=',⍺)}GetText'Settings.UI'
+          ud←'.tab-pane .fade .show .active #ui role=tabpanel aria-labelledby=ui-tab'tabs.Add _.div
+          ud1←'.form-inline .w-100'ud.Add _.div
+          'for=lang .col-9  .justify-content-start'ud1.Add _.label(GetText'Settings.UI.lang')
+          languages←0(⎕NINFO⍠1)#.Env.Root,'Assets/texts*.json'
+          languages←(⊂'EN'),('.*/texts-(\w*)\.json'⎕S'\1')∊languages
+          ctl←'#lang .form-control .col-3'ud1.Add _.Select languages
+          ctl.Selected←languages⍳⍥⎕C⊂user.Prefs.lang
+     
+          ud1←'.form-inline .w-100'ud.Add _.div
+          'for=prefsStyle .col-9  .justify-content-start'ud1.Add _.label(GetText'Settings.UI.style')
+          styles←0(⎕NINFO⍠1)(((#.Boot.ms.Config.Virtual.alias⍳⊂'Bootstrap4')⊃#.Boot.ms.Config.Virtual.path),'styles/bootstrap*.css')
+          styles←('bootstrap-(.*).min'⎕S'\1'){2⊃⎕NPARTS ⍵}¨⊃styles
+          ctl←'#prefsStyle .form-control .col-3'ud1.Add _.Select styles
+          ctl.On'change' 'ApplyStyle'
+     
+          :If 0 ⍝ TODO: sort this out!
+              ud1←'.form-inline .w-100'ud.Add _.div
+              'for=prefsBckgrnd .col-9  .justify-content-start'ud1.Add _.label(GetText'Settings.UI.bckgrnd')
+              ctl←'#prefsBckgrnd .form-control .col-3'ud1.Add _.Select(↑':'#.Strings.split¨';'#.Strings.split GetText'selBckgrnd')
+              ctl.On'change' 'ApplyStyle'
+          :EndIf
+     
+     
+          'kbd'{('.nav-item'ul.Add _.li).Add _.a ⍵('.nav-link  data-toggle=tab href=#',⍺,' role=tab aria-controls=',⍺)}(GetText'Settings.accel')
+          ud←'.tab-pane .fade #kbd role=tabpanel aria-labelledby=kbd-tab'tabs.Add _.div
+          '.w-100'ud.Add _.p(GetText'Settings.accel.Intro')
+          ud1←'.my-2 .form-inline .w-100'ud.Add _.div
+          (('.bg-primary .',text_white,' .col-10')ud1.Add _.span).Add¨('.mx-4'New _.Icon'fas-caret-right')(⊃('(.*)\s\(.*\)$'⎕S'\1')GetText'TooltipReveal')
+          ctl←'#accelReveal'ud1.Add _.Select(,¨⎕A) ⋄ ctl.Selected←⎕A⍳user.Prefs.accel.Reveal
+          ud1←'.my-2 .form-inline .w-100'ud.Add _.div
+          (('.bg-success .',text_white,' .col-10')ud1.Add _.span).Add¨('.mx-4'New _.Icon'fas-check-circle')(⊃('(.*)\s\(.*\)$'⎕S'\1')GetText'TooltipOK')
+          ctl←'#accelOK'ud1.Add _.Select(,¨⎕A) ⋄ ctl.Selected←⎕A⍳user.Prefs.accel.OK
+          ud1←'.my-2 .form-inline .w-100'ud.Add _.div
+          (('.bg-danger .',text_white,' .col-10')ud1.Add _.span).Add¨('.mx-4'New _.Icon'fas-thumbs-down')(⊃('(.*)\s\(.*\)$'⎕S'\1')GetText'TooltipNope')
+          ctl←'#accelNope'ud1.Add _.Select(,¨⎕A) ⋄ ctl.Selected←⎕A⍳user.Prefs.accel.Nope
+     
+     
+     
+      :EndSection
+     
+      :Section New Project
+          td←'#newProject .modal role=dialog data-backdrop=true data-keyboard=true data-focus=false data-show=false tabindex=-1'Add _.div
+          mc←(('.modal-dialog .modal-dialog-centered .modal-dialog-scrollable .',text_dark)td.Add _.div).Add _.form'' '.modal-content'
+          mh←mc.Add _.div'' '.modal-header'
+          '.modal-title'mh.Add _.h3(GetText'PrjNew')
+          ('type=button class=close data-dismiss=modal'mh.Add _.button).Add _.span'&times;' 'aria-hidden=true'
+     
+          ud←('.modal-body'mc.Add _.div).Add _.div
+          cards←user.ListFiles'cards'
+          modes←⍬
+          r←'.row'ud.Add _.div
+          r.Add _.label(GetText'np_Cards')'.col-md-6 for=cards'
+          ('#cards .col-md-6'r.Add _.Select(cards 1)).On'change' 'cbSelected'
+          r←'.row'ud.Add _.div
+          r.Add _.label(GetText'np_Mode')'.col-md-6 for=mode'
+          np_mode←'#mode .col-md-6'r.Add _.Select modes 1
+          r←'.row'ud.Add _.div
+          r.Add _.label(GetText'np_filename')'.col-md-6 for=mode'
+          '#filename .col-md-6'r.Add _.Input'type=text'
+⍝ auswahl stock
+⍝ lernmodus
+⍝ ns anlegen, progress←1, keine stats
+          uf←'.modal-footer'mc.Add _.div
+          '.btn .btn-secondary type=button data-dismiss=modal'uf.Add #._.button(GetText'Cancel')
+          b←'#CreateProject .btn .btn-primary type=button'uf.Add #._.button(GetText'OK')
+          b.On'click' 'ClickedButton'
+      :EndSection
+     
+      :Section Open Project
+          m←'#mo_OpenBox .modal role=dialog data-backdrop=static data-keyboard=true data-focus=false data-show=false'Add _.div
+          mc←('.modal-dialog .modal-dialog-centered'm.Add _.div).Add _.div''('.modal-content .',bg_dark)
+          mh←mc.Add _.div'' '.modal-header'
+          '.modal-title'mh.Add _.h3(GetText'PrjOpen')
+          ('type=button class=close data-dismiss=modal'mh.Add _.button).Add _.span'&times;' 'aria-hidden=true'
+     
+          mb←('.modal-body'mc.Add _.div).Add _.form
+          r←'.row .mx-2'mb.Add _.div
+          ('col-md-6'r.Add _.div).Add _.label(GetText'lblPrjOpenFile')
+          ctl_file←'#file'('.col-md-6'r.Add _.div).Add _.Select
+          r←'.row .mx-2'mb.Add _.div
+          ('col-md-6'r.Add _.div).Add _.label(GetText'lblPrjAutoOpen')
+          '#prjAutoOpen'('.col-md-6'r.Add _.div).Add _.CheckBox
+     
+          mf←('.modal-footer .text-center .my-2'mc.Add _.div)
+          ('#b_PrjOpen2 .btn .btn-success .btn-lg  .mx-2 .px-4'mf.Add _.Button(GetText'OK')).On'click' 'FileMenu'
+          '.btn .btn-warning .btn-lg  .mx-2 .px-4 data-dismiss=modal'mf.Add _.Button(GetText'Cancel')
+     
+      :EndSection
+     
+      :Section Editable Grid (for cards etc.)
+          m←'#mo_Grid .modal role=dialog data-backdrop=static data-keyboard=false data-focus=false data-show=false'Add _.div
+          mc←('.modal-dialog .modal-dialog-centered'm.Add _.div).Add _.div''('.modal-content .',bg_dark)
+          mh←mc.Add _.div'' '.modal-header'
+          '.modal-title #gridTit'mh.Add _.h3
+          ('type=button class=close data-dismiss=modal'mh.Add _.button).Add _.span'&times;' 'aria-hidden=true'
+     
+          mb←('.modal-body'mc.Add _.div).Add _.form
+          '#myGridType'mb.Add _.Input'type=hidden'
+          myGrid←'#myGrid'('#EditGrid'mb.Add _.div).Add _.ejGrid
+     
+          mf←('.modal-footer .text-center .my-2'mc.Add _.div)
+          '#b_GridSave .btn .btn-success .btn-lg  .mx-2 .px-4'mf.Add _.Button(GetText'lblSave')
+          '.btn .btn-warning .btn-lg  .mx-2 .px-4 data-dismiss=modal'mf.Add _.Button(GetText'Cancel')
+     
+      :EndSection Editable Grid (for cards etc.)
+     
+     
+     
+      :Section Import File
+          m←'#mo_Import .modal role=dialog data-backdrop=static data-keyboard=false data-focus=false data-show=false'Add _.div
+          mc←('.modal-dialog .modal-dialog-centered'm.Add _.div).Add _.div''('.modal-content .',bg_dark)
+          mh←mc.Add _.div'' '.modal-header'
+          '.modal-title #gridTit'mh.Add _.h3(GetText'capImport')
+          ('type=button class=close data-dismiss=modal'mh.Add _.button).Add _.span'&times;' 'aria-hidden=true'
+     
+          mb←('.modal-body'mc.Add _.div).Add _.form
+          '#ip_file'mb.Add _.InputFile
+          ctl←'#rxrec'mb.Add _.Input'text' ⋄ ctl.Set'placeholder="rx for record-separator"'
+          ctl←'#rxfld1'mb.Add _.Input'text' ⋄ ctl.Set'placeholder="rx to extract field1"'
+          ctl←'#rxfld2'mb.Add _.Input'text' ⋄ ctl.Set'placeholder="rx to extract field2"'
+          ctl←'#rxfld3'mb.Add _.Input'text' ⋄ ctl.Set'placeholder="rx to extract field3"'
+          ctl←'#paste'mb.Add _.Textarea ⋄ ctl.Set'Cols=60' ⋄ ctl.Set'rows=10'
+     
+          mf←('.modal-footer .text-center .my-2'mc.Add _.div)
+          ('#b_Import .btn .btn-success .btn-lg  .mx-2 .px-4'mf.Add _.Button(GetText'OK')).On'click' 'FileMenu'
+          '.btn .btn-warning .btn-lg  .mx-2 .px-4 data-dismiss=modal'mf.Add _.Button(GetText'Cancel')
+     
+     
+     
+      :EndSection
+     
+     
+      :Section Testing-UI
+          dPrj←('#dPrj .w-100 .text-center',(~haveBox)/' .d-none')Add _.div
+          s←'#status .mt-2 .mb-4 .large'dPrj.Add _.div
+          :If haveBox
+              s.Add StatusInfo
+              :If prj.Lesson.stock_meta{6::0 ⋄ 0<≢⍺⍎⍵}'subsets.title'
+                  r←prj.Lesson.({(1⊃⍵),' (',(⍕+/EvalFilter 2⊃⍵),')'}¨stock_meta.subsets.(title sel))
+                  r,←GetText'RemoveSubsel'
+                  ('#subset .mb-3'dPrj.Add _.Select r).On'change' 'SelectSubset'
+              :EndIf
+          :EndIf
+          r←('.row .mx-2 #task',(~haveLesson)/' .d-none')Add _.div
+          (h j)←({0::'' '' ⋄ ⍎⍵}'1 RenderCard prj.Lesson.GetWord')
+          r.Add _.div h'#w1 .testW1 .col-md-6'
+          :If 0<≢j ⋄ Add _.script j ⋄ :EndIf
+     
+          (h j)←({0::'' '' ⋄ ⍎⍵}'2 RenderCard prj.Lesson.GetWord')
+          '#w2 .col-md-6 .d-none'r.Add _.div h
+          :If 0<≢j ⋄ Add _.script j ⋄ :EndIf
+          OnLoad,←(0=≢prj.Lesson._words)/'$(".testW1").addClass("d-none");'
+          '#end .text-center'Add _.div  ⍝ space to hold final msg
       :EndSection
      
     ∇
@@ -145,28 +422,126 @@
       R←''
       :Select _currentTarget
       :Case 'translate'
-          R←Display'trans'
+          R←Display'w2'
           R,←Execute'$("#translate").prop("disabled", true);'
       :CaseList 'ok' 'fail'
           prj.Lesson.Tested _currentTarget≡'ok'
           (h j)←getHTMLjs StatusInfo
           R,←'#status'Replace h
           R,←Execute j
+⍝          ∘∘∘
           :If prj.Lesson.Done
-              R←0 Display'w1'
-              R,←'#trans'Replace(New _.p('Lesson ended, Data saved!'))
-              prj.data.progress+←1
-              prj.saveData
+              R←0 Display'.testW1'
+              R,←0 Display'w2'
+              R,←'#end'Replace('.badge .badge-pill .badge-success .m-3 .p-3 .large'New _.div('<i class="fas fa-trophy fa-2x mr-2"></i><div class="d-inline-block">',(sprintf(GetText'LessonEnded')(⍕prj.Lesson.data.progress)(2⊃⎕NPARTS prj.file)),'</div>'))
+              prj.Lesson.IncProgress
+              R,←closePrj
           :Else
-              R,←0 Display'trans'
-              R,←'#w1'Replace(1⊃prj.Lesson.GetWord)
-              R,←'#w2'Replace(2⊃prj.Lesson.GetWord)
+              R,←0 Display'w2'
+              w←prj.Lesson.GetWord
+              R,←Execute'$(".transbutton").off("click");'
+              (h j)←1 RenderCard w ⋄ R,←'#w1'Replace h ⋄ R,←Execute j
+              (h j)←2 RenderCard w ⋄ R,←'#w2'Replace h ⋄ R,←Execute j
               R,←Execute'$("#translate").prop("disabled", false);'
           :EndIf
+      :Case 'CreateProject'
+          ns←⎕NS''
+          ns.mode←Get'mode'
+          ns.stock←'../../',Get'cards'
+          ns.progress←1
+          file←((⎕JSON⍠'Compact' 0)ns)user.SaveBox((Get'filename'),'.lbox.json')
+          R←Execute'$("#newProject").modal("hide");'
+          R,←Execute Notice 1(sprintf(GetText'CreatedBox')file)
       :Else
           ⎕←'_currentTarget=',_currentTarget
           ∘∘∘
       :EndSelect
+    ∇
+
+    ∇ R←cbSelected;data;ns
+      :Access public
+      data←_currentTarget user.GetFile _value
+      ns←⎕JSON 1⊃data
+      R←np_mode.ReplaceOptions ns.meta.modes.id
+      R,←(0=≢Get'filename')/Execute'$("#filename").val("',({(∧\⍵≠'.')/⍵}_value),'");'
+    ∇
+
+
+
+
+    ∇ (h j)←i RenderCard w;R;wi;h;b;f;F;ctl;f∆;r;rw;wij;ap;TheID;sv;ht;wd
+⍝ w: Card
+⍝ i: Index 1/2
+      F←i⊃prj.Lesson.(f1 f2)
+      R←('.card .w-100 .',bg_dark,' .',text_white)#.HtmlElement.New #._.div
+      h←'.card-header .text-center'R.Add #._.div
+      :If 1=≢F ⋄ '.card-title'h.Add #._.h5(F.label) ⋄ :EndIf
+      b←'.card-body .text-center'R.Add #._.div
+     
+      f←'.card-footer .text-center'R.Add #._.div
+      :If i=1
+          ctl←'.transbutton .testW1 #translate .btn .btn-primary .btn-lg .mx-2 .px-5'('class="text-center"'f.Add _.div).Add _.button(New _.Icon'fas-caret-right')
+          ctl AddTooltipAndAccesskey'Reveal'
+      :Else
+          ctl←'.transbutton #ok .btn .btn-success .btn-lg  .mx-2 .px-5'f.Add _.button(New _.Icon'fas-check-circle')
+          ctl AddTooltipAndAccesskey'OK'
+          ctl←'.transbutton #fail .btn .btn-danger .btn-lg .mx-2 .px-5'f.Add _.button(New _.Icon'fas-thumbs-down')
+          ctl AddTooltipAndAccesskey'Nope'
+      :EndIf
+      :If i=2
+          R.Add _.Handler'.transbutton' 'click' 'ClickedButton'
+      :EndIf
+      wi←i⊃w
+      b.id←'id',⍕3⊃w
+      :For j :In ⍳≢⊆wi
+          f∆←j⊃,F
+          :If ⎕NULL≢wij←j⊃,wi
+              :If 1=≢F
+                  :If 2=f∆.⎕NC'class' ⋄ b.class←f∆.class
+                  :Else ⋄ b.style←'font-size: 2em;'
+                  :EndIf
+                  r←b
+              :Else
+                  rw←'.row'b.Add _.div
+                  :If 2=f∆.⎕NC'css' ⋄ rw.style←f∆.css
+                  :Else ⋄ rw.style←'font-size: 2em;'
+                  :EndIf
+                  ('.col-sm-1 .my-2 .text-center .text-sm-right style=min-width:',(⍕⌈/∊≢¨F.label),'em;')rw.Add _.div(f∆.label,':')
+                  r←'.col-sm'rw.Add _.div
+              :EndIf
+              r.SetId
+              :Select f∆.type
+              :Case 'text' ⋄ r.Add wij
+              :Case 'media'
+                  :If 'data:'≡5↑wij
+                      :Select {(∧\⍵≠';')/⍵}5↓wij
+                      :Case 'image/png'
+                          ('src="',wij,'"')r.Add _.img
+                      :Case 'image/svg'
+                          wij←#.Base64.Encode(¯1+wij⍳'<')↓wij
+                          ('width="100%" src="data:image/svg+xml;base64,',wij,'"')r.Add _.img  ⍝ width=100% helps with SVG-Scaling!
+                      :Case 'audio/mpeg'
+                          ((TheID←'#',r.id,'_audio'),'  controls type=audio/mpeg src="',wij,'" ')r.Add _.audio
+                          R.Add _.Script('$("#w',(⍕i),'").off("becameVisible");')  ⍝ remove the old handler before asigning the new one
+                          R.Add _.Script('$("#w',(⍕i),'").on("becameVisible", function (){console.info(("visible ',(⍕i),'=',TheID,'"));document.getElementById("',1↓TheID,'").play();});                      ')
+                      :EndSelect
+                  :Else
+                      ∘∘∘∘should not get here!!!!∘∘∘
+⍝              :Select ⎕C 3⊃⎕NPARTS wi
+⍝              :CaseList '.png' '.jpg'
+⍝          ⍝ vollständigen Pfad!
+⍝                  ('src=',wi)b.Add _.img ⍝ may need to be smart about sizes...!
+⍝              :Else
+⍝                  ⎕←'No handler for media type ',3⊃⎕NPARTS wi
+⍝                  ∘∘∘
+⍝              :EndSelect
+                  :EndIf
+              :Else
+                  ⎕←'Unknow fieldtype: ',f∆.type
+              :EndSelect
+          :EndIf
+      :EndFor
+      (h j)←getHTMLjs R
     ∇
 
     ∇ R←StatusInfo;si;R
@@ -174,6 +549,7 @@
       R←'.mr-4 .text-info'#.HtmlElement.New #._.Icon'fas-info-circle'
       tip←sprintf(GetText'TooltipInfo')prj.Lesson.data.progress prj.file
       R AddTooltip tip
+      R←'.mr-4 .badge .badge-pill badge-info'New _.span'#',⍕prj.Lesson.data.progress
       R,←(↓(¯1+⍳≢2⊃si),[1.5]si[1]=¯1+⍳≢2⊃si){
           (0=1⊃⍺)∧⍵=0:New _.span  ⍝ return empty span if box 0 is empty
           s←New _.span(⍕⍵)('#sect_',(⍕1⊃⍺),' .mr-',(⍕4*0=1⊃⍺),' .badge .badge-pill .badge-',(1+2⊃⍺)⊃'info' 'light')
@@ -182,18 +558,21 @@
       }¨2⊃si
     ∇
 
-
-    ∇ R←SendCode
+    ∇ R←SaveSettings
       :Access public
-      ∘∘∘
-      R←''
+      :If 'lang'user.Prefs.{⍵≡⍎⍺:0 ⋄ 1⊣⍎⍺,'←⍵'}Get'lang'
+          Notice 1 'Changes will be fully effective after restarting the app!'
+      ⍝ TODO: this should trigger a reload of the page!
+      :EndIf
+      user.Prefs.accel.OK←Get'accelOK'
+      user.Prefs.accel.Nope←Get'accelNope'
+      user.Prefs.accel.Reveal←Get'accelReveal'
+      user.Prefs.lang←Get'lang'
+      user.Prefs.ui_style←Get'prefsStyle'
+      user.Prefs.bckgrnd←Get'prefsBckgrnd'
+      (⊂(⎕JSON⍠'Compact' 0)user.Prefs)⎕NPUT user.Prefs._file 1
     ∇
 
-    ∇ R←Login
-      :Access public
-      ∘∘∘
-      R←''
-    ∇
 
     ∇ R←cb_ViewSect;t;z
       :Access Public
@@ -228,9 +607,13 @@
               R,←Execute'#mn_login'#._JSS.Attr'disabled' 'disabled'
               R,←Execute'#mn_register'#._JSS.Attr'disabled' 'disabled'
               R,←Execute'.needsLogin'#._JSS.RemoveAttr'disabled'
-              R,←'Hurray!'MsgBox'You were logged in!'
-              :If 0≢user.ListBoxes
+              R,←('Hurray!' 2)MsgBox'You were logged in!'
+              :If 0<≢prj←user.ListProjects
                   R,←Execute'#mn_BoxOpen'#._JSS.RemoveAttr'disabled'
+                  :If 2=⎕NC user.Prefs.autoOpen
+                  :AndIf (⊂user.Prefs.autoOpen)∊prj
+                      R,←File_OpenPrj user.Prefs.autoOpen
+                  :EndIf
               :Else
                   R,←Execute'#mn_BoxOpen'#._JSS.#._JSS.Attr'disabled' 'disabled'
               :EndIf
@@ -269,63 +652,189 @@
       :EndSelect
     ∇
 
-    ∇ R←FileMenu
+    ∇ R←FileMenu;h;j;m;mc;mh;mb;r
       :Access public
-      :Select ⎕←2⊃'_'#.Strings.split _currentTarget
-      :Case 'PrjOpen'
-          f←user.ListProjects
-          m←'#mo_OpenBox .modal role=dialog data-backdrop=static data-keyboard=true data-focus=false data-show=false'New _.div
-          mc←('.modal-dialog .modal-dialog-centered'm.Add _.div).Add _.div'' '.modal-content .bg-dark'
-          mh←mc.Add _.div'' '.modal-header'
-          '.modal-title'mh.Add _.h3(GetText'BoxOpen')
-     
-          mb←('.modal-body'mc.Add _.div).Add _.form
-          '#file'mb.Add _.Chosen f
-     
-          mf←('.model-footer .text-center'mc.Add _.div)
-          ('#b_PrjOpen2 .btn .btn-success .btn-lg  .mx-2 .px-4'mf.Add _.Button(GetText'OK')).On'click' 'FileMenu'
-          '.btn .btn-warning .btn-lg  .mx-2 .px-4 onclick=$("#mo_OpenBox").modal("close");'mf.Add _.Button(GetText'Cancel')
-          R←Execute'$("body").append("',(('\"'⎕R'\\"')m.Render),'");$("#mo_OpenBox").modal("show");'
+      R←''
+      :Select 2⊃'_'#.Strings.split _target
+      :Case 'prjOpen'
+          f←user.ListFiles'lbox'
+          R←ctl_file.ReplaceOptions f
+          R,←Execute'$("#mo_OpenBox").modal("show");'
       :Case 'PrjOpen2'
-          R←Execute'$("#mo_OpenBox").modal("hide").remove();'
-        ⍝   R,←Execute'$("#mo_OpenBox").remove();'
-          prj←⎕NEW #.lBox(#.Boot.AppRoot,'Data/Users/u',(⍕user.id),'/',Get'file')
-          :If prj.Lesson.Done
-              R,←('Today''s section is empty!')MsgBox'The section for today is empty'((('Open next section')'NextSection')('OK' 'close' 'primary'))
-          :Else
-              R,←Display'translate'
-              R,←Display'task'
-              R,←'#w1'Replace(1⊃prj.Lesson.GetWord)
-              R,←'#w2'Replace(2⊃prj.Lesson.GetWord)
-              (h j)←StatusInfo
-              R,←'#status'Replace h
-              R,←Execute j
+          :If 'checked'≡Get'prjAutoOpen'
+              'autoOpen'user.SetPrefs(Get'file')
           :EndIf
-      :Case 'PrjNew'⋄R←NotYetImplemented
-      :Case 'BoxNew'⋄R←NotYetImplemented
-      :Case 'EditCurrentBox'⋄R←NotYetImplemented
+          R←Execute'$("#mo_OpenBox").modal("hide");'
+          R,←File_OpenPrj Get'file'
+          R,←updatedPrj
+          R,←0 Display'end'  ⍝ may need .noBox (or something similar) if we need to hide > 1 elems upon loading
+          ∘∘∘∘
+      :Case 'prjClose' ⋄ R←closePrj
+      :Case 'PrjNew' ⋄ R←Execute'$("#newProject").modal("show");'
+      :Case 'BoxNew' ⋄ R←NotYetImplemented
+      :Case 'EditBoxModes' ⋄ R←NotYetImplemented
+      :Case 'boxFields'
+     ⍝ meta.fields:
+     ⍝ code
+     ⍝ label
+     ⍝ type: media  | text | level
+     ⍝ meta.modes: id / f1 / f2
+          m∆←prj.Lesson.stock_meta
+          d←'#myGrid'#.HtmlElement.New #._.ejGrid
+          (d.Options.editSettings←⎕NS'').(allowEditing allowAdding allowDeleting)←_true
+          d.Options.editSettings.editMode←'Normal'
+          d.Options.toolbarSettings←⎕NS''
+          d.Options.toolbarSettings.showToolbar←_true
+          d.Options.toolbarSettings.toolbarItems←⊂'[ej.Grid.ToolBarItems.Add,ej.Grid.ToolBarItems.Edit,ej.Grid.ToolBarItems.Delete,ej.Grid.ToolBarItems.Update,ej.Grid.ToolBarItems.Cancel]'
+          d.Options.actionBegin←⊂'function (args){ActionBegin(args);}'
+          d.Options.toolbarClick←⊂'function (args){ToolbarClick(args);}'
+          cols←⎕NS¨5⍴⊂''
+          cols.field←'nr' 'code' 'label' 'type' 'class'
+          cols.headerText←'#' 'Code' 'Label' 'Type' 'CSS Class[es]'
+          cols[4].editType←⊂'ej.Grid.EditingType.Dropdown'
+          cols[4].dataSource←⊂'fieldTypes'
+          cols[4].dropdownData←⊂'fieldTypes'
+          cols[4].editParams←⎕NS''
+          cols[4].editParams.fields←⎕NS''
+          cols[4].editParams.fields.(text value)←⊂'type'
+          ⍝cols[⍳2].editType←⊂'ej.Grid.EditingType.String'
+          ⍝cols[⍳2].editType←⊂'ej.Grid.EditingType.InputTextBox'
+          cols.isPrimaryKey←#.HtmlElement.(_true _false _false _false _false)
+          cols.isIdentity←#.HtmlElement.(_true _false _false _false _false)
+        ⍝    cols[1].visible←_false
+        ⍝ cols[1].defaultValue←⊂'nextID'
+          'dataSource'd.Set⊂'myGridData'
+     
+          'columns'd.Set cols
+          h←#.HtmlElement.New #._.Handler('#b_GridSave' 'click' 'FileMenu'(('model'd.getModel'')('myGridType' 'val' '#myGridType')))
+     
+          ⍝h.WidgetDef←d.WidgetDef ⍝ 'argument' 'argument' 'argument.model' 'this.element'
+          R,←Execute 2⊃getHTMLjs h.Render
+          (h j)←getHTMLjs d
+          m∆.fields.nr←⍳≢m∆.fields
+          R,←'#EditGrid'Replace h
+          R,←'#gridTit'Replace'Fields of box ',prj.NameOfBox
+          R,←Execute'myGridData = ',(⎕JSON m∆.fields),';$("#myGridType").val("Fields");'
+          R,←Execute'nextID = ',(⍕1+≢m∆.fields),';'
+          R,←Execute'fieldTypes = [{type:"media"},{type:"text"},{type:"level"}];'
+          R,←Execute'$("#mo_Grid .modal-dialog").css("max-width","80%");'
+          R,←Execute(j,'$("#mo_Grid").modal("show");')
+     
+      :Case 'EditBoxCards' ⋄ R←NotYetImplemented
+      :Case 'GridSave'
+          :Select Get'myGridType'
+          :Case 'Fields'
+              m←Get'model'
+              d←m.dataSource
+              t1←prj.Lesson.cards2mat
+              t2←(1↓[1]t1,⊂'')[;t1[1;]⍳d.code]
+              t2[1;]←d.code
+              prj.Lesson.cards2mat←t2
+      ⍝ TODO: handle renamed fields in modes!
+      ⍝ TODO: "clean" d (remove null-fields and "id")
+      ⍝ save cards (incl. meta-info, creating backup)
+              ∘∘∘
+          :Else
+              ∘∘∘
+          :EndSelect
+      :Case 'boxImport'
+          R←Execute'$("#mo_Import").modal("show");'
+     
+      :Else
+          ⎕←'_target=',_target
+          ∘∘∘
+     
       :EndSelect
     ∇
 
+    ∇ {R}←closePrj
+      :Access public
+      :If 326=⎕DR prj
+          prj.saveData
+      :EndIf
+      prj←''
+      R←updatedPrj
+    ∇
+
+    ∇ R←updatedPrj
+      R←''
+      :If {0::0 ⋄ 0<≢⍵.file}prj
+          R,←1 Display'task'
+          R←'#lblPrj'Replace prj.NameOfBox
+     
+      :Else
+          R,←0 Display'task'
+          R,←'#lblPrj'Replace''
+          R,←'#trans'Replace''
+          R,←'#status'Replace''
+      :EndIf
+      :If prj{0::1 ⋄ ⍺⍎⍵}'Lesson.ReadOnly'
+          R,←Execute'#mn_BoxEdit'#._JSS.AddClass'disabled'
+      :Else
+          R,←Execute'#mn_BoxEdit'#._JSS.RemoveClass'disabled'
+      :EndIf
+    ∇
+
     ∇ R←NotYetImplemented
-    R←Execute Notice 3 'This functionality is not yet implemented, sorry!'
+      R←Execute Notice 3 'This functionality is not yet implemented, sorry!'
     ∇
 
-    ∇R←Settings
-    :Access public
-    R←NotYetImplemented
+    ∇ R←Settings
+      :Access public
+      R←Execute'$("#settings").modal("show");'
     ∇
-      
 
-    ∇ R←NextSection
+    ∇ R←File_OpenPrj file;h;j
+      :If ⎕NEXISTS file←#.Boot.AppRoot,'Data/Users/u',(⍕user.id),'/',file
+          prj←⎕NEW #.lBox file
+          :If prj.Lesson.Done
+              R←GetLessonDoneMsg 3
+          :Else
+              R←Display'translate'
+              R,←Display'task'
+              R,←Display'.testW1'
+              R,←updatedPrj
+              w←prj.Lesson.GetWord
+              (h j)←1 RenderCard w ⋄ R,←'#w1'Replace h ⋄ R,←Execute j
+              (h j)←2 RenderCard w ⋄ R,←'#w2'Replace h ⋄ R,←Execute j
+              (h j)←getHTMLjs StatusInfo
+              R,←'#status'Replace h
+              R,←Execute j
+              :If 0<≢d←prj.Lesson.GetCSS
+                  R,←Execute'$("#boxCSS").remove();'
+                  R,←Execute'$("head").append("<style id=''boxCSS'' type=''text/css''>',d,'</style>");'
+              :EndIf
+     
+          :EndIf
+      :Else
+      ⍝ TODO: Error
+      :EndIf
+    ∇
+
+    ∇ R←GetLessonDoneMsg opt
+      ⍝ opt
+      R←((GetText'titLessonDone')opt)MsgBox(GetText'txtLessonDone')(((GetText'btnNextLesson')'NextLesson' 'light')((GetText'PrjClose')'closePrj' 'default'))
+    ∇
+
+
+    ∇ R←NextLesson
       :Access public
       start←prj.Lesson.data.progress
       :While prj.Lesson.Done
-          prj.Lesson.data.progress+←1
-          prj.Lesson.SaveData
+          prj.Lesson.IncProgress
+          prj.saveData
       :EndWhile
-     
-     
+      (h j)←getHTMLjs StatusInfo
+      R←'#status'Replace h
+      R,←Execute j
+      R,←Execute'$("#',(Get'mid'),'").modal("hide");'
+      R,←Display'translate'
+      R,←Display'task'
+      R,←Display'.testW1'
+      R,←updatedPrj
+      w←prj.Lesson.GetWord
+      (h j)←1 RenderCard w ⋄ R,←'#w1'Replace h ⋄ R,←Execute j
+      (h j)←2 RenderCard w ⋄ R,←'#w2'Replace h ⋄ R,←Execute j
     ∇
 
     ∇ R←ToggleDevTools
@@ -371,15 +880,80 @@
 
     ∇ R←OFF
       :Access public
-            R←''
+      R←''
       :If {6::0 ⋄ 'HRServer'≡⍎⍵}'#.Boot.ms.Framework' ⍝ if we running with DUI
           :If {6::⍵ ⋄ #.Prefs.closeAPLonExit}1
               ⎕OFF 0
           :Else
               {}⎕NQ #.Boot.ms._Renderer'Close'
-              ⎕←'*** Closed HTMLRenderer, APL not closed. To do so, please set "closeAPLonExit":1 in preferences.json'
+              ⎕←'*** Closed HTMLRenderer, APL not closed. '
           :EndIf
       :EndIf
     ∇
+
+    ∇ R←MenuHandler;xx
+      :Access public
+      :Select xx←{0::⍵ ⋄ 2⊃'_'#.Strings.split ⍵}_target
+      :CaseList 'usrLogin' 'usrLogout' 'usrRegister'
+          R←cbLogInOutRegister
+      :CaseList 'boxFields' 'prjOpen' 'boxImport' 'prjClose'
+          R←FileMenu
+      :Case 'usrSettings'
+          R←Execute'$("#settings").modal("show");'
+      :CaseList 'lblUsr' 'lblPrj'  ⍝ nothing happens when clicking menu-titles
+          R←''
+      :Else
+          ⎕←'No handler for "',xx,'"'
+          ∘∘∘
+      :EndSelect
+    ∇
+
+    ∇ R←ApplyStyle
+      :Access public
+      :Select _what
+      :Case 'prefsStyle'
+          R←Execute'$("#style").remove();'
+          R,←Execute'$("head").append("<link id=\"style\" rel=\"stylesheet\" type=\"text/css\" href=\"/Bootstrap4/styles/bootstrap-',_value,'.min.css\">");'
+      :Case 'prefsBckgrnd'
+⍝ :if _value≡'lite'
+          R←Execute'$(".text-light").switchClass("text-light","text-lite");'
+          R,←Execute'$(".text-dark").switchClass("text-dark","text-light");'
+          R,←Execute'$(".text-light").switchClass("text-lite","text-light");'
+          R,←Execute'$(".bg-dark").switchClass("bg-dark","bg-lite");'
+          R,←Execute'$(".bg-light").switchClass("bg-light","bg-dark");'
+          R,←Execute'$(".bg-lite").switchClass("bg-lite","bg-light");'
+        ⍝   :else
+        ⍝   R←Execute'$(".text-light").switchClass("text-light","text-lite");'
+        ⍝   R,←Execute'$(".text-dark").switchClass("text-dark","text-light");'
+        ⍝   R,←Execute'$(".text-light").switchClass("text-lite","text-light");'
+        ⍝   R,←Execute'$(".bg-dark").switchClass("bg-dark","bg-lite");'
+        ⍝   R,←Execute'$(".bg-light").switchClass("bg-light","bg-dark");'
+        ⍝   R,←Execute'$(".bg-lite").switchClass("bg-lite","bg-light");'
+        ⍝   :endif
+      :EndSelect
+    ∇
+
+    ∇ R←SettingsCancel
+      :Access public
+      R←Execute'$("#settings").modal("hide");'
+      ∘∘∘⍝ reset style & background
+     
+    ∇
+
+    ∇ R←SelectSubset;val∆;i;h;j
+      :Access public
+      val∆←(¯2+_value⍳'(')↑_value
+      :If (≢prj.Lesson.stock_meta.subsets)≥i←prj.Lesson.stock_meta.subsets.title⍳⊂val∆
+          prj.Lesson.ApplyFilter prj.Lesson.stock_meta.subsets[i].sel
+          (h j)←getHTMLjs StatusInfo
+          R←'#status'Replace h
+          R,←Execute j
+     
+          ∘∘∘
+      :Else
+          ∘∘∘
+      :EndIf
+    ∇
+
 
 :endclass
