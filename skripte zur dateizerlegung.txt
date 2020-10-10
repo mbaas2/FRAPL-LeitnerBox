@@ -1,0 +1,22 @@
+#!/uar/bin/perl -
+
+open (FILE,"Sheet1-Tabelle 1.csv");
+@file=<FILE>;
+close(FILE);
+chomp(@file);
+
+foreach $line (@file) {
+    @array=split(/;/,$line);
+    print "\"$array[0]\",\"$array[1]\"\n"; 
+}
+
+----------------------------------------------------------------
+#!/usr/bin/apl
+
+file←1⊃⎕nget'sheet1-tabelle.csv' ⋄ csv←''
+:for line :in file
+  comp←';'#.Strings.split line
+  csv,←'"',(1⊃comp),'","',(2⊃comp),'"',⎕ucs 13
+:endfor
+
+(⊂csv)⎕nput'blabl.csv'

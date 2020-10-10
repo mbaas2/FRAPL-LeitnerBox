@@ -1,0 +1,84 @@
+{
+    "meta": {
+        "modes": [{
+                "id": "Verkehrszeichen lernen",
+                "f1": "inhalt",
+                "f2": "img"
+            },
+            {
+                "id": "Verkehrszeichen erkennen",
+                "f1": "img",
+                "f2": "inhalt"
+            }
+        ],
+        "fields": [{
+                "code": "img",
+                "label": "Abbildung",
+                "type": "media"
+            },
+            {
+                "code": "inhalt",
+                "label": "Bedeutung"
+            }
+        ],
+        "info": [
+            "Entnommen der Wikipedia",
+            "blablabla",
+            "noch mehr",
+            "Dieser Text sollte über den Info-Button angezeigt werden...",
+            "und muss auch editiert werden können"
+        ],
+        "readonly": "true"
+    },
+    "cards": [{
+            "id": 1,
+            "img": "./Verkehrszeichen/256px-Zeichen_101_-_Gefahrstelle,_StVO_1970.svg.png",
+            "inhalt": "Gefahrenstelle"
+        },
+        {
+            "id": 2,
+            "img": "./Verkehrszeichen/273px-Zeichen_105-10_-_Doppelkurve_(zunächst_links),_StVO_1992.svg.png",
+            "inhalt": "Doppelkeruve (zunächst links)"
+        },
+        {
+            "id": 3,
+            "img": "./Verkehrszeichen/273px-Zeichen_105-20_-_Doppelkurve_(zunächst_rechts),_StVO_1992.svg.png",
+            "inhalt": "Doppelkurve (zunächst rechts)"
+        },
+        {
+            "id": 4,
+            "img": "./Verkehrszeichen/273px-Zeichen_108-50_-_Gefälle_4%,_StVO_1992.svg.png",
+            "inhalt": "Gefälle (4%)"
+        },
+        {
+            "id": 5,
+            "img": "./Verkehrszeichen/273px-Zeichen_110-50_-_Steigung_4%,_StVO_1992.svg.png",
+            "inhalt": "Steigung (4%)"
+        },
+        {
+            "id": 6,
+            "img": "./Verkehrszeichen/273px-Zeichen_114_-_Schleuder-_oder_Rutschgefahr,_StVO_2013.svg.png",
+            "inhalt": "Schleuder- oder Rutschgefahr"
+        },
+        {
+            "id": 7,
+            "img": "./Verkehrszeichen/Zeichen_102_-_Kreuzung_oder_Einmündung_mit_Vorfahrt_von_rechts,_StVO_1970.svg.png",
+            "inhalt": "Kreuzung oder Einmündung mit Vorfahrt von rechts"
+        },
+        {
+            "id": 8,
+            "img": "./Verkehrszeichen/Zeichen_103-10_-_Kurve_(links),_StVO_1992.svg.png",
+            "inhalt": "Kurve (links)"
+        },
+        {
+            "id": 9,
+            "img": "./Verkehrszeichen/Zeichen_103-20_-_Kurve_(rechts),_StVO_1992.svg.png",
+            "inhalt": "Kurve rechts"
+        },
+        {
+            "id": 10,
+            "img": "./Verkehrszeichen/Zeichen_112_–_Unebene_Fahrbahn,_StVO_1970.svg.png",
+            "inhalt": "Unebene Fahrbahn"
+        }
+    ]
+}

@@ -1,0 +1,1221 @@
+{
+  "cards": [
+    {
+      "flag": "./LänderFlaggenHauptstädte/af.svg",
+      "capitol": "Kabul",
+      "cnty": "Afghanistan",
+      "id": 8324
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/eg.svg",
+      "capitol": "Kairo",
+      "cnty": "Agypten",
+      "id": 32138
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/al.svg",
+      "capitol": "Tirana",
+      "cnty": "Albanien",
+      "id": 24383
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/dz.svg",
+      "capitol": "Algier",
+      "cnty": "Algerien",
+      "id": 28640
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ad.svg",
+      "capitol": "Andorra la Vella",
+      "cnty": "Andorra",
+      "id": 3004
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ao.svg",
+      "capitol": "Luanda",
+      "cnty": "Angola",
+      "id": 23832
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ag.svg",
+      "capitol": "St. John’s",
+      "cnty": "Antigua und Barbuda",
+      "id": 8197
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/gq.svg",
+      "capitol": "Malabo",
+      "cnty": "Äquatorialguinea",
+      "id": 31221
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ar.svg",
+      "capitol": "Buenos Aires",
+      "cnty": "Argentinien",
+      "id": 21318
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/am.svg",
+      "capitol": "Jerewan",
+      "cnty": "Armenien",
+      "id": 2968
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/az.svg",
+      "capitol": "Baku",
+      "cnty": "Aserbaidschan",
+      "id": 24901
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/et.svg",
+      "capitol": "Addis Abeba",
+      "cnty": "Athiopien",
+      "id": 10935
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/au.svg",
+      "capitol": "Canberra",
+      "cnty": "Australien",
+      "id": 25308
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/bs.svg",
+      "capitol": "Nassau",
+      "cnty": "Bahamas",
+      "id": 31954
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/bh.svg",
+      "capitol": "Manama",
+      "cnty": "Bahrain",
+      "id": 21113
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/bd.svg",
+      "capitol": "Dhaka",
+      "cnty": "Bangladesch",
+      "id": 26930
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/be.svg",
+      "capitol": "Brüssel",
+      "cnty": "Belgien",
+      "id": 13988
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/bz.svg",
+      "capitol": "Belmopan",
+      "cnty": "Belize",
+      "id": 5736
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/bj.svg",
+      "capitol": "Porto Novo",
+      "cnty": "Benin",
+      "id": 27312
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/bt.svg",
+      "capitol": "Thimphu",
+      "cnty": "Bhutan",
+      "id": 16576
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/bo.svg",
+      "capitol": "Sucre",
+      "cnty": "Bolivien",
+      "id": 2289
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ba.svg",
+      "capitol": "Sarajevo",
+      "cnty": "Bosnien und Herzegowina",
+      "id": 20601
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/bw.svg",
+      "capitol": "Gaborone",
+      "cnty": "Botswana",
+      "id": 262
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/br.svg",
+      "capitol": "Brasília",
+      "cnty": "Brasilien",
+      "id": 8139
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/bn.svg",
+      "capitol": "Bandar Seri Begawan",
+      "cnty": "Brunei",
+      "id": 4957
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/bg.svg",
+      "capitol": "Sofia",
+      "cnty": "Bulgarien",
+      "id": 12524
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/bf.svg",
+      "capitol": "Ouagadougou",
+      "cnty": "Burkina Faso",
+      "id": 25904
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/bi.svg",
+      "capitol": "Gitega",
+      "cnty": "Burundi",
+      "id": 13329
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/cl.svg",
+      "capitol": "Santiago de Chile",
+      "cnty": "Chile",
+      "id": 30499
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/cn.svg",
+      "capitol": "Peking",
+      "cnty": "China Volksrepublik",
+      "id": 32575
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/cr.svg",
+      "capitol": "San José",
+      "cnty": "Costa Rica",
+      "id": 20871
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/dk.svg",
+      "capitol": "Kopenhagen",
+      "cnty": "Danemark",
+      "id": 21682
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/de.svg",
+      "capitol": "Berlin",
+      "cnty": "Deutschland",
+      "id": 18926
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/dm.svg",
+      "capitol": "Roseau",
+      "cnty": "Dominica",
+      "id": 19999
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/do.svg",
+      "capitol": "Santo Domingo",
+      "cnty": "Dominikanische Republik",
+      "id": 8381
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/dj.svg",
+      "capitol": "Dschibuti",
+      "cnty": "Dschibuti",
+      "id": 10188
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ec.svg",
+      "capitol": "Quito",
+      "cnty": "Ecuador",
+      "id": 15231
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ci.svg",
+      "capitol": "Yamoussoukro",
+      "cnty": "Elfenbeinküste",
+      "id": 10821
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/sv.svg",
+      "capitol": "San Salvador",
+      "cnty": "El Salvador",
+      "id": 27767
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/er.svg",
+      "capitol": "Asmara",
+      "cnty": "Eritrea",
+      "id": 11320
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ee.svg",
+      "capitol": "Tallinn (Reval)",
+      "cnty": "Estland",
+      "id": 16923
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/fj.svg",
+      "capitol": "Suva",
+      "cnty": "Fidschi",
+      "id": 4599
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/fi.svg",
+      "capitol": "Helsinki",
+      "cnty": "Finnland",
+      "id": 28485
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/fr.svg",
+      "capitol": "Paris",
+      "cnty": "Frankreich",
+      "id": 4532
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ga.svg",
+      "capitol": "Libreville",
+      "cnty": "Gabun",
+      "id": 3677
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/gm.svg",
+      "capitol": "Banjul",
+      "cnty": "Gambia",
+      "id": 25388
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ge.svg",
+      "capitol": "Tiflis",
+      "cnty": "Georgien",
+      "id": 10338
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/gh.svg",
+      "capitol": "Accra",
+      "cnty": "Ghana",
+      "id": 23583
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/gd.svg",
+      "capitol": "St. George’s",
+      "cnty": "Grenada",
+      "id": 23274
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/gr.svg",
+      "capitol": "Athen",
+      "cnty": "Griechenland",
+      "id": 9220
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/gt.svg",
+      "capitol": "Guatemala-Stadt",
+      "cnty": "Guatemala",
+      "id": 29645
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/gn.svg",
+      "capitol": "Conakry",
+      "cnty": "Guinea-a",
+      "id": 21180
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/gw.svg",
+      "capitol": "Bissau",
+      "cnty": "Guinea-Bissau",
+      "id": 21271
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/gy.svg",
+      "capitol": "Georgetown",
+      "cnty": "Guyana",
+      "id": 10734
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ht.svg",
+      "capitol": "Port-au-Prince",
+      "cnty": "Haiti",
+      "id": 16092
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/hn.svg",
+      "capitol": "Tegucigalpa",
+      "cnty": "Honduras",
+      "id": 27280
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/in.svg",
+      "capitol": "Neu-Delhi",
+      "cnty": "Indien",
+      "id": 26947
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/id.svg",
+      "capitol": "Jakarta",
+      "cnty": "Indonesien",
+      "id": 12541
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/iq.svg",
+      "capitol": "Bagdad",
+      "cnty": "Irak",
+      "id": 22814
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ir.svg",
+      "capitol": "Teheran",
+      "cnty": "Iran",
+      "id": 32358
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ie.svg",
+      "capitol": "Dublin",
+      "cnty": "Irland",
+      "id": 8622
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/is.svg",
+      "capitol": "Reykjavík",
+      "cnty": "Island",
+      "id": 21686
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/il.svg",
+      "capitol": "Jerusalem",
+      "cnty": "Israel",
+      "id": 18391
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/it.svg",
+      "capitol": "Rom",
+      "cnty": "Italien",
+      "id": 28390
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/jm.svg",
+      "capitol": "Kingston",
+      "cnty": "Jamaika",
+      "id": 13662
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/jp.svg",
+      "capitol": "Tokio",
+      "cnty": "Japan",
+      "id": 23406
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ye.svg",
+      "capitol": "Sanaa",
+      "cnty": "Jemen",
+      "id": 14518
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/jo.svg",
+      "capitol": "Amman",
+      "cnty": "Jordanien",
+      "id": 31218
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/kh.svg",
+      "capitol": "Phnom Penh",
+      "cnty": "Kambodscha",
+      "id": 13035
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/cm.svg",
+      "capitol": "Yaoundé",
+      "cnty": "Kamerun",
+      "id": 25212
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ca.svg",
+      "capitol": "Ottawa",
+      "cnty": "Kanada",
+      "id": 25184
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/cv.svg",
+      "capitol": "Praia",
+      "cnty": "Kap Verde",
+      "id": 847
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/kz.svg",
+      "capitol": "Nur-Sultan",
+      "cnty": "Kasachstan",
+      "id": 31870
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/qa.svg",
+      "capitol": "Doha",
+      "cnty": "Katar",
+      "id": 26007
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ke.svg",
+      "capitol": "Nairobi",
+      "cnty": "Kenia",
+      "id": 4270
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/kg.svg",
+      "capitol": "Bischkek",
+      "cnty": "Kirgisistan",
+      "id": 2192
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ki.svg",
+      "capitol": "South Tarawa",
+      "cnty": "Kiribati",
+      "id": 4520
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/co.svg",
+      "capitol": "Bogotá",
+      "cnty": "Kolumbien",
+      "id": 8583
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/km.svg",
+      "capitol": "Moroni",
+      "cnty": "Komoren",
+      "id": 9824
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/cd.svg",
+      "capitol": "Kinshasa",
+      "cnty": "Kongo Demokratische Republik",
+      "id": 26102
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/cg.svg",
+      "capitol": "Brazzaville",
+      "cnty": "Kongo Republik",
+      "id": 9652
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/kp.svg",
+      "capitol": "Pjöngjang",
+      "cnty": "Korea Nord",
+      "id": 16142
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/kr.svg",
+      "capitol": "Seoul",
+      "cnty": "Korea Sud",
+      "id": 27415
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/hr.svg",
+      "capitol": "Zagreb",
+      "cnty": "Kroatien",
+      "id": 28490
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/cu.svg",
+      "capitol": "Havanna",
+      "cnty": "Kuba",
+      "id": 2750
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/kw.svg",
+      "capitol": "Kuwait-Stadt",
+      "cnty": "Kuwait",
+      "id": 18443
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/la.svg",
+      "capitol": "Vientiane",
+      "cnty": "Laos",
+      "id": 16624
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ls.svg",
+      "capitol": "Maseru",
+      "cnty": "Lesotho",
+      "id": 28353
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/lv.svg",
+      "capitol": "Riga",
+      "cnty": "Lettland",
+      "id": 2983
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/lb.svg",
+      "capitol": "Beirut",
+      "cnty": "Libanon",
+      "id": 1746
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/lr.svg",
+      "capitol": "Monrovia",
+      "cnty": "Liberia",
+      "id": 16604
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ly.svg",
+      "capitol": "Tripolis",
+      "cnty": "Libyen",
+      "id": 3430
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/li.svg",
+      "capitol": "Vaduz",
+      "cnty": "Liechtenstein",
+      "id": 9953
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/lt.svg",
+      "capitol": "Vilnius",
+      "cnty": "Litauen",
+      "id": 10744
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/lu.svg",
+      "capitol": "Luxemburg",
+      "cnty": "Luxemburg",
+      "id": 8986
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/mg.svg",
+      "capitol": "Antananarivo",
+      "cnty": "Madagaskar",
+      "id": 31049
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/mw.svg",
+      "capitol": "Lilongwe",
+      "cnty": "Malawi",
+      "id": 25861
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/my.svg",
+      "capitol": "Kuala Lumpur",
+      "cnty": "Malaysia",
+      "id": 11243
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/mv.svg",
+      "capitol": "Malé",
+      "cnty": "Malediven",
+      "id": 26663
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ml.svg",
+      "capitol": "Bamako",
+      "cnty": "Mali",
+      "id": 30165
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/mt.svg",
+      "capitol": "Valletta",
+      "cnty": "Malta",
+      "id": 31117
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ma.svg",
+      "capitol": "Rabat",
+      "cnty": "Marokko",
+      "id": 30740
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/mh.svg",
+      "capitol": "Majuro",
+      "cnty": "Marshallinseln",
+      "id": 9744
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/mr.svg",
+      "capitol": "Nouakchott",
+      "cnty": "Mauretanien",
+      "id": 771
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/mu.svg",
+      "capitol": "Port Louis",
+      "cnty": "Mauritius",
+      "id": 13343
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/mx.svg",
+      "capitol": "Mexiko-Stadt",
+      "cnty": "Mexiko",
+      "id": 20129
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/fm.svg",
+      "capitol": "Palikir",
+      "cnty": "Mikronesien Foderierte Staaten",
+      "id": 20908
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/md.svg",
+      "capitol": "Chișinău",
+      "cnty": "Moldau Republik",
+      "id": 26279
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/mc.svg",
+      "capitol": "",
+      "cnty": "Monaco",
+      "id": 23933
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/mn.svg",
+      "capitol": "Ulaanbaatar",
+      "cnty": "Mongolei",
+      "id": 7573
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/me.svg",
+      "capitol": "Podgorica",
+      "cnty": "Montenegro",
+      "id": 28038
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/mz.svg",
+      "capitol": "Maputo",
+      "cnty": "Mosambik",
+      "id": 18416
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/mm.svg",
+      "capitol": "Naypyidaw",
+      "cnty": "Myanmar",
+      "id": 5302
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/na.svg",
+      "capitol": "Windhoek",
+      "cnty": "Namibia",
+      "id": 27343
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/nr.svg",
+      "capitol": "Yaren",
+      "cnty": "Nauru",
+      "id": 1520
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/np.svg",
+      "capitol": "Kathmandu",
+      "cnty": "Nepal",
+      "id": 15417
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/nz.svg",
+      "capitol": "Wellington",
+      "cnty": "Neuseeland",
+      "id": 30552
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ni.svg",
+      "capitol": "Managua",
+      "cnty": "Nicaragua",
+      "id": 1997
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/nl.svg",
+      "capitol": "Amsterdam",
+      "cnty": "Niederlande",
+      "id": 18129
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ne.svg",
+      "capitol": "Niamey",
+      "cnty": "Niger",
+      "id": 568
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ng.svg",
+      "capitol": "Abuja",
+      "cnty": "Nigeria",
+      "id": 19800
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/mk.svg",
+      "capitol": "Skopje",
+      "cnty": "Nordmazedonien",
+      "id": 32606
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/no.svg",
+      "capitol": "Oslo",
+      "cnty": "Norwegen",
+      "id": 29217
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/om.svg",
+      "capitol": "Maskat",
+      "cnty": "Oman",
+      "id": 32102
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/at.svg",
+      "capitol": "Wien",
+      "cnty": "Osterreich",
+      "id": 21832
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/tl.svg",
+      "capitol": "Dili",
+      "cnty": "Osttimor",
+      "id": 27599
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/pk.svg",
+      "capitol": "Islamabad",
+      "cnty": "Pakistan",
+      "id": 2169
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/pw.svg",
+      "capitol": "Ngerulmud",
+      "cnty": "Palau",
+      "id": 4203
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/pa.svg",
+      "capitol": "Panama-Stadt",
+      "cnty": "Panama",
+      "id": 14231
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/pg.svg",
+      "capitol": "Port Moresby",
+      "cnty": "Papua-Neuguinea",
+      "id": 23018
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/py.svg",
+      "capitol": "Asunción",
+      "cnty": "Paraguay",
+      "id": 32127
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/pe.svg",
+      "capitol": "Lima",
+      "cnty": "Peru",
+      "id": 13991
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ph.svg",
+      "capitol": "Manila",
+      "cnty": "Philippinen",
+      "id": 9858
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/pl.svg",
+      "capitol": "Warschau",
+      "cnty": "Polen",
+      "id": 29170
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/pt.svg",
+      "capitol": "Lissabon",
+      "cnty": "Portugal",
+      "id": 3845
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/rw.svg",
+      "capitol": "Kigali",
+      "cnty": "Ruanda",
+      "id": 31389
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ro.svg",
+      "capitol": "Bukarest",
+      "cnty": "Rumänien",
+      "id": 18769
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ru.svg",
+      "capitol": "Moskau",
+      "cnty": "Russland",
+      "id": 5777
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/kn.svg",
+      "capitol": "Basseterre",
+      "cnty": "Saint Kitts Nevis",
+      "id": 17519
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/lc.svg",
+      "capitol": "Castries",
+      "cnty": "Saint Lucia",
+      "id": 18516
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/vc.svg",
+      "capitol": "Kingstown",
+      "cnty": "Saint Vincent Grenadinen",
+      "id": 1756
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/sb.svg",
+      "capitol": "Honiara",
+      "cnty": "Salomonen",
+      "id": 32320
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/zm.svg",
+      "capitol": "Lusaka",
+      "cnty": "Sambia",
+      "id": 19220
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ws.svg",
+      "capitol": "Apia",
+      "cnty": "Samoa",
+      "id": 8046
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/sm.svg",
+      "capitol": "San Marino",
+      "cnty": "San Marino",
+      "id": 17115
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/st.svg",
+      "capitol": "São Tomé",
+      "cnty": "Sao Tome und Principe",
+      "id": 16360
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/sa.svg",
+      "capitol": "Riad",
+      "cnty": "Saudi-Arabien",
+      "id": 25053
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/se.svg",
+      "capitol": "Stockholm",
+      "cnty": "Schweden",
+      "id": 15370
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ch.svg",
+      "capitol": "Bern",
+      "cnty": "Schweiz",
+      "id": 707
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/sn.svg",
+      "capitol": "Dakar",
+      "cnty": "Senegal",
+      "id": 14173
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/rs.svg",
+      "capitol": "Belgrad",
+      "cnty": "Serbien",
+      "id": 30804
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/sc.svg",
+      "capitol": "Victoria",
+      "cnty": "Seychellen",
+      "id": 25614
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/sl.svg",
+      "capitol": "Freetown",
+      "cnty": "Sierra Leone",
+      "id": 3916
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/zw.svg",
+      "capitol": "Harare",
+      "cnty": "Simbabwe",
+      "id": 19602
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/sg.svg",
+      "capitol": "",
+      "cnty": "Singapur",
+      "id": 23864
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/sk.svg",
+      "capitol": "Bratislava",
+      "cnty": "Slowakei",
+      "id": 22069
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/si.svg",
+      "capitol": "Ljubljana",
+      "cnty": "Slowenien",
+      "id": 7723
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/so.svg",
+      "capitol": "Mogadischu",
+      "cnty": "Somalia",
+      "id": 19609
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/es.svg",
+      "capitol": "Madrid",
+      "cnty": "Spanien",
+      "id": 21432
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/lk.svg",
+      "capitol": "Sri Jayewardenepura Kotte",
+      "cnty": "Sri Lanka",
+      "id": 12376
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/za.svg",
+      "capitol": "Bloemfontein",
+      "cnty": "Sudafrika",
+      "id": 5216
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/sd.svg",
+      "capitol": "Khartum",
+      "cnty": "Sudan",
+      "id": 18796
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ss.svg",
+      "capitol": "Juba",
+      "cnty": "Sudsudan",
+      "id": 19639
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/sr.svg",
+      "capitol": "Paramaribo",
+      "cnty": "Suriname",
+      "id": 3106
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/sz.svg",
+      "capitol": "Mbabane",
+      "cnty": "Swasiland",
+      "id": 23192
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/sy.svg",
+      "capitol": "Damaskus",
+      "cnty": "Syrien",
+      "id": 7622
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/tj.svg",
+      "capitol": "Duschanbe",
+      "cnty": "Tadschikistan",
+      "id": 2841
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/tz.svg",
+      "capitol": "Dodoma",
+      "cnty": "Tansania",
+      "id": 4383
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/th.svg",
+      "capitol": "Bangkok",
+      "cnty": "Thailand",
+      "id": 20728
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/tg.svg",
+      "capitol": "Lomé",
+      "cnty": "Togo",
+      "id": 17043
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/to.svg",
+      "capitol": "Nukuʻalofa",
+      "cnty": "Tonga",
+      "id": 29611
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/tt.svg",
+      "capitol": "Port of Spain",
+      "cnty": "Trinidad und Tobago",
+      "id": 26700
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/td.svg",
+      "capitol": "N’Djamena",
+      "cnty": "Tschad",
+      "id": 13054
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/cz.svg",
+      "capitol": "Prag",
+      "cnty": "Tschechien",
+      "id": 15974
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/tn.svg",
+      "capitol": "Tunis",
+      "cnty": "Tunesien",
+      "id": 4145
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/tr.svg",
+      "capitol": "Ankara",
+      "cnty": "Turkei",
+      "id": 12498
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/tm.svg",
+      "capitol": "Aşgabat",
+      "cnty": "Turkmenistan",
+      "id": 14327
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/tv.svg",
+      "capitol": "Funafuti",
+      "cnty": "Tuvalu",
+      "id": 20878
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ug.svg",
+      "capitol": "Kampala",
+      "cnty": "Uganda",
+      "id": 9617
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ua.svg",
+      "capitol": "Kiew",
+      "cnty": "Ukraine",
+      "id": 31858
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/hu.svg",
+      "capitol": "Budapest",
+      "cnty": "Ungarn",
+      "id": 26323
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/uy.svg",
+      "capitol": "Montevideo",
+      "cnty": "Uruguay",
+      "id": 25701
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/uz.svg",
+      "capitol": "Taschkent",
+      "cnty": "Usbekistan",
+      "id": 7031
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/vu.svg",
+      "capitol": "Port Vila",
+      "cnty": "Vanuatu",
+      "id": 26698
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/va.svg",
+      "capitol": "Vatikanstadt",
+      "cnty": "Vatikanstadt",
+      "id": 22193
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ve.svg",
+      "capitol": "Caracas",
+      "cnty": "Venezuela",
+      "id": 11794
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ae.svg",
+      "capitol": "Abu Dhabi",
+      "cnty": "Vereinigte Arabische Emirate",
+      "id": 18272
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/gb.svg",
+      "capitol": "London",
+      "cnty": "Vereinigtes Konigreich",
+      "id": 2646
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/us.svg",
+      "capitol": "Washington, D.C.",
+      "cnty": "Vereinigte Staaten",
+      "id": 6882
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/vn.svg",
+      "capitol": "Hanoi",
+      "cnty": "Vietnam",
+      "id": 32443
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/by.svg",
+      "capitol": "Minsk",
+      "cnty": "Weissrussland",
+      "id": 18257
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/cf.svg",
+      "capitol": "Bangui",
+      "cnty": "Zentralafrikanische Republik",
+      "id": 1600
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/cy.svg",
+      "capitol": "Nikosia",
+      "cnty": "Zypern Republik",
+      "id": 8009
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ck.svg",
+      "capitol": "Avarua",
+      "cnty": "Cookinseln",
+      "id": 22592
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/nu.svg",
+      "capitol": "Alofi",
+      "cnty": "Niue",
+      "id": 22963
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/ps.svg",
+      "capitol": "Ostjerusalem",
+      "cnty": "Palastina Autonomiegebiete",
+      "id": 30403
+    },
+    {
+      "flag": "./LänderFlaggenHauptstädte/tw.svg",
+      "capitol": "Taipeh",
+      "cnty": "Taiwan",
+      "id": 1984
+    }
+  ],
+  "meta": {
+    "fields": [
+      {
+        "code": "flag",
+        "label": "Flagge",
+        "type": "media"
+      },
+      {
+        "code": "capitol",
+        "label": "Hauptstadt"
+      },
+      {
+        "code": "cnty",
+        "label": "Staat"
+      }
+    ],
+    "modes": [
+      {
+        "f1": [
+          "cnty",
+          "flag"
+        ],
+        "f2": "capitol",
+        "id": "Hauptstädte benennen"
+      },
+      {
+        "f1": "flag",
+        "f2": [
+          "cnty",
+          "capitol"
+        ],
+        "id": "Flaggen erkennen"
+      }
+    ]
+  }
+}

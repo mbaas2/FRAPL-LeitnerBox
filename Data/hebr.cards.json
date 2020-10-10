@@ -1,0 +1,162 @@
+{
+  "cards": [
+    {
+      "ansage": "./hebr/letter1488.mp3",
+      "char": "א",
+      "id": 1,
+      "name": "Aleph"
+    },
+    {
+      "ansage": "./hebr/letter1489.mp3",
+      "char": "ב",
+      "id": 2,
+      "name": "Beth"
+    },
+    {
+      "ansage": "./hebr/letter1490.mp3",
+      "char": "ג",
+      "id": 3,
+      "name": "Gimel"
+    },
+    {
+      "ansage": "./hebr/letter1491.mp3",
+      "char": "ד",
+      "id": 4,
+      "name": "Daleth"
+    },
+    {
+      "ansage": "./hebr/letter1492.mp3",
+      "char": "ה",
+      "id": 5,
+      "name": "He"
+    },
+    {
+      "ansage": "./hebr/letter1493.mp3",
+      "char": "ו",
+      "id": 6,
+      "name": "Waw"
+    },
+    {
+      "ansage": "./hebr/letter1494.mp3",
+      "char": "ז",
+      "id": 7,
+      "name": "Zajin"
+    },
+    {
+      "ansage": "./hebr/letter1495.mp3",
+      "char": "ח",
+      "id": 8,
+      "name": "Chet"
+    },
+    {
+      "ansage": "./hebr/letter1496.mp3",
+      "char": "ט",
+      "id": 9,
+      "name": "Tet"
+    },
+    {
+      "ansage": "./hebr/letter1497.mp3",
+      "char": "י",
+      "id": 10,
+      "name": "Jod"
+    },
+    {
+      "ansage": "./hebr/letter1499.mp3",
+      "char": "כ",
+      "id": 11,
+      "name": "Kaph"
+    },
+    {
+      "ansage": "./hebr/letter1500.mp3",
+      "char": "ל",
+      "id": 12,
+      "name": "Lamed"
+    },
+    {
+      "ansage": "./hebr/letter1502.mp3",
+      "char": "מ",
+      "id": 13,
+      "name": "Mem"
+    },
+    {
+      "ansage": "./hebr/letter1504.mp3",
+      "char": "נ",
+      "id": 14,
+      "name": "Nun"
+    },
+    {
+      "ansage": "./hebr/letter1505.mp3",
+      "char": "ס",
+      "id": 15,
+      "name": "Samech"
+    },
+    {
+      "ansage": "./hebr/letter1506.mp3",
+      "char": "ע",
+      "id": 16,
+      "name": "Ajin"
+    },
+    {
+      "ansage": "./hebr/letter1508.mp3",
+      "char": "פ",
+      "id": 17,
+      "name": "Pe"
+    },
+    {
+      "ansage": "./hebr/letter1510.mp3",
+      "char": "צ",
+      "id": 18,
+      "name": "Tzade"
+    },
+    {
+      "ansage": "./hebr/letter1511.mp3",
+      "char": "ק",
+      "id": 19,
+      "name": "Qoph"
+    },
+    {
+      "ansage": "./hebr/letter1512.mp3",
+      "char": "ר",
+      "id": 20,
+      "name": "Resch"
+    },
+    {
+      "ansage": "./hebr/letter1513.mp3",
+      "char": "ש",
+      "id": 21,
+      "name": "Sin, Schin"
+    },
+    {
+      "ansage": "./hebr/letter1514.mp3",
+      "char": "ת",
+      "id": 22,
+      "name": "Taw"
+    }
+  ],
+  "meta": {
+    "css":"./hebr/hebr.css",
+    "fields": [
+      {
+        "code": "char",
+        "class": "parchement w-100 text-center",
+        "label": "Buchstabe"
+      },
+      {
+        "code": "name",
+        "label": "Name"
+      },
+      {
+          "code":"ansage",
+          "label":"Ansage (engl).",
+          "type":"media"
+      }
+    ],
+    "modes": [
+      {
+        "f1": "char",
+        "f2": ["name","ansage"],
+        "id": "Hebr Buchstaben benennen"
+      }
+    ]
+  }
+}

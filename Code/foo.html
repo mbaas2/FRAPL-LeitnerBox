@@ -1,0 +1,212 @@
+<div id="id518194139" class="modal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content bg-dark">
+            <div class="modal-header">
+                <h3 class="modal-title">Today's section is empty!</h3><button class="close" type="button"
+                    data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">The section for today's lesson is empty</div>
+            <div class="modal-footer"><button id="id768437741" style="btn;" name="id768437741" type="button">Next
+                    Lesson</button>
+                <script>
+                    $(function () {
+                        $("#id768437741").on("click", function (event, ui) {
+                            $("#id518194139").modal("close");
+                            $("#id518194139").remove();;
+                            document.body.style.cursor = "wait";
+                            $.ajax({
+                                url: "/index.mipage",
+                                cache: false,
+                                type: "POST",
+                                dataType: "json",
+                                headers: {
+                                    "isAPLJax": "true"
+                                },
+                                data: {
+                                    _event: event.type,
+                                    _what: function (arg) {
+                                        try {
+                                            return arg.attr("id");
+                                        } catch (e) {
+                                            return "";
+                                        }
+                                    }($(event.target)),
+                                    _value: function (arg) {
+                                        try {
+                                            return arg.val();
+                                        } catch (e) {
+                                            return "";
+                                        }
+                                    }($(event.target)),
+                                    _selector: "#id768437741",
+                                    _target: function (arg) {
+                                        try {
+                                            return arg.target.id;
+                                        } catch (e) {
+                                            return "";
+                                        }
+                                    }(event),
+                                    _currentTarget: function (arg) {
+                                        try {
+                                            return arg.currentTarget.id;
+                                        } catch (e) {
+                                            return "";
+                                        }
+                                    }(event),
+                                    _callback: "NextLesson",
+                                    mid: "id518194139"
+                                },
+                                success: function (obj) {
+                                    APLJaxReturn(obj);
+                                    document.body.style.cursor = "default";
+                                },
+                                statusCode: {
+                                    408: function (p1, p2, p3) {
+                                        alert("Session timed out");
+                                        document.body.style.cursor = "default";
+                                    },
+                                    500: function (p1, p2, p3) {
+                                        alert("Internal Server Error");
+                                        document.body.style.cursor = "default";
+                                    }
+                                }
+                            });
+                        });
+                    });
+                </script><button id="id1484595121" style="btn;" name="id1484595121" type="button">Close Project</button>
+                <script>
+                    $(function () {
+                        $("#id1484595121").on("click", function (event, ui) {
+                            $("#id518194139").modal("close");
+                            $("#id518194139").remove();;
+                            document.body.style.cursor = "wait";
+                            $.ajax({
+                                url: "/index.mipage",
+                                cache: false,
+                                type: "POST",
+                                dataType: "json",
+                                headers: {
+                                    "isAPLJax": "true"
+                                },
+                                data: {
+                                    _event: event.type,
+                                    _what: function (arg) {
+                                        try {
+                                            return arg.attr("id");
+                                        } catch (e) {
+                                            return "";
+                                        }
+                                    }($(event.target)),
+                                    _value: function (arg) {
+                                        try {
+                                            return arg.val();
+                                        } catch (e) {
+                                            return "";
+                                        }
+                                    }($(event.target)),
+                                    _selector: "#id1484595121",
+                                    _target: function (arg) {
+                                        try {
+                                            return arg.target.id;
+                                        } catch (e) {
+                                            return "";
+                                        }
+                                    }(event),
+                                    _currentTarget: function (arg) {
+                                        try {
+                                            return arg.currentTarget.id;
+                                        } catch (e) {
+                                            return "";
+                                        }
+                                    }(event),
+                                    _callback: "             ",
+                                    mid: "id518194139"
+                                },
+                                success: function (obj) {
+                                    APLJaxReturn(obj);
+                                    document.body.style.cursor = "default";
+                                },
+                                statusCode: {
+                                    408: function (p1, p2, p3) {
+                                        alert("Session timed out");
+                                        document.body.style.cursor = "default";
+                                    },
+                                    500: function (p1, p2, p3) {
+                                        alert("Internal Server Error");
+                                        document.body.style.cursor = "default";
+                                    }
+                                }
+                            });
+                        });
+                    });
+                </script><button id="id834190542" style="btn;" name="id834190542" type="button">closePrj</button>
+                <script>
+                    $(function () {
+                        $("#id834190542").on("click", function (event, ui) {
+                            $("#id518194139").modal("close");
+                            $("#id518194139").remove();;
+                            document.body.style.cursor = "wait";
+                            $.ajax({
+                                url: "/index.mipage",
+                                cache: false,
+                                type: "POST",
+                                dataType: "json",
+                                headers: {
+                                    "isAPLJax": "true"
+                                },
+                                data: {
+                                    _event: event.type,
+                                    _what: function (arg) {
+                                        try {
+                                            return arg.attr("id");
+                                        } catch (e) {
+                                            return "";
+                                        }
+                                    }($(event.target)),
+                                    _value: function (arg) {
+                                        try {
+                                            return arg.val();
+                                        } catch (e) {
+                                            return "";
+                                        }
+                                    }($(event.target)),
+                                    _selector: "#id834190542",
+                                    _target: function (arg) {
+                                        try {
+                                            return arg.target.id;
+                                        } catch (e) {
+                                            return "";
+                                        }
+                                    }(event),
+                                    _currentTarget: function (arg) {
+                                        try {
+                                            return arg.currentTarget.id;
+                                        } catch (e) {
+                                            return "";
+                                        }
+                                    }(event),
+                                    _callback: "        ",
+                                    mid: "id518194139"
+                                },
+                                success: function (obj) {
+                                    APLJaxReturn(obj);
+                                    document.body.style.cursor = "default";
+                                },
+                                statusCode: {
+                                    408: function (p1, p2, p3) {
+                                        alert("Session timed out");
+                                        document.body.style.cursor = "default";
+                                    },
+                                    500: function (p1, p2, p3) {
+                                        alert("Internal Server Error");
+                                        document.body.style.cursor = "default";
+                                    }
+                                }
+                            });
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
